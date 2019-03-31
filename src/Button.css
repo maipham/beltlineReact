@@ -1,0 +1,31 @@
+.Button {
+    color: white;
+    background-color: #008CBA;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.sButton {
+    padding: 10px 24px;
+    font-size: 16px;
+}
+
+.mButton {
+    padding: 12px 28px;
+    font-size: 16px;
+}
+
+.lButton {
+    padding: 12px 44px;
+    font-size: 18px;
+}
+
+.fleft {
+    float: left;
+    margin-left: 120px;
+}
+.fright {
+    float: right;
+    margin-right: 115px;
+}
