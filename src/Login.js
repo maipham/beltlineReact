@@ -43,8 +43,8 @@ export class Login extends Component {
                     <br />
                 </form>
                 <br />
-                <Button type="button" text="Login" buttonSize="sButton" onClick={this.sendUserInfo} float="fleft"/>
-                <Button type="button" text="Register" buttonSize="sButton" onClick={this.registerUser} float="fright"/>
+                <Button type="button" text="Login" onClick={this.sendUserInfo} className="fleft sButton"/>
+                <Button type="button" text="Register" onClick={this.registerUser} className="fright sButton"/>
             </div>
         );
     }
