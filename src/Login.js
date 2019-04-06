@@ -39,7 +39,7 @@ export class Login extends Component {
                     <br/>
                     <br/>
                     <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Password</label>
-                    <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.password} onChange={this.handlePasswordChange}></input>
+                    <input style={{display: "inline-block", float: "left", padding: 5}} type="password" value={this.state.password} onChange={this.handlePasswordChange}></input>
                     <br />
                 </form>
                 <br />
