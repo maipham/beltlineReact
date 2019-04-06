@@ -22,6 +22,11 @@
     font-size: 18px;
 }
 
+.bigAssButton {
+    padding: 48px 69px;
+    font-size: 32px;
+}
+
 .fleft {
     float: left;
     margin-left: 120px;

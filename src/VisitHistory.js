@@ -47,18 +47,37 @@ export class VisitHistory extends Component {
         return (
             <div>
                 <h1>Visit History</h1>
-                <form>
-                    <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Event</label>
-                    <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.value} onChange={this.handleUserChange}></input>
-                    <br/>
-                    <br/>
-                    <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Password</label>
-                    <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.password} onChange={this.handlePasswordChange}></input>
-                    <br />
+                <form style={{float: "left", width: 425}}>
+                    <span>
+                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Event</label>
+                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.eventName} onChange={this.handleEventChange}></input>
+
+                        <br/>
+                        <br/>
+
+                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Start Date</label>
+                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.startDate} onChange={this.handleStartDateChange}></input>
+                        <br />
+                    </span>
                 </form>
+
+                <form style={{float: "left", width: 425}}>
+                    <span>
+                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Site</label>
+                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.siteName} onChange={this.handleSiteChange}></input>
+
+                        <br/>
+                        <br/>
+
+                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>End Date</label>
+                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.endDate} onChange={this.handleEndDateChange}></input>
+                        <br />
+                    </span>
+                </form>
+
                 <br />
-                <Button type="button" text="Login" buttonSize="sButton" onClick={this.sendUserInfo} float="fleft"/>
-                <Button type="button" text="Register" buttonSize="sButton" onClick={this.registerUser} float="fright"/>
+                <br />
+                <Button type="bigAssButton" text="Filter" onClick={this.filterAndGetInfo} float="fleft"/>
             </div>
         );
     }
