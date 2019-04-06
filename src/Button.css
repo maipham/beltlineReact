@@ -26,6 +26,11 @@
     font-size: 32px;
 }
 
+.moreVerticalSpace {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
 .fleft {
     float: left;
     margin-left: 120px;

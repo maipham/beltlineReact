@@ -76,8 +76,31 @@ export class VisitHistory extends Component {
                 </form>
 
                 <br />
+                <Button type="button" text="Filter" onClick={this.filterAndGetInfo} className="mButton moreVerticalSpace"/>
+
                 <br />
-                <Button type="bigAssButton" text="Filter" onClick={this.filterAndGetInfo} float="fleft"/>
+                <table cellSpacing={"15"} align={"center"} border={"1"} bordercolor={"white"}>
+                    <tr>
+                        <th>Date</th>
+                        <th>Event</th>
+                        <th>Site</th>
+                        <th>Price</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+
             </div>
         );
     }
