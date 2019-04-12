@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from './Button.js';
+import { Button } from './components/Button/Button.js';
 
 export class RegistrationNav extends Component {
     render() {

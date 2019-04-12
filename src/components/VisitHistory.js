@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from './Button.js';
+import { Button } from './Button/Button.js';
 
 export class VisitHistory extends Component {
     constructor(props) {
@@ -99,8 +99,6 @@ export class VisitHistory extends Component {
                         <td></td>
                     </tr>
                 </table>
-
-
             </div>
         );
     }
