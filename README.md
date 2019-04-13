@@ -11,4 +11,4 @@ new-comp is the name of the new component
 
 cd to the entity folder, do the following  
 
-![image](https://user-images.githubusercontent.com/34165109/56083507-f461d880-5df3-11e9-8f4f-af1a76a8f9f7.png)
+![image](https://user-images.githubusercontent.com/34165109/56083532-3723b080-5df4-11e9-95cf-a468d061c9bb.png)
