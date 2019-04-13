@@ -23,7 +23,7 @@ export class ${entityName} {
 }
 `;
 
-fs.writeFile('./' + entityName + ".tsx", componentTemplate, function (err) {
+fs.writeFile('./' + entityName + ".js", componentTemplate, function (err) {
     if (err) {
         return console.log(err);
     }

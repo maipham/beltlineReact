@@ -2,12 +2,16 @@ import {status, user_type} from "./enums";
 import {User} from "./User";
 
 export class Employee extends User{
-    constructor(username, email, password, fname, lname, phone, emp_type, address, is_visitor) {
+    constructor(username, email, password, fname, lname, phone, emp_type, address, is_visitor, site) {
         super(username, email, password, fname, lname);
         this._emp_type = emp_type;
         this._phone = phone;
         this._address = address;
         this._is_visitor = is_visitor;
+        this._site = site;
+    }
+    set site(site) {
+        this._site = site;
     }
 
     set fname(new_fname) {
@@ -49,7 +53,11 @@ export class Employee extends User{
     }
 
     remove_email(rm_email) {
-        this._email = rm_email;
+        for (let i = 0; i < this._email.length; i++) {
+            if (this._email[i] === rm_email) {
+                this._email.splice(i, 1);
+            }
+        }
     }
 
     get userType() {
@@ -66,5 +74,8 @@ export class Employee extends User{
 
     get emp_type() {
         return this._emp_type;
+    }
+    get site() {
+        return this._site;
     }
 }

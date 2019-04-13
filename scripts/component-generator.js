@@ -18,17 +18,11 @@ if (newName) {
 var componentProp = componentName + "Prop";
 var componentState = componentName + "State";
 var componentTemplate = `
-import * as React from 'react';
+import React, { Component } from 'react';
 import './${componentName}.css';
 
-interface ${componentProp} {
-}
-
-interface ${componentState} {
-}
-
-export default class ${componentName} extends React.Component<${componentProp}, ${componentState}> {
-    constructor(props: Readonly<${componentProp}>) {
+export default class ${componentName} extends Component {
+    constructor(props) {
         super(props);
         this.state = {
         };
@@ -57,7 +51,7 @@ fs.writeFile(path + componentName + ".css", "", function (err) {
     }
 });
 
-fs.writeFile(path + componentName + ".tsx", componentTemplate, function (err) {
+fs.writeFile(path + componentName + ".js", componentTemplate, function (err) {
     if (err) {
         return console.log(err);
     }
