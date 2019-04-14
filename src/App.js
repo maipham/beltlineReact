@@ -4,19 +4,17 @@ import {Login} from './Login.js';
 import  {RegistrationNav} from "./RegistrationNav";
 import {VisitHistory} from "./components/VisitHistory";
 import {Router} from "react-router-dom";
+import {Register_view} from "./components/RegisterView/Register_view";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-
-          <VisitHistory/>
-        </header>
-         <Router>
+         {/* <Router>
 
 
-         </Router>
+         </Router> */}
+         <Register_view />
       </div>
     );
   }
