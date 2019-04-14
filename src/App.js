@@ -6,6 +6,7 @@ import {VisitHistory} from "./components/VisitHistory";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import {User} from "./entities/User";
 import {Visitor} from "./entities/Visitor";
+import {Register_view} from "./components/RegisterView/Register_view"
 
 class App extends Component {
 
@@ -13,8 +14,8 @@ class App extends Component {
         return (
             <Router>
                 <div className="App">
-                    <header className="App-header"/>
                     <Route path="/visit_history" component={VisitHistory}/>
+                    <Register_view />
                 </div>
             </Router>
         );
