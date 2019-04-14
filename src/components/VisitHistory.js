@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Button } from './Button/Button.js';
+import {User} from "../entities/User";
+import {Employee} from "../entities/Employee";
 
 export class VisitHistory extends Component {
+    user = new User('maipham', 'maipham@gmail.com', 'mai',);
     constructor(props) {
         super(props);
         this.state = {
@@ -46,59 +49,8 @@ export class VisitHistory extends Component {
     render() {
         return (
             <div>
-                <h1>Visit History</h1>
-                <form style={{float: "left", width: 425}}>
-                    <span>
-                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Event</label>
-                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.eventName} onChange={this.handleEventChange}></input>
-
-                        <br/>
-                        <br/>
-
-                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Start Date</label>
-                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.startDate} onChange={this.handleStartDateChange}></input>
-                        <br />
-                    </span>
-                </form>
-
-                <form style={{float: "left", width: 425}}>
-                    <span>
-                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>Site</label>
-                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.siteName} onChange={this.handleSiteChange}></input>
-
-                        <br/>
-                        <br/>
-
-                        <label style={{display: "inline-block", float: "left", clear: "left", width: 250}}>End Date</label>
-                        <input style={{display: "inline-block", float: "left", padding: 5}} type="text" value={this.state.endDate} onChange={this.handleEndDateChange}></input>
-                        <br />
-                    </span>
-                </form>
-
-                <br />
-                <Button type="button" text="Filter" onClick={this.filterAndGetInfo} className="mButton moreVerticalSpace"/>
-
-                <br />
-                <table cellSpacing={"15"} align={"center"} border={"1"} bordercolor={"white"}>
-                    <tr>
-                        <th>Date</th>
-                        <th>Event</th>
-                        <th>Site</th>
-                        <th>Price</th>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
+                VisitHistory works!
+                <h1>{ this.user.email }</h1>
             </div>
         );
     }
