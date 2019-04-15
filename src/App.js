@@ -7,6 +7,7 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import {User} from "./entities/User";
 import {Visitor} from "./entities/Visitor";
 import {Register_view} from "./components/RegisterView/Register_view"
+import { User_take_transit } from './components/UserTakeTransit/User_take_transit';
 
 class App extends Component {
 
@@ -15,7 +16,7 @@ class App extends Component {
             <Router>
                 <div className="App">
                     <Route path="/visit_history" component={VisitHistory}/>
-                    <Register_view />
+                    <User_take_transit />
                 </div>
             </Router>
         );

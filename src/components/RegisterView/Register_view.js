@@ -7,6 +7,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+const us_states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI' ,'ID',
+                    'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
+                    'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK',
+                    'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV',
+                    'WI', 'WY'];
 
 export class Register_view extends Component {
     constructor(props) {
@@ -21,16 +26,17 @@ export class Register_view extends Component {
                     phone: '',
                     address: '',
                     city: '',
-                    state: '',
+                    us_state: 'AL',
                     zipcode: '',
                     email: '',
                     emails: [],
                     anchorEl: null,
+                    anchorEl2: null,
                     counter: 0
                 };
     }
 
-    handleClick = event => {
+    handleTypeClick = event => {
         this.setState({ anchorEl: event.currentTarget });
     }
     
@@ -42,6 +48,20 @@ export class Register_view extends Component {
         this.setState({anchorEl: null,
         usertype: event.target.innerText});
     }
+
+    handleStateClick = event => {
+        this.setState({ anchorEl2: event.currentTarget });
+    }
+    
+    handleStateClose = (event, value) => {
+        this.setState({ anchorEl2: null});
+    };
+
+    handleStateMenuClick = (event) => {
+        this.setState({anchorEl2: null,
+        us_state: event.target.innerText});
+    }
+
 
     handleEmailAdd = () => {
         let emailList = this.state.emails;
@@ -61,12 +81,15 @@ export class Register_view extends Component {
         }
     }
 
+    
+
     render() {
         const { anchorEl } = this.state;
+        const { anchorEl2 } = this.state;
         return (
             <div>
                 <h1 style={styles.textColor}>Register</h1>
-                <InputLabel >First Name</InputLabel>
+                <InputLabel style={{...styles.spacing}}>First Name</InputLabel>
                 <Input placeholder="First Name" onChange={(event) => this.setState({firstname: event.target.value})}/>
 
                 <InputLabel>Last Name</InputLabel>
@@ -78,7 +101,7 @@ export class Register_view extends Component {
                 <InputLabel>User Type</InputLabel>
                 <Button aria-owns={anchorEl ? 'simple-menu' : undefined}
                     aria-haspopup="true"
-                    onClick={this.handleClick}>{this.state.usertype}</Button>
+                    onClick={this.handleTypeClick}>{this.state.usertype}</Button>
                 <Menu
                     id="simple-menu"
                     anchorEl={anchorEl}
@@ -105,6 +128,21 @@ export class Register_view extends Component {
 
                 <InputLabel>City</InputLabel>
                 <Input placeholder="City"/>
+
+                <InputLabel>State</InputLabel>
+                <Button aria-owns={anchorEl ? 'state-menu' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleStateClick}>{this.state.us_state}</Button>
+                <Menu
+                    id="state-menu"
+                    anchorEl={anchorEl2}
+                    open={Boolean(anchorEl2)}
+                    onClose={this.handleStateClose}
+                >
+                    {us_states.map(us_state => (
+                        <MenuItem onClick={this.handleStateMenuClick} value={us_state}>{us_state}</MenuItem>
+                    ))}
+                </Menu>
 
                 <InputLabel>Zipcode</InputLabel>
                 <Input placeholder="Zipcode"/>
@@ -134,14 +172,13 @@ export class Register_view extends Component {
     }
 }
 
-const styles = {
-    inputTitle: {
-        height: '200PX'
+const styles = theme => ({
+    root: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
     },
-    inputSpace: {
-        vertical_align: 'left'
+    table: {
+      minWidth: 700,
     },
-    textColor: {
-        color: "black"
-    }
-}
+  });
