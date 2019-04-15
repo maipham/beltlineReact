@@ -1,0 +1,15 @@
+{
+  "name": "Visit History",
+  "version": "1.0.0",
+  "devDependencies": {
+    "react-scripts": "latest"
+  },
+  "description": "https://github.com/mui-org/material-ui/blob/master/docs/src/pages/demos/text-fields/TextFields.js",
+  "dependencies": {
+    "react-dom": "latest",
+    "react": "latest",
+    "prop-types": "latest",
+    "classnames": "latest",
+    "@material-ui/core": "latest"
+  }
+}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {Login} from './Login.js';
 import  {RegistrationNav} from "./RegistrationNav";
-import {VisitHistory} from "./components/VisitHistory";
+import {VisitHistory} from "./components/Visit History/VisitHistory";
 import {Router} from "react-router-dom";
 
 class App extends Component {
@@ -11,12 +11,14 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
 
-          <VisitHistory/>
+            <VisitHistory/>
         </header>
-         <Router>
+
+         {/*<Router>*/}
 
 
-         </Router>
+         {/*</Router>*/}
+
       </div>
     );
   }
