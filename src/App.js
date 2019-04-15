@@ -16,7 +16,7 @@ class App extends Component {
             <Router>
                 <div className="App">
                     <Route path="/visit_history" component={VisitHistory}/>
-                    <User_take_transit />
+                    <Route path="/register" component={Register_view}/>
                 </div>
             </Router>
         );
