@@ -23,12 +23,8 @@ class App extends Component {
                 <div className="App">
                     <Route path="/visit_history" component={VisitHistory}/>
                     <Route path="/register" component={Register_view}/>
-<<<<<<< HEAD
-                    <Route path="/take_transit" component={User_take_transit}></Route>
-=======
                     <Route path="/functionality" component={FunctionalityView}/>
                     <Route path="/login" component={Login}/>
->>>>>>> ef366115f7ea76820c5e337b7fa7983bef67d9bb
                 </div>
             </Router>
         );
