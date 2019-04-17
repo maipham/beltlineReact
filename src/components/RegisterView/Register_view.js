@@ -6,7 +6,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { FormControl, FormBuilder, Validators, FieldGroup, FieldControl } from 'react-reactive-form';
+import RegisterForm from '../forms/RegisterForm/RegisterForm';
+import {Field, reduxForm} from 'redux-form';
 
 const us_states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI' ,'ID',
                     'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
@@ -25,9 +26,6 @@ const input = ({ handler, touched, hasError, meta }) => (
                         </div>  
                       );
 export class Register_view extends Component {
-    register_form = new FormBuilder.group({
-        username: ["", Validators.required]
-    });
 
     constructor(props) {
         super(props);
@@ -99,108 +97,104 @@ export class Register_view extends Component {
     
 
     render() {
-        const { anchorEl } = this.state;
-        const { anchorEl2 } = this.state;
-        
         return (
             <div>
-                <h1 style={styles.textColor}>Register</h1>
-                <FieldGroup control={this.register_form}>
-                    <InputLabel style={{...styles.spacing}}>First Name</InputLabel>
-                    <FieldControl name="username" render={input} meta={{ label: "Username" }}/>
-                    <Input placeholder="First Name" onChange={(event) => this.setState({firstname: event.target.value})}/>
-
-                    <InputLabel>Last Name</InputLabel>
-                    <Input placeholder="Last Name" onChange={(event) => this.setState({lastname: event.target.value})}/>
-                    <br />
-
-                    <InputLabel style ={styles.inputTitle}>Username</InputLabel>
-                    
-                    <Input placeholder="Username"/>
-                    <InputLabel>User Type</InputLabel>
-                    <Button aria-owns={anchorEl ? 'simple-menu' : undefined}
-                        aria-haspopup="true"
-                        onClick={this.handleTypeClick}>{this.state.usertype}</Button>
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={this.handleClose}
-                    >       
-                        <MenuItem onClick={this.handleMenuClick} value="Manager">Manager</MenuItem>
-                        <MenuItem onClick={this.handleMenuClick} value="Staff">Staff</MenuItem>
-                    </Menu>
-                    
-                    <br />
-
-                    <InputLabel>Password</InputLabel>
-                    <Input placeholder="Password" type="password"/>
-                    <InputLabel>Confirm Password</InputLabel>
-                    <Input placeholder="Confirm Password" type="password"/>
-                    <br />
-
-                    <InputLabel>Phone</InputLabel>
-                    <Input placeholder="Phone" />
-                    <InputLabel>Address</InputLabel>
-                    <Input placeholder="Address" />
-                    <br />
-
-                    <InputLabel>City</InputLabel>
-                    <Input placeholder="City"/>
-
-                    <InputLabel>State</InputLabel>
-                    <Button aria-owns={anchorEl ? 'state-menu' : undefined}
-                        aria-haspopup="true"
-                        onClick={this.handleStateClick}>{this.state.us_state}</Button>
-                    <Menu
-                        id="state-menu"
-                        anchorEl={anchorEl2}
-                        open={Boolean(anchorEl2)}
-                        onClose={this.handleStateClose}
-                    >
-                        {us_states.map(us_state => (
-                            <MenuItem onClick={this.handleStateMenuClick} value={us_state}>{us_state}</MenuItem>
-                        ))}
-                    </Menu>
-
-                    <InputLabel>Zipcode</InputLabel>
-                    <Input placeholder="Zipcode"/>
-
-                    <div>
-                        <InputLabel>Emails</InputLabel>
-                        <List dense>
-                            {this.state.emails.map(value => (
-                                <ListItem key={value.id}>
-                                    <ListItemText primary={value.emailentry}/>
-                                    <ListItemSecondaryAction>
-                                        <IconButton aria-label="Delete" onClick={this.handleEmailDelete(value.id)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Input inputRef={this.emailRef} placeholder="Email" onChange={(event) => this.setState({email: event.target.value})}/>
-                
-                </FieldGroup>
-                
-
-                    <Button variant="outlined" onClick={this.handleEmailAdd}>
-                        Add
-                    </Button>
-                </div>
+                <RegisterForm />
             </div>
-        );
-    }
-}
+        )
+    //     const { anchorEl } = this.state;
+    //     const { anchorEl2 } = this.state;
+        
+    //     return (
+    //         <div>
+    //             <h1 style={styles.textColor}>Register</h1>
+    //             <FieldGroup control={this.register_form}>
+    //                 <InputLabel style={{...styles.spacing}}>First Name</InputLabel>
+    //                 <FieldControl name="username" render={input} meta={{ label: "Username" }}/>
+    //                 <Input placeholder="First Name" onChange={(event) => this.setState({firstname: event.target.value})}/>
 
-const styles = theme => ({
-    root: {
-      width: '100%',
-      marginTop: theme.spacing.unit * 3,
-      overflowX: 'auto',
-    },
-    table: {
-      minWidth: 700,
-    },
-  });
+    //                 <InputLabel>Last Name</InputLabel>
+    //                 <Input placeholder="Last Name" onChange={(event) => this.setState({lastname: event.target.value})}/>
+    //                 <br />
+
+    //                 <InputLabel style ={styles.inputTitle}>Username</InputLabel>
+                    
+    //                 <Input placeholder="Username"/>
+    //                 <InputLabel>User Type</InputLabel>
+    //                 <Button aria-owns={anchorEl ? 'simple-menu' : undefined}
+    //                     aria-haspopup="true"
+    //                     onClick={this.handleTypeClick}>{this.state.usertype}</Button>
+    //                 <Menu
+    //                     id="simple-menu"
+    //                     anchorEl={anchorEl}
+    //                     open={Boolean(anchorEl)}
+    //                     onClose={this.handleClose}
+    //                 >       
+    //                     <MenuItem onClick={this.handleMenuClick} value="Manager">Manager</MenuItem>
+    //                     <MenuItem onClick={this.handleMenuClick} value="Staff">Staff</MenuItem>
+    //                 </Menu>
+                    
+    //                 <br />
+
+    //                 <InputLabel>Password</InputLabel>
+    //                 <Input placeholder="Password" type="password"/>
+    //                 <InputLabel>Confirm Password</InputLabel>
+    //                 <Input placeholder="Confirm Password" type="password"/>
+    //                 <br />
+
+    //                 <InputLabel>Phone</InputLabel>
+    //                 <Input placeholder="Phone" />
+    //                 <InputLabel>Address</InputLabel>
+    //                 <Input placeholder="Address" />
+    //                 <br />
+
+    //                 <InputLabel>City</InputLabel>
+    //                 <Input placeholder="City"/>
+
+    //                 <InputLabel>State</InputLabel>
+    //                 <Button aria-owns={anchorEl ? 'state-menu' : undefined}
+    //                     aria-haspopup="true"
+    //                     onClick={this.handleStateClick}>{this.state.us_state}</Button>
+    //                 <Menu
+    //                     id="state-menu"
+    //                     anchorEl={anchorEl2}
+    //                     open={Boolean(anchorEl2)}
+    //                     onClose={this.handleStateClose}
+    //                 >
+    //                     {us_states.map(us_state => (
+    //                         <MenuItem onClick={this.handleStateMenuClick} value={us_state}>{us_state}</MenuItem>
+    //                     ))}
+    //                 </Menu>
+
+    //                 <InputLabel>Zipcode</InputLabel>
+    //                 <Input placeholder="Zipcode"/>
+
+    //                 <div>
+    //                     <InputLabel>Emails</InputLabel>
+    //                     <List dense>
+    //                         {this.state.emails.map(value => (
+    //                             <ListItem key={value.id}>
+    //                                 <ListItemText primary={value.emailentry}/>
+    //                                 <ListItemSecondaryAction>
+    //                                     <IconButton aria-label="Delete" onClick={this.handleEmailDelete(value.id)}>
+    //                                         <DeleteIcon />
+    //                                     </IconButton>
+    //                                 </ListItemSecondaryAction>
+    //                             </ListItem>
+    //                         ))}
+    //                     </List>
+    //                     <Input inputRef={this.emailRef} placeholder="Email" onChange={(event) => this.setState({email: event.target.value})}/>
+                
+    //             </FieldGroup>
+                
+
+    //                 <Button variant="outlined" onClick={this.handleEmailAdd}>
+    //                     Add
+    //                 </Button>
+    //             </div>
+    //         </div>
+    //     );
+    // }
+
+}
+}
