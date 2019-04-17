@@ -108,7 +108,7 @@ export class Register_view extends Component {
                 <FieldGroup control={this.register_form}>
                     <InputLabel style={{...styles.spacing}}>First Name</InputLabel>
                     <FieldControl name="username" render={input} meta={{ label: "Username" }}/>
-                    {/* <Input placeholder="First Name" onChange={(event) => this.setState({firstname: event.target.value})}/>
+                    <Input placeholder="First Name" onChange={(event) => this.setState({firstname: event.target.value})}/>
 
                     <InputLabel>Last Name</InputLabel>
                     <Input placeholder="Last Name" onChange={(event) => this.setState({lastname: event.target.value})}/>
@@ -180,7 +180,7 @@ export class Register_view extends Component {
                                 </ListItem>
                             ))}
                         </List>
-                        <Input inputRef={this.emailRef} placeholder="Email" onChange={(event) => this.setState({email: event.target.value})}/> */}
+                        <Input inputRef={this.emailRef} placeholder="Email" onChange={(event) => this.setState({email: event.target.value})}/>
                 
                 </FieldGroup>
                 
@@ -188,7 +188,7 @@ export class Register_view extends Component {
                     <Button variant="outlined" onClick={this.handleEmailAdd}>
                         Add
                     </Button>
-                {/* </div> */}
+                </div>
             </div>
         );
     }

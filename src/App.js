@@ -17,6 +17,7 @@ class App extends Component {
                 <div className="App">
                     <Route path="/visit_history" component={VisitHistory}/>
                     <Route path="/register" component={Register_view}/>
+                    <Route path="/take_transit" component={User_take_transit}></Route>
                 </div>
             </Router>
         );
