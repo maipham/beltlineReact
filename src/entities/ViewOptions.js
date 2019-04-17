@@ -1,0 +1,15 @@
+export const view_options = [
+{opt : ["Manage Profile", "/profile"]},
+{opt : ["Manage Users", "/users"]},
+{opt : ["Manage Transit", "/transits"]},
+{opt : ["Manage Site", "/sites"]},
+{opt : ["Manage Event", "/events"]},
+{opt : ["View Staff", "/staffs"]},
+{opt : ["View Site Report", "/site_report"]},
+{opt : ["View Schedule", "/schedule"]},
+{opt : ["Explore Event", "/explore_events"]},
+{opt : ["Explore Site", "/explore_sites"]},
+{opt : ["View Visit History", "/visit_history"]},
+{opt : ["Take Transit", "/take_transit"]},
+{opt : ["View Transit History", "/transit_history"]},
+];
