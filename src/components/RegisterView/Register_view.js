@@ -64,6 +64,7 @@ export class Register_view extends Component {
     handleSubmit = (e) => {
         console.log(e);
         console.log(e['email']);
+
         // this.state.user = new User(e.username, e.email, e.password);
     };
 

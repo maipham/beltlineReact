@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Grid from "@material-ui/core/Grid";
-import {Button, Menu, MenuItem, List, ListItem, Select, ListItemSecondaryAction, IconButton,
+import {Button, Menu, MenuItem, ListItemText, List, ListItem, Select, ListItemSecondaryAction, IconButton,
     InputLabel, FormControl} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -90,7 +90,32 @@ const renderSelectField = ({input, label, meta: {touched, error}, children, ...c
 export class RegisterForm extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            emails: [],
+            email: ''
+        }
     }
+
+    handleAddEmail = () => {
+        let a = this.state.emails;
+        if (this.state.email && !a.includes(this.state.email)) {
+            a.push(this.state.email);
+        }
+        this.setState({emails: a,
+            email: ''});
+    }
+
+    handleEmailDelete = (e, i) => {
+        let b = this.state.emails;
+        this.setState({emails: b.filter(email => email !== b[i])});
+    }
+
+    inputHandler = e => {
+        this.setState({
+            email: e.target.value
+        });
+    }
+
     render() {
         const {handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
@@ -179,8 +204,23 @@ export class RegisterForm extends Component {
                 {/*display of entered emails*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item >
-                        <Field name="email" component={renderField} label="Email" />
-                        <FieldArray name="allEmails" component={renderFieldArray}/>
+                        <Field name="email" value={this.state.email} component={renderField} label="Email" onChange={this.inputHandler}/>
+                        <List>
+                            {this.state.emails.map((member, i) => (
+                                <ListItem key={i}>
+                                    <ListItemText primary={member}/>
+                                    <ListItemSecondaryAction key={i}>
+                                        <IconButton aria-label="Delete" onClick={e => this.handleEmailDelete(e, i)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                            ))}
+                        </List>
+                        {/*<FieldArray name="allEmails" component={renderFieldArray}/>*/}
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" onClick={this.handleAddEmail} disabled={!(this.state.email && !this.state.emails.includes(this.state.email))}>Add Email</Button>
                     </Grid>
 
                 </Grid>
