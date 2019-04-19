@@ -102,7 +102,7 @@ export class RegisterForm extends Component {
             a.push(this.state.email);
         }
         this.setState({emails: a,
-            email: ''});
+            email: ' '});
     }
 
     handleEmailDelete = (e, i) => {
@@ -220,7 +220,10 @@ export class RegisterForm extends Component {
                         {/*<FieldArray name="allEmails" component={renderFieldArray}/>*/}
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" onClick={this.handleAddEmail} disabled={!(this.state.email && !this.state.emails.includes(this.state.email))}>Add Email</Button>
+                        <Button variant="contained" onClick={this.handleAddEmail}
+                                disabled={!(this.state.email &&
+                                    !this.state.emails.includes(this.state.email)
+                                    && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.email))}>Add Email</Button>
                     </Grid>
 
                 </Grid>
