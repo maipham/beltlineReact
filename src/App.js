@@ -7,6 +7,8 @@ import FunctionalityView from "./components/FunctionalityView/FunctionalityView"
 import {Login} from "./components/Login";
 import {User_take_transit} from "./components/UserTakeTransit/User_take_transit";
 import {TransitHistory} from "./components/TransitHistory/TransitHistory";
+import {EmployeeManageProfile} from "./components/EmployeeManageProfile/EmployeeManageProfile";
+import {AdminManageUser} from "./components/AdminManageUser/AdminManageUser";
 
 class App extends Component {
 
@@ -25,6 +27,8 @@ class App extends Component {
                     <Route path="/login" component={Login}/>
                     <Route path="/take_transit" component={User_take_transit} />
                     <Route path="/transit_history" component={TransitHistory} />
+                    <Route path="/manage_profile" component={EmployeeManageProfile} />
+                    <Route path="/manage_user" component={AdminManageUser} />
                 </div>
             </Router>
         );
