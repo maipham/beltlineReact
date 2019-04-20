@@ -48,7 +48,6 @@ export class AdminManageUser extends Component {
     };
 
     handleTypeOptionClick = event => {
-        console.log(event.target.innerText);
         this.setState({
             anchorEl2: null,
             filterType: event.target.innerText
