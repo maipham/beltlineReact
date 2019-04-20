@@ -10,6 +10,7 @@ import {TransitHistory} from "./components/TransitHistory/TransitHistory";
 import {EmployeeManageProfile} from "./components/EmployeeManageProfile/EmployeeManageProfile";
 import {AdminManageUser} from "./components/AdminManageUser/AdminManageUser";
 import {ManageSite} from "./components/AdminManageSite/AdminManageSite";
+import {AdminEditSite} from "./components/AdminEditSite/AdminEditSite";
 
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
                     <Route path="/manage_profile" component={EmployeeManageProfile} />
                     <Route path="/manage_user" component={AdminManageUser} />
                     <Route path="/manage_site" component={ManageSite} />
+                    <Route path="/edit_site" component={AdminEditSite} />
                 </div>
             </Router>
         );
