@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import {Register_view} from "./components/RegisterView/Register_view"
 import FunctionalityView from "./components/FunctionalityView/FunctionalityView";
 import {Login} from "./components/Login";
+import {User_take_transit} from "./components/UserTakeTransit/User_take_transit";
 
 class App extends Component {
 
@@ -21,6 +22,7 @@ class App extends Component {
                     <Route path="/register" component={Register_view}/>
                     <Route path="/functionality" component={FunctionalityView}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/take_transit" component={User_take_transit} />
                 </div>
             </Router>
         );

@@ -41,29 +41,6 @@ const renderField = ({input, label, type, meta: {touched, error, warning}}) => {
 };
 
 
-const renderFieldArray = ({fields}) => (
-    <Grid container direction="column" justify="center">
-        <List>
-            {fields.map((member, i) => (
-                <ListItem key={i}>
-                    <Field name={`email${i}`} type='email' component={renderField}/>
-                    <ListItemSecondaryAction>
-                        <IconButton aria-label="Delete" onClick={() => {fields.remove(i)}}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                ))}
-
-                <ListItem>
-                    <Button variant="outlined" onClick={() => fields.push({})}>Add Another Email</Button>
-                </ListItem>
-
-        </List>
-    </Grid>
-);
-
-
 const renderCheckbox = ({input, label}) => (
     <Checkbox label={label}
               checked={!!input.value}
@@ -96,7 +73,7 @@ export class RegisterForm extends Component {
         }
     }
 
-    handleAddEmail = () => {
+    handleAddEmail = (e) => {
         let a = this.state.emails;
         if (this.state.email && !a.includes(this.state.email)) {
             a.push(this.state.email);
@@ -117,7 +94,7 @@ export class RegisterForm extends Component {
     }
 
     render() {
-        const {handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
+        const {handleSubmit, handleStateClick, isEmployee, handleStateMenuClick, handleTypeClick, handleClose,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
             curr_state} = this.props;
         return (

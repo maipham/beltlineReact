@@ -10,34 +10,44 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Grid from "@material-ui/core/Grid";
+import {Transit} from "../../entities/Transit";
 
-
-let id = 0;
-function createTransit(route, transport_type, price, num_connected_sites) {
-    id += 1;
-    return { id, route, transport_type, price, num_connected_sites };
-}
 const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
-
-const initial_transits = [createTransit("816", "Bus", "2.5", "4"),
-    createTransit("200", "MARTA", "2.5", "4"),
-    createTransit("319", "MARTA", "2.5", "4")];
 
 const transport_type = ['ALL', 'MARTA', 'Bus', 'Bike'];
 
+const initial_transits = [new Transit("816", "Bus", "2.5", "4"),
+    new Transit("200", "Bike", "2.5", "4"),
+    new Transit("200", "MARTA", "4.5", "10"),
+    new Transit("Blue", "Bus", "5", "12")];
+
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0');
+let yyyy = today.getFullYear();
+
+today = mm + '-' + dd + '-' + yyyy;
+
+
 export class User_take_transit extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            sitefilter: 'All',
-            transportfilter: 'All',
-            pricelow: '',
-            pricehigh: '',
+            transits: initial_transits,
+            sitefilter: 'ALL',
+            transportfilter: 'ALL',
+            pricelow: 0,
+            pricehigh: 0,
             anchorEl: null,
-            anchorEl2: null
-        }
+            anchorEl2: null,
+            selected: null}
+
     }
+
     handleSiteClick = event => {
+        console.log(today);
         this.setState({ anchorEl: event.currentTarget });
     };
 
@@ -45,6 +55,20 @@ export class User_take_transit extends Component {
         this.setState({
             anchorEl: null,
             sitefilter: event.target.innerText
+        })
+    };
+
+    handleMinPrice = event => {
+        const onlyNum = event.target.value.replace(/[^0-9]/g, '');
+        this.setState({
+            pricelow: onlyNum
+        })
+    };
+
+    handleMaxPrice = event => {
+        const onlyNum = event.target.value.replace(/[^0-9]/g, '');
+        this.setState({
+            pricehigh: onlyNum
         })
     };
 
@@ -64,65 +88,156 @@ export class User_take_transit extends Component {
                         anchorEl2: null});
     };
 
+    handleRowClick = (event, i) => {
+        this.setState({
+            selected: i
+        })
+    }
+
+    handleFilter = () => {
+        const siteFilter = this.state.sitefilter;
+        const transportFilter = this.state.transportfilter;
+        const priceLow = this.state.pricelow;
+        const priceHigh = this.state.pricehigh;
+
+        let newTransits = initial_transits;
+
+        console.log(typeof(priceLow));
+        console.log(priceLow);
+        console.log(priceHigh);
+        if (siteFilter === 'ALL'
+            && transportFilter === 'ALL'
+            && (priceLow === 0 || priceLow === '0' || priceLow === '')
+            && (priceLow === 0 || priceHigh === '0' || priceHigh === '')) {
+            this.setState({
+                transits: initial_transits
+            });
+        } else {
+            if (transportFilter !== 'ALL') {
+                newTransits = newTransits.filter(transit => transit.transport_type === transportFilter);
+            }
+            if (parseInt(priceLow, 10) > 0 && (priceHigh === '' || parseInt(priceHigh, 10) === 0) ) {
+                newTransits = newTransits.filter(transit => parseInt(transit.price, 10) >= parseInt(priceLow, 10));
+            } else if (parseInt(priceHigh, 10) >= 0 && (priceLow === '' || parseInt(priceLow, 10) === 0)){
+                newTransits = newTransits.filter(transit => parseInt(transit.price, 10) <= parseInt(priceHigh, 10));
+            } else {
+                newTransits = newTransits.filter(transit => parseInt(transit.price, 10) >= parseInt(priceLow, 10));
+                newTransits = newTransits.filter(transit => parseInt(transit.price, 10) <= parseInt(priceHigh, 10));
+            }
+            this.setState({
+                transits: newTransits
+            });
+        }
+    }
+
+    isSelected = id => id === this.state.selected;
+
 
     render() {
         const { anchorEl } = this.state;
         const { anchorEl2 } = this.state;
         return (
             <div>
-                <h1>Take Transit</h1>
-                <InputLabel>Contain Site</InputLabel>
-                <Button aria-owns={anchorEl ? 'site_menu' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleSiteClick}> {this.state.sitefilter} </Button>
-                <Menu
-                    id="site_menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={this.handleClose}
-                >
-                    {site_names.map(sites =>
-                        <MenuItem onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
-                </Menu>
-                
-                <InputLabel>Transport Type</InputLabel>
-                <Button aria-owns={anchorEl2 ? 'transport_menu' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleTransportClick}> {this.state.transportfilter} </Button>
-                <Menu
-                    id="transport_menu"
-                    anchorEl={anchorEl2}
-                    open={Boolean(anchorEl2)}
-                    onClose={this.handleClose}
-                >
-                    {transport_type.map(transports => 
-                        <MenuItem onClick={this.handleTransportOptionClick} value={transports}>{transports}</MenuItem>)}
-                </Menu>
-                <Button>Filter</Button>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="right">Route</TableCell>
-                            <TableCell align="right">Transport Type</TableCell>
-                            <TableCell align="right">Price</TableCell>
-                            <TableCell align="right"># of Connected Sites</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {initial_transits.map(transit => (
-                            <TableRow key={transit.id}>
-                                <TableCell align="right">{transit.route}</TableCell>
-                                <TableCell align="right">{transit.transport_type}</TableCell>
-                                <TableCell align="right">{transit.price}</TableCell>
-                                <TableCell align="right">{transit.num_connected_sites}</TableCell>
-                            </TableRow>
-                        ))}
+                {/*grid container of the header*/}
+                <Grid container justify="center">
+                    <Grid item>
+                        <h1>Take Transit</h1>
+                    </Grid>
+                </Grid>
 
-                    </TableBody>
-                </Table>
-                <Button>Back</Button>
-                <Input placeholder="date"></Input>
-                <Button>Log Transit</Button>
+                {/*grid container of the transport type dropdown and also contain site dropdown*/}
+                <Grid container spacing={40} justify="center">
+                    <Grid item>
+                        <InputLabel>Contain Site</InputLabel>
+                        <Button aria-owns={anchorEl ? 'site_menu' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleSiteClick}> {this.state.sitefilter} </Button>
+                        <Menu
+                            id="site_menu"
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={this.handleClose}
+                        >
+                            {site_names.map( (sites, index) =>
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
+                        </Menu>
+                    </Grid>
+                    <Grid item>
+                        <InputLabel>Transport Type</InputLabel>
+                        <Button aria-owns={anchorEl2 ? 'transport_menu' : undefined}
+                                aria-haspopup="true"
+                                onClick={this.handleTransportClick}> {this.state.transportfilter} </Button>
+                        <Menu
+                            id="transport_menu"
+                            anchorEl={anchorEl2}
+                            open={Boolean(anchorEl2)}
+                            onClose={this.handleClose}
+                        >
+                            {transport_type.map((transports, index) =>
+                                <MenuItem key={index}onClick={this.handleTransportOptionClick} value={transports}>{transports}</MenuItem>)}
+                        </Menu>
+                    </Grid>
+                </Grid>
+
+                {/*grid container that has price range and filter button*/}
+                <Grid container spacing={0} justify="center">
+                    <Grid item container justify="center" xs={1}>
+                        <TextField label="min" onChange={this.handleMinPrice} style={{width: '40px'}}/>
+                    </Grid>
+
+                    <Grid item container justify="center" xs={1}>
+                        <TextField label="max" onChange={this.handleMaxPrice} style={{width: '40px'}}/>
+                    </Grid>
+                    <Grid item container justify="center" xs={2}>
+                        <Button variant="contained" color="primary" onClick={this.handleFilter}>Filter</Button>
+                    </Grid>
+                </Grid>
+
+                {/*grid container of the table*/}
+                <Grid container justify="center">
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="right">Route</TableCell>
+                                <TableCell align="right">Transport Type</TableCell>
+                                <TableCell align="right">Price</TableCell>
+                                <TableCell align="right"># of Connected Sites</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.state.transits.map((transit, i) => {
+                                const isSelected = this.isSelected(i);
+                                return (<TableRow hover
+                                          aria-checked={!(() => this.isSelected(i))}
+                                          selected={isSelected}
+                                          key={i}
+                                          onClick={event => this.handleRowClick(event, i)}>
+                                    <TableCell align="right">{transit.route}</TableCell>
+                                    <TableCell align="right">{transit.transport_type}</TableCell>
+                                    <TableCell align="right">{transit.price}</TableCell>
+                                    <TableCell align="right">{transit.connected_sites}</TableCell>
+                                </TableRow>);
+                            })}
+
+                        </TableBody>
+                    </Table>
+                </Grid>
+
+                {/*grid container of back button, transition date, and log transit*/}
+                <Grid container justify="space-around">
+                    <Grid item>
+                        <Button variant="contained" color="primary">Back</Button>
+                    </Grid>
+
+                    <Grid item>
+                        <TextField label="Date" defaultValue={today} InputProps={{readOnly: true}}
+                                   style={{ width: '88px'}}/>
+                    </Grid>
+
+                    <Grid item>
+                        <Button variant="contained" color="primary">Log Transit</Button>
+                    </Grid>
+                </Grid>
             </div>
         );
     }
