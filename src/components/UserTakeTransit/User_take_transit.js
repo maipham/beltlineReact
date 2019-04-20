@@ -13,9 +13,11 @@ import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {Transit} from "../../entities/Transit";
 
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
+const API = 'http://localhost:8080';
+const query = '/transit';
 
-const transport_type = ['ALL', 'MARTA', 'Bus', 'Bike'];
+const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
+const type = ['ALL', 'MARTA', 'Bus', 'Bike'];
 
 const initial_transits = [new Transit("816", "Bus", "2.5", "4"),
     new Transit("200", "Bike", "2.5", "4"),
@@ -42,8 +44,14 @@ export class User_take_transit extends Component {
             pricehigh: 0,
             anchorEl: null,
             anchorEl2: null,
-            selected: null}
+            selected: null
+        }
 
+    }
+
+    componentDidMount() {
+        fetch(API + query).then(response => response.json()).then(data => {this.setState({transits: data});
+            console.log(data)});
     }
 
     handleSiteClick = event => {
@@ -99,12 +107,8 @@ export class User_take_transit extends Component {
         const transportFilter = this.state.transportfilter;
         const priceLow = this.state.pricelow;
         const priceHigh = this.state.pricehigh;
-
         let newTransits = initial_transits;
 
-        console.log(typeof(priceLow));
-        console.log(priceLow);
-        console.log(priceHigh);
         if (siteFilter === 'ALL'
             && transportFilter === 'ALL'
             && (priceLow === 0 || priceLow === '0' || priceLow === '')
@@ -114,7 +118,7 @@ export class User_take_transit extends Component {
             });
         } else {
             if (transportFilter !== 'ALL') {
-                newTransits = newTransits.filter(transit => transit.transport_type === transportFilter);
+                newTransits = newTransits.filter(transit => transit.type === transportFilter);
             }
             if (parseInt(priceLow, 10) > 0 && (priceHigh === '' || parseInt(priceHigh, 10) === 0) ) {
                 newTransits = newTransits.filter(transit => parseInt(transit.price, 10) >= parseInt(priceLow, 10));
@@ -173,7 +177,7 @@ export class User_take_transit extends Component {
                             open={Boolean(anchorEl2)}
                             onClose={this.handleClose}
                         >
-                            {transport_type.map((transports, index) =>
+                            {type.map((transports, index) =>
                                 <MenuItem key={index}onClick={this.handleTransportOptionClick} value={transports}>{transports}</MenuItem>)}
                         </Menu>
                     </Grid>
@@ -213,7 +217,7 @@ export class User_take_transit extends Component {
                                           key={i}
                                           onClick={event => this.handleRowClick(event, i)}>
                                     <TableCell align="right">{transit.route}</TableCell>
-                                    <TableCell align="right">{transit.transport_type}</TableCell>
+                                    <TableCell align="right">{transit.type}</TableCell>
                                     <TableCell align="right">{transit.price}</TableCell>
                                     <TableCell align="right">{transit.connected_sites}</TableCell>
                                 </TableRow>);
@@ -226,7 +230,7 @@ export class User_take_transit extends Component {
                 {/*grid container of back button, transition date, and log transit*/}
                 <Grid container justify="space-around">
                     <Grid item>
-                        <Button variant="contained" color="primary">Back</Button>
+                        <Button variant="contained" color="primary" style={{marginTop: '10px'}}>Back</Button>
                     </Grid>
 
                     <Grid item>
@@ -235,7 +239,7 @@ export class User_take_transit extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button variant="contained" color="primary">Log Transit</Button>
+                        <Button variant="contained" color="primary" style={{marginTop: '10px'}}>Log Transit</Button>
                     </Grid>
                 </Grid>
             </div>
