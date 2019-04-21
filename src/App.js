@@ -6,6 +6,7 @@ import {Register_view} from "./components/RegisterView/Register_view"
 import FunctionalityView from "./components/FunctionalityView/FunctionalityView";
 import {Login} from "./components/Login/Login";
 import RegisterNav from "./components/RegisterNav/RegisterNav";
+import ViewEditEvent from "./components/ViewEditEvent/ViewEditEvent";
 // import {Login} from "./components/Login";
 import {User_take_transit} from "./components/UserTakeTransit/User_take_transit";
 import {TransitHistory} from "./components/TransitHistory/TransitHistory";
@@ -22,7 +23,6 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {authenticated : false};
     }
 
     render() {
@@ -34,6 +34,7 @@ class App extends Component {
                     <Route path="/functionality" component={FunctionalityView}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/reg_nav" component={RegisterNav}/>
+                    <Route path="/view_edit_event" component={ViewEditEvent}/>
                     <Route path="/take_transit" component={User_take_transit} />
                     <Route path="/transit_history" component={TransitHistory} />
                     <Route path="/manage_profile" component={EmployeeManageProfile} />

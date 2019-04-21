@@ -1,6 +1,6 @@
 
-export class event {
-    constructor(name, price, capacity, min_staff, start_date, end_date, description, staffs, revenue) {
+export default class event {
+    constructor(name, price, capacity, min_staff, start_date, end_date, description, staffs, revenue, stats) {
         this._name = name;
         this._price = price;
         this._capacity = capacity;
@@ -9,8 +9,14 @@ export class event {
         this._eDate = end_date;
         this._descr = description;
         this._staffs = staffs;
+        this._stats = stats;
         this._revenue = revenue;
     }
+
+    get stats() {
+        return this._stats;
+    }
+
     get name() {
         return this._name;
     }
@@ -31,6 +37,9 @@ export class event {
     }
     get description() {
         return this._descr;
+    }
+    set description(val) {
+        this._descr = val;
     }
     get staffs() {
         return this._staffs;
