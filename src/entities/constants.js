@@ -17,3 +17,12 @@ export const employee_type = {
     MANAGER: 'Manager',
     STAFF: 'Staff'
 };
+
+export const response_messages = {
+    wrong_pw: "WRONG_PASSWORD",
+    email_not_exists: "EMAIL_NOT_EXISTS",
+    username_taken: "USERNAME_TAKEN",
+    email_already_exists: "EMAIL_ALREADY_EXISTS",
+    account_exists: "LOGIN_SUCCESSFULLY",
+    register_successfully: "REGISTER_SUCCESSFULLY"
+};
