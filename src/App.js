@@ -39,6 +39,7 @@ class App extends Component {
         return (
             <Router>
                 <div className="App">
+                    <Route exact path="/" component={Login}/>
                     <Route path="/visit_history" component={VisitHistory}/>
                     <Route path="/register" component={Register_view}/>
                     <Route path="/functionality" component={FunctionalityView}/>

@@ -99,7 +99,7 @@ export class Register_view extends Component {
         return (
             <div>
                 <Grid container justify="center" item xs={12}><h1>Register User</h1></Grid>
-                <RegisterForm onSubmit={this.handleSubmit} handleTypeClick={this.handleTypeClick}
+                <RegisterForm onSubmit={this.handleSubmit} handleTypeClick={this.handleTypeClick} isEmployee={this.isEmployee}
                               handleClose={this.handleClose} handleMenuClick={this.handleMenuClick}
                               anchorEl={this.state.anchorEl} userType={this.state.usertype}
                               anchorEl2={this.state.anchorEl2} states={us_states}
