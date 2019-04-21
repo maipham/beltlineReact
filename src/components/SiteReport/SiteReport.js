@@ -22,6 +22,7 @@ export default class SiteReport extends Component {
 
     init() {
         this.state = {
+            dateRange: ['', ''],
             eventCountRange: ['', ''],
             staffCountRange: ['', ''],
             totalVisitsRange: ['', ''],
@@ -45,7 +46,9 @@ export default class SiteReport extends Component {
                             label="Start Date"
                             type="date"
                             defaultValue={moment().format('YYYY-MM-DD')}
+                            value={this.state.dateRange[0]}
                             className={'start-date'}
+                            onChange={this.handleDateRange('start')}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -58,6 +61,8 @@ export default class SiteReport extends Component {
                             label="End Date"
                             type="date"
                             defaultValue={moment().format('YYYY-MM-DD')}
+                            value={this.state.dateRange[1]}
+                            onChange={this.handleDateRange('end')}
                             className={'end-date'}
                             InputLabelProps={{
                                 shrink: true,
@@ -217,6 +222,14 @@ export default class SiteReport extends Component {
             const visitCount = d.visits;
             const revenue = d.revenue;
             let tmp = d;
+            if (this.state.dateRange[0] && this.state.dateRange[1]) {
+                const sel = moment(date).valueOf();
+                const start = moment(this.state.dateRange[0]).valueOf();
+                const end = moment(this.state.dateRange[1]).valueOf();
+                if (sel < start || sel > end) {
+                    tmp = undefined;
+                }
+            }
             if (this.state.eventCountRange[0] && this.state.eventCountRange[1]) {
                 if (eCount < this.state.eventCountRange[0] || eCount > this.state.eventCountRange[1]) {
                     tmp = undefined;
@@ -297,6 +310,15 @@ export default class SiteReport extends Component {
         });
         this.state[e_date] = true;
         console.log(this.state);
+        this.setState(this.state);
+    }
+
+    handleDateRange = (type) => event => {
+        if (type === 'start') {
+            this.state.dateRange[0] = event.target.value;
+        } else if (type == 'end') {
+            this.state.dateRange[1] = event.target.value;
+        }
         this.setState(this.state);
     }
 }
