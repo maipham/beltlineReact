@@ -1,5 +1,5 @@
 
-export class TransitHistory {
+export class TransitHistoryObject {
     constructor(date, route, transport_type, price) {
         this._date = date;
         this._route = route;
@@ -17,5 +17,9 @@ export class TransitHistory {
 
     get price() {
         return this._price;
+    }
+
+    get date() {
+        return this._date;
     }
 }
