@@ -66,7 +66,6 @@ class App extends Component {
                     <Route path="/explore_event" component={VisitorExploreEvent} />
                     <Route path="/transit_detail" component={TransitDetail}/>
                     <Route path="/explore_site" component={VisitorExploreSite}/>
-                    <Route path="/manage_profile" component={ManageProfile}/>
                 </div>
             </Router>
         );
