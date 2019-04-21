@@ -8,13 +8,32 @@ import {BrowserRouter as Router, Route, Redirect, Link} from "react-router-dom";
 import {VisitHistory} from "../VisitHistory/VisitHistory";
 
 export default class FunctionalityView extends Component {
+    isAdmin = false;
+    isStaff = false;
+    isManager = false;
+    isVisitor = false;
+    isUser = false;
     constructor(props) {
         super(props);
         this.state = {
-            view_options: view_options
-
+            view_options: view_options,
+            userType: "Staff"
         };
+        console.log(props.location.hash);
     }
+
+
+    showFunctionalityOps(hash) {
+        switch (hash) {
+            case "#admin":
+                this.isAdmin = true;
+            case "#admin":
+            case "#admin":
+            case "#admin":
+            default:
+        }
+    }
+
 
 
     render() {
@@ -40,6 +59,7 @@ export default class FunctionalityView extends Component {
                       spacing={16}>
                     {this.state.view_options.map((opt, i) => {
                         return <Grid key={i} item={true} container justify='center' style={item} xs={4}>
+
                             <Button variant="contained" style={button} component={Link} to={opt.opt[1]}>{opt.opt[0]}</Button>
                         </Grid>
                     })}
