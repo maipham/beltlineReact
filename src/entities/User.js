@@ -1,4 +1,4 @@
-import {status, user_type} from "./enums";
+import {status, user_type} from "./constants";
 
 export class User {
     constructor(username, email, password, fname, lname) {

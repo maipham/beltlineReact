@@ -5,12 +5,12 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import {Register_view} from "./components/RegisterView/Register_view"
 import FunctionalityView from "./components/FunctionalityView/FunctionalityView";
 import {Login} from "./components/Login";
+import RegisterNav from "./components/RegisterNav/RegisterNav";
 
 class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {authenticated : false};
     }
 
     render() {
@@ -21,6 +21,7 @@ class App extends Component {
                     <Route path="/register" component={Register_view}/>
                     <Route path="/functionality" component={FunctionalityView}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/reg_nav" component={RegisterNav}/>
                 </div>
             </Router>
         );

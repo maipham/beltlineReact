@@ -1,4 +1,4 @@
-import {status, user_type} from "./enums";
+import {status, user_type} from "./constants";
 import {User} from "./User";
 
 export class Employee extends User{

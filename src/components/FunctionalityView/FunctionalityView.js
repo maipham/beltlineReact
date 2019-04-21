@@ -16,9 +16,6 @@ export default class FunctionalityView extends Component {
         };
     }
 
-    navigateTo(url) {
-
-    }
 
     render() {
         const styles = {
