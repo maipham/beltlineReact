@@ -99,10 +99,6 @@ export class AdminCreateTransit extends Component {
         this.hr.send(JSON.stringify({'type': type, 'route': route, 'price': price, 'sites': connectedSites}));
     };
 
-    checkIfExists = () => {
-
-    }
-
     render() {
         const {anchorEl} = this.state;
         return (
