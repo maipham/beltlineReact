@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Button} from './Button/Button.js';
-import LoginForm from "./forms/LoginForm/LoginForm";
 import Grid from "@material-ui/core/Grid";
+import LoginForm from "../forms/LoginForm/LoginForm";
 
 export class Login extends Component {
     constructor(props) {

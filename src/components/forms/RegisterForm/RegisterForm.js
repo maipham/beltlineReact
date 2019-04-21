@@ -1,93 +1,23 @@
 import React, {Component} from 'react';
 import './RegisterForm.css';
 import {Field, reduxForm, FieldArray, formValueSelector} from 'redux-form';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Grid from "@material-ui/core/Grid";
-import {Button, Menu, MenuItem, ListItemText, List, ListItem, Select, ListItemSecondaryAction, IconButton,
-    InputLabel, FormControl} from "@material-ui/core";
+import {
+    Button, Menu, MenuItem, ListItemText, List, ListItem, Select, ListItemSecondaryAction, IconButton,
+    InputLabel, FormControl
+} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-
-
-const validate = values => {
-    const errors = {};
-    const requiredFields = ['firstName', 'lastName', 'email', 'password', 'cpassword', 'username', 'phone', 'address', 'city', 'zipcode',
-                            'city'];
-    requiredFields.forEach(field => {
-        if (!values[field]) {
-            errors[field] = 'Required'
-        }
-    });
-    if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email'
-    }
-    return errors
-};
-
-const renderField = ({input, label, type, meta: {touched, error, warning}}) => {
-    return (
-        <Grid container direction="column" justify="center">
-            <Grid item>
-                <TextField {...input} label={label} type={type}/>
-            </Grid>
-            <Grid item>
-                {touched && ((error && <span style={{"color": "red"}}>{error}</span>) || (warning &&
-                    <span>{warning}</span>))}
-            </Grid>
-        </Grid>
-    )
-};
-
-
-const renderFieldArray = ({fields}) => (
-    <Grid container direction="column" justify="center">
-        <List>
-            {fields.map((member, i) => (
-                <ListItem key={i}>
-                    <Field name={`email${i}`} type='email' component={renderField}/>
-                    <ListItemSecondaryAction>
-                        <IconButton aria-label="Delete" onClick={() => {fields.remove(i)}}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                ))}
-
-                <ListItem>
-                    <Button variant="outlined" onClick={() => fields.push({})}>Add Another Email</Button>
-                </ListItem>
-
-        </List>
-    </Grid>
-);
-
-
-const renderCheckbox = ({input, label}) => (
-    <Checkbox label={label}
-              checked={!!input.value}
-              onCheck={input.onChange}/>
-);
-
-const renderRadioGroup = ({input, ...rest}) => (
-    <RadioGroup {...input} {...rest}
-                valueSelected={input.value}
-                onChange={(event, value) => input.onChange(value)}/>
-);
-
-const renderSelectField = ({input, label, meta: {touched, error}, children, ...custom}) => (
-    <Select
-        floatingLabelText={label}
-        errorText={touched && error}
-        {...input}
-        onChange={(event, index, value) => input.onChange(value)}
-        children={children}
-        {...custom}/>
-);
+import {renderField, renderSelectField} from "../form-templates";
+import {validate} from "../form-templates";
 
 
 export class RegisterForm extends Component {
+    user_type = ['Manager', 'Staff'];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -96,7 +26,7 @@ export class RegisterForm extends Component {
         }
     }
 
-    handleAddEmail = () => {
+    handleAddEmail = (e) => {
         let a = this.state.emails;
         if (this.state.email && !a.includes(this.state.email)) {
             a.push(this.state.email);
@@ -117,7 +47,7 @@ export class RegisterForm extends Component {
     }
 
     render() {
-        const {handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
+        const {handleSubmit, handleStateClick, isEmployee, handleStateMenuClick, handleTypeClick, handleClose,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
             curr_state} = this.props;
         return (
@@ -140,7 +70,7 @@ export class RegisterForm extends Component {
 
                     <Grid item>
                         <Button variant="outlined"aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
-                            onClick={handleTypeClick}>{userType}</Button>
+                                onClick={handleTypeClick}>{userType}</Button>
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}
@@ -239,7 +169,6 @@ export class RegisterForm extends Component {
 RegisterForm = reduxForm({
     form: 'register-form',  // a unique identifier for this form
     validate,
-    // asyncValidate
 })(RegisterForm);
 
 export default RegisterForm;
