@@ -10,6 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
+import {Link} from "react-router-dom";
 
 const type = ['MARTA', 'Bus', 'Bike'];
 const site_names = ['Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
@@ -88,6 +89,7 @@ export class AdminEditTransit extends Component {
                     <Grid item style={{marginRight: '40px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Transport Type</InputLabel>
                         <Button aria-owns={anchorEl ? 'site_menu' : undefined}
+                                disabled={true}
                                 aria-haspopup="true"
                                 onClick={this.handleTransportClick}> {this.state.transportType} </Button>
                         <Menu
@@ -138,7 +140,7 @@ export class AdminEditTransit extends Component {
                 {/*container for the back and create buttons*/}
                 <Grid container justify="center" style={{marginTop: '20px'}}>
                     <Grid item>
-                        <Button variant="contained" color="primary" style={{marginRight: '100px', width: "120px"}}>Back</Button>
+                        <Button component={Link} to={'/manage_transit'} variant="contained" color="primary" style={{marginRight: '100px', width: "120px"}}>Back</Button>
                     </Grid>
 
                     <Grid item>
