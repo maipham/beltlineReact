@@ -6,6 +6,7 @@ import {Register_view} from "./components/RegisterView/Register_view"
 import FunctionalityView from "./components/FunctionalityView/FunctionalityView";
 import {Login} from "./components/Login";
 import RegisterNav from "./components/RegisterNav/RegisterNav";
+import ViewEditEvent from "./components/ViewEditEvent/ViewEditEvent";
 
 class App extends Component {
 
@@ -22,6 +23,7 @@ class App extends Component {
                     <Route path="/functionality" component={FunctionalityView}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/reg_nav" component={RegisterNav}/>
+                    <Route path="/view_edit_event" component={ViewEditEvent}/>
                 </div>
             </Router>
         );
