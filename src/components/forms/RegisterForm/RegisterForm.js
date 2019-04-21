@@ -83,7 +83,7 @@ export class RegisterForm extends Component {
         this.state.emails = a.slice();
         this.state.email = '';
         this.setState(this.state);
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     handleEmailDelete = (e, i) => {
