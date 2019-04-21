@@ -21,7 +21,6 @@ import {ManagerManageStaff} from "./components/ManagerManageStaff/ManagerManageS
 import {StaffViewSchedule} from "./components/StaffViewSchedule/StaffViewSchedule";
 import {SiteDetail} from "./components/SiteDetail/SiteDetail";
 import {VisitorExploreEvent} from "./components/VisitorExploreEvent/VisitorExploreEvent";
-import {VisitorExploreEvent} from "./components/VisitorExploreEvent/VisitorExploreEvent";
 import {VisitorExploreSite} from "./components/VisitorExploreSite/VisitorExploreSite";
 
 class App extends Component {
