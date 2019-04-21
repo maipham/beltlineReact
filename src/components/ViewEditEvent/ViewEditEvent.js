@@ -26,6 +26,7 @@ export default class ViewEditEvent extends Component {
             endVisitCount: '',
             startRevenue: '',
             endRevenue: '',
+            filteredStats: [...mock_events[0].stats],
         };
         this.state.allStaffs.forEach((staff) => {
             this.state[staff] = this.state.event.staffs.includes(staff);
@@ -135,7 +136,10 @@ export default class ViewEditEvent extends Component {
                             />
                         </Grid>
                         <Grid container spacing={24}>
-                            <Grid item md={6}>
+                            <Grid item md={6} spacing={24}>
+                                <Button variant="contained" onClick={this.reset}>
+                                    Reset
+                                </Button>
                                 <Button variant="contained" color="primary" onClick={this.filter}>
                                     Filter
                                 </Button>
@@ -159,7 +163,7 @@ export default class ViewEditEvent extends Component {
                                     </TableHead>
                                     <TableBody>
                                         {
-                                            this.state.event.stats.map((stat, indx) => (
+                                            this.state.filteredStats.map((stat, indx) => (
                                                     <TableRow key={indx}>
                                                         <TableCell>{stat['date']} </TableCell>
                                                         <TableCell>{stat['visits']}</TableCell>
@@ -216,6 +220,33 @@ export default class ViewEditEvent extends Component {
 
     filter = (event) => {
         console.log(event);
+        let startVisit = parseInt(this.state.startVisitCount);
+        let endVisit = parseInt(this.state.endVisitCount);
+        let startRevenue = parseInt(this.state.startRevenue);
+        let endRevenue = parseInt(this.state.endRevenue);
+        const visits_filteredStats = [];
+        const revenue_filteredStats = [];
+        this.state.event.stats.forEach(stat => {
+            if (stat.visits >= startVisit && stat.visits <= endVisit) {
+                visits_filteredStats.push(stat);
+            }
+        });
+        if (startRevenue && endRevenue) {
+            visits_filteredStats.forEach(stat => {
+                if (stat.revenue >= startRevenue && stat.revenue <= endRevenue) {
+                    revenue_filteredStats.push(stat);
+                }
+            });
+            this.state.filteredStats = [...revenue_filteredStats];
+        } else {
+            this.state.filteredStats = [...visits_filteredStats];
+        }
+        this.setState(this.state);
+    }
+
+    reset = (event) => {
+        this.state.filteredStats = [... this.state.event.stats];
+        this.setState(this.state);
     }
 
     update = (event) => {
