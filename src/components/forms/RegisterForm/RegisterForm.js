@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './RegisterForm.css';
 import {Field, reduxForm, FieldArray, formValueSelector} from 'redux-form';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -16,7 +16,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const validate = values => {
     const errors = {};
     const requiredFields = ['firstName', 'lastName', 'email', 'password', 'cpassword', 'username', 'phone', 'address', 'city', 'zipcode',
-                            'city'];
+        'city'];
     requiredFields.forEach(field => {
         if (!values[field]) {
             errors[field] = 'Required'
@@ -80,11 +80,13 @@ export class RegisterForm extends Component {
         if (this.state.email && !a.includes(this.state.email)) {
             a.push(this.state.email);
         }
-        this.setState({emails: a,
-            email: ' '});
+        this.state.emails = a.slice();
+        this.state.email = '';
+        this.setState(this.state);
+        console.log(this.state);
     }
 
-    handleEmailDelete = (e, i) => {
+    handleEmailDelete = (e, i) => event => {
         let b = this.state.emails;
         this.setState({emails: b.filter(email => email !== b[i])});
     }
@@ -96,15 +98,17 @@ export class RegisterForm extends Component {
     }
 
     render() {
-        const {handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
+        const {
+            handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
-            curr_state} = this.props;
+            curr_state
+        } = this.props;
         return (
             <form onSubmit={handleSubmit}>
                 {/*first name and last name grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="firstName" component={renderField} label="First Name" />
+                        <Field name="firstName" component={renderField} label="First Name"/>
                     </Grid>
                     <Grid item>
                         <Field name="lastName" component={renderField} label="Last Name"/>
@@ -114,12 +118,12 @@ export class RegisterForm extends Component {
                 {/*username and user type grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="username" component={renderField} label="Username" />
+                        <Field name="username" component={renderField} label="Username"/>
                     </Grid>
 
                     <Grid item>
-                        <Button variant="outlined"aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
-                            onClick={handleTypeClick}>{userType}</Button>
+                        <Button variant="outlined" aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
+                                onClick={handleTypeClick}>{userType}</Button>
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}
@@ -145,17 +149,17 @@ export class RegisterForm extends Component {
                 {/*phone and address grid*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="phone" component={renderField} label="Phone" />
+                        <Field name="phone" component={renderField} label="Phone"/>
                     </Grid>
                     <Grid item>
-                        <Field name="address" component={renderField} label="Address" />
+                        <Field name="address" component={renderField} label="Address"/>
                     </Grid>
                 </Grid>
 
                 {/*city, state, and zipcode grid*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="city" component={renderField} label={"City"} />
+                        <Field name="city" component={renderField} label={"City"}/>
                     </Grid>
 
                     <Grid item>
@@ -170,27 +174,29 @@ export class RegisterForm extends Component {
                             onClose={handleClose}>
 
                             {states.map((state, i) => (
-                                <MenuItem key={i} onClick={handleStateMenuClick} value={states[i]}>{states[i]}</MenuItem>
+                                <MenuItem key={i} onClick={handleStateMenuClick}
+                                          value={states[i]}>{states[i]}</MenuItem>
                             ))}
                         </Menu>
                     </Grid>
 
                     <Grid item>
-                        <Field name="zipcode" component={renderField} label={"Zipcode"} />
+                        <Field name="zipcode" component={renderField} label={"Zipcode"}/>
                     </Grid>
                 </Grid>
 
                 {/*display of entered emails*/}
                 <Grid container spacing={32} justify="center" direction="row">
-                    <Grid item >
-                        <Field name="email" value={this.state.email} component={renderField} label="Email" onChange={this.inputHandler}/>
+                    <Grid item>
+                        <Field name="email" value={this.state.email} component={renderField} label="Email"
+                               onChange={this.inputHandler}/>
                         <List>
                             {this.state.emails.map((member, i) => (
                                 <ListItem key={i}>
                                     <ListItemText primary={member}/>
                                     <ListItemSecondaryAction key={i}>
                                         <IconButton aria-label="Delete" onClick={e => this.handleEmailDelete(e, i)}>
-                                            <DeleteIcon />
+                                            <DeleteIcon/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -202,7 +208,9 @@ export class RegisterForm extends Component {
                         <Button variant="contained" onClick={this.handleAddEmail}
                                 disabled={!(this.state.email &&
                                     !this.state.emails.includes(this.state.email)
-                                    && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.email))}>Add Email</Button>
+                                    && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.email))}>
+                            Add Email
+                        </Button>
                     </Grid>
 
                 </Grid>
