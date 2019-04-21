@@ -19,11 +19,9 @@ import {ManagerManageEvent} from "./components/ManagerManageEvent/ManagerManageE
 import {AdminEditTransit} from "./components/AdminEditTransit/AdminEditTransit";
 import {ManagerManageStaff} from "./components/ManagerManageStaff/ManagerManageStaff";
 import {StaffViewSchedule} from "./components/StaffViewSchedule/StaffViewSchedule";
-<<<<<<< HEAD
 import {VisitorExploreEvent} from "./components/VisitorExploreEvent/VisitorExploreEvent";
-=======
 import {SiteDetail} from "./components/SiteDetail/SiteDetail";
->>>>>>> 3381e273e929b470a21b697b4e75bfaa78a5d747
+import {VisitorExploreSite} from "./components/VisitorExploreSite/VisitorExploreSite";
 
 class App extends Component {
 
@@ -54,11 +52,12 @@ class App extends Component {
                     <Route path="/edit_transit" component={AdminEditTransit} />
                     <Route path="/manage_staff" component={ManagerManageStaff} />
                     <Route path="/view_schedule" component={StaffViewSchedule} />
-<<<<<<< HEAD
-                    <Route path="/explore_event" component={VisitorExploreEvent} />
-=======
                     <Route path="/site_detail" component={SiteDetail}/>
->>>>>>> 3381e273e929b470a21b697b4e75bfaa78a5d747
+                    <Route path="/explore_event" component={VisitorExploreEvent} />
+                    <Route path="/site_detail" component={SiteDetail}/>
+                    <Route path="/explore_event" component={VisitorExploreEvent} />
+                    <Route path="/site_detail" component={SiteDetail}/>
+                    <Route path="/explore_site" component={VisitorExploreSite}/>
                 </div>
             </Router>
         );
