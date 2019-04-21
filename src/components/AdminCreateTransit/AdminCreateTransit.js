@@ -16,6 +16,8 @@ const type = ['MARTA', 'Bus', 'Bike'];
 const site_names = ['Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
 export class AdminCreateTransit extends Component {
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/a_create_transit';
     constructor(props) {
         super(props);
         this.state = {
@@ -73,6 +75,26 @@ export class AdminCreateTransit extends Component {
         this.setState({
             price: event.target.value
         });
+    };
+
+    handleCreateClick = () => {
+        this.hr.open('POST', this.url);
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                let filtered = this.state.filteredTransits;
+                delete filtered[this.state.selected];
+                console.log("deleted");
+
+                this.setState({
+                    filteredUsers: filtered
+                });
+            }
+        };
+        const type = this.state.initialTransits[this.state.selected].type;
+        const route = this.state.initialTransits[this.state.selected].route;
+
+            this.hr.send(JSON.stringify({'type': type, 'route': route}));
     };
 
     render() {
