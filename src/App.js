@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {VisitHistory} from "./components/VisitHistory";
+import {VisitHistory} from "./components/VisitHistory/VisitHistory";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import {Register_view} from "./components/RegisterView/Register_view"
 import FunctionalityView from "./components/FunctionalityView/FunctionalityView";
