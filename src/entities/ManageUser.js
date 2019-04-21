@@ -1,17 +1,17 @@
 
 export class ManageUser {
-    constructor(username, emailcount, type, status) {
-        this._username = username;
+    constructor(emailcount, status, type, username) {
         this._emailcount = emailcount;
-        this._type = type;
         this._status = status;
+        this._username = username;
+        this._type = type;
     }
 
     get username() {
         return this._username;
     }
 
-    get emailcounter() {
+    get emailcount() {
         return this._emailcount;
     }
 

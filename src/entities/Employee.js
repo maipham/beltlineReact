@@ -2,14 +2,34 @@ import {status, user_type} from "./constants";
 import {User} from "./User";
 
 export class Employee extends User{
-    constructor(username, email, password, fname, lname, phone, emp_type, address, is_visitor, site) {
+    constructor(username, email, password, fname, lname, phone, emp_type, address, is_visitor, site, emails, id) {
         super(username, email, password, fname, lname);
         this._emp_type = emp_type;
         this._phone = phone;
         this._address = address;
         this._is_visitor = is_visitor;
         this._site = site;
+        this._emails = emails;
+        this._id = id;
     }
+
+
+    get address() {
+        return this._address;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get emails() {
+        return this._emails;
+    }
+
+    set email(val) {
+        this._emails = val;
+    }
+
     set site(site) {
         this._site = site;
     }

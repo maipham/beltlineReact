@@ -13,7 +13,7 @@ export class Login extends Component {
         super(props);
         this.state = {
             signIn_success: false,
-            user_type: null
+            username: null
         };
     }
 
@@ -28,13 +28,14 @@ export class Login extends Component {
             // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const response = JSON.parse(e.target.responseText);
+                console.log(response);
                 const message = response.message;
-                const user_type = response.user_type;
+                const username = response.username;
                 console.log(message);
                 if (message === response_messages.account_exists) {
                     console.log("THIS SHIT EXISTS");
                     this.state.signIn_success = true;
-                    this.state.user_type = user_type;
+                    this.state.username = username;
                     this.setState(
                         this.state
                     );
@@ -54,7 +55,7 @@ export class Login extends Component {
                 {this.state.signIn_success ?
                     <Redirect to={{
                         pathname: "/functionality",
-                        hash: this.state.user_type}}/>
+                        hash: this.state.username}}/>
                     :
                     <div>
                         <Grid container justify="center" item xs={12}><h1>Login</h1></Grid>
