@@ -96,7 +96,7 @@ export class RegisterForm extends Component {
     }
 
     render() {
-        const {handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
+        const {handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose, isEmployee,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
             curr_state} = this.props;
         return (
@@ -116,20 +116,21 @@ export class RegisterForm extends Component {
                     <Grid item>
                         <Field name="username" component={renderField} label="Username" />
                     </Grid>
+                    {isEmployee ?
+                        <Grid item>
+                            <Button variant="outlined"aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
+                                    onClick={handleTypeClick}>{userType}</Button>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}>
 
-                    <Grid item>
-                        <Button variant="outlined"aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
-                            onClick={handleTypeClick}>{userType}</Button>
-                        <Menu
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}>
-
-                            <MenuItem onClick={handleMenuClick} value="Manager">Manager</MenuItem>
-                            <MenuItem onClick={handleMenuClick} value="Staff">Staff</MenuItem>
-                        </Menu>
-                    </Grid>
+                                <MenuItem onClick={handleMenuClick} value="Manager">Manager</MenuItem>
+                                <MenuItem onClick={handleMenuClick} value="Staff">Staff</MenuItem>
+                            </Menu>
+                        </Grid> : null
+                    }
                 </Grid>
 
                 {/*password and confirm password grid section*/}
