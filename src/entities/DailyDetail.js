@@ -1,23 +1,19 @@
 
 export class DailyDetail {
-    constructor(date, events, staffs, totalVisits,revenue) {
-        this._date = date;
-        this._events = events;
+    constructor(eventname, staffs, visits, revenue) {
+        this._eventname = eventname;
         this._staffs = staffs;
-        this._totalVisits = totalVisits;
+        this._totalVisits = visits;
         this._revenue = revenue;
     }
 
-    get date() {
-        return this._date;
+    get eventname() {
+        return this._eventname;
     }
-    get events() {
-        return this._events;
-    }
-    get stafs() {
+    get staffs() {
         return this._staffs;
     }
-    get totalVisits() {
+    get visits() {
         return this._totalVisits;
     }
     get revenue() {
