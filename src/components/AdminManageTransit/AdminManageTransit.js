@@ -112,7 +112,6 @@ export class AdminManageTransit extends Component {
         }
     };
 
-    //need to implement this
     handleDeleteClick = () => {
         if (this.state.selected !== null) {
                 this.hr.open('POST', this.url);

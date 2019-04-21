@@ -124,11 +124,24 @@ export class AdminManageUser extends Component {
 
     handleDeclineClick = (event) => {
         if (this.state.selected !== null) {
-            if (this.state.initialUsers[this.state.selected].status === 'Declined') {
-                console.log('aasdfdsa');
+            if (this.state.initialUsers[this.state.selected].status === 'Pending') {
+                this.hr.open('POST', this.url);
+                this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                this.hr.onreadystatechange = (event) => {
+                    if (event.target.readyState === 4 && event.target.status === 200) {
+                        let filtered = this.state.filteredUsers;
+                        filtered[this.state.selected].status = 'Declined';
+                        this.setState({
+                            filteredUsers: filtered
+                        });
+                    }
+                };
+                const username = this.state.initialUsers[this.state.selected].username;
+                // const body = {'username': username, 'status': 'Approved'};
+                this.hr.send(JSON.stringify({'username': username, 'status': 'Declined'}));
             }
         }
-    }
+    };
 
     render() {
         const {anchorEl, anchorEl2} = this.state;
@@ -187,7 +200,7 @@ export class AdminManageUser extends Component {
 
                         <Grid item>
                             <Button color="primary" onClick={this.handleApproveClick} variant="contained" style={{marginRight: '10px'}}>Approve</Button>
-                            <Button color="primary" variant="contained">Decline</Button>
+                            <Button color="primary" onClick={this.handleDeclineClick} variant="contained">Decline</Button>
                         </Grid>
                     </Grid>
 

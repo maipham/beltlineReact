@@ -82,20 +82,26 @@ export class AdminCreateTransit extends Component {
         this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
-                let filtered = this.state.filteredTransits;
-                delete filtered[this.state.selected];
-                console.log("deleted");
-
-                this.setState({
-                    filteredUsers: filtered
-                });
+                console.log("successful");
             }
         };
-        const type = this.state.initialTransits[this.state.selected].type;
-        const route = this.state.initialTransits[this.state.selected].route;
-
-            this.hr.send(JSON.stringify({'type': type, 'route': route}));
+        const type = this.state.transportType;
+        const route = this.state.route;
+        const price = parseFloat(this.state.price);
+        let connectedSites = '';
+        const size = this.state.connectedIndexes.length - 1;
+        this.state.connectedIndexes.forEach(function(element, i) {
+          connectedSites += site_names[parseInt(element, 10)];
+          if (i !== size) {
+              connectedSites += ',';
+          }
+        });
+        this.hr.send(JSON.stringify({'type': type, 'route': route, 'price': price, 'sites': connectedSites}));
     };
+
+    checkIfExists = () => {
+
+    }
 
     render() {
         const {anchorEl} = this.state;
@@ -166,7 +172,8 @@ export class AdminCreateTransit extends Component {
 
                     <Grid item>
                         <Button disabled={!(this.state.route && this.state.price && this.state.connectedIndexes.length >= 2)}
-                                style={{width: "120px"}} variant="contained" color="primary">Create</Button>
+                                style={{width: "120px"}} variant="contained" color="primary"
+                                onClick={this.handleCreateClick}>Create</Button>
                     </Grid>
 
                 </Grid>

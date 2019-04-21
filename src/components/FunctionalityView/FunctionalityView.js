@@ -24,11 +24,13 @@ export default class FunctionalityView extends Component {
 
         const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/get_user_info?username=' + hash;
+        console.log(hash);
         hr.open('GET', url);
         hr.onreadystatechange = (e) => {
-            // console.log(e);
+             console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
                 const response = ret_dat[0];
                 const temp_state = {
                     isAdmin : false,
