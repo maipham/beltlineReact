@@ -86,9 +86,11 @@ export class RegisterForm extends Component {
         console.log(this.state);
     }
 
-    handleEmailDelete = (e, i) => event => {
+    handleEmailDelete = (e, i) => {
         let b = this.state.emails;
-        this.setState({emails: b.filter(email => email !== b[i])});
+        const filtered = b.filter(email => email !== b[i]);
+        this.state.emails = filtered;
+        this.setState(this.state);
     }
 
     inputHandler = e => {
