@@ -183,7 +183,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
-                {/*container that holds the table*/}
+                {/*container that holds the buttons filter, create, view/edit, and delete*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item>
                         <Table>
