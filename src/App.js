@@ -45,7 +45,7 @@ class App extends Component {
                     <Route path="/login" component={Login}/>
                     <Route path="/reg_nav" component={RegisterNav}/>
                     <Route path="/view-edit0event" component={ViewEditEvent}/>
-                    <Route path="/site-report" component={SiteReport}/>
+                    <Route path="/site_report" component={SiteReport}/>
                     <Route path="/view_edit_event" component={ViewEditEvent}/>
                     <Route path="/take_transit" component={User_take_transit} />
                     <Route path="/transit_history" component={TransitHistory} />
