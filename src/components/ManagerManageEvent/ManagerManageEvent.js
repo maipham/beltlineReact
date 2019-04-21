@@ -183,6 +183,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
+                {/*container that holds the table*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item>
                         <Table>
