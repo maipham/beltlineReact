@@ -15,6 +15,9 @@ import {AdminCreateSite} from "./components/AdminCreateSite/AdminCreateSite";
 import {AdminCreateTransit} from "./components/AdminCreateTransit/AdminCreateTransit";
 import {AdminManageTransit} from "./components/AdminManageTransit/AdminManageTransit";
 import {ManagerCreateEvent} from "./components/ManagerCreateEvent/ManagerCreateEvent";
+import {ManagerManageEvent} from "./components/ManagerManageEvent/ManagerManageEvent";
+import {AdminEditTransit} from "./components/AdminEditTransit/AdminEditTransit";
+import {ManagerManageStaff} from "./components/ManagerManageStaff/ManagerManageStaff";
 
 class App extends Component {
 
@@ -41,6 +44,9 @@ class App extends Component {
                     <Route path="/create_transit" component={AdminCreateTransit} />
                     <Route path="/manage_transit" component={AdminManageTransit} />
                     <Route path="/create_event" component={ManagerCreateEvent} />
+                    <Route path="/manage_event" component={ManagerManageEvent} />
+                    <Route path="/edit_transit" component={AdminEditTransit} />
+                    <Route path="/manage_staff" component={ManagerManageStaff} />
                 </div>
             </Router>
         );
