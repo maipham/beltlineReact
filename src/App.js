@@ -14,6 +14,7 @@ import {AdminEditSite} from "./components/AdminEditSite/AdminEditSite";
 import {AdminCreateSite} from "./components/AdminCreateSite/AdminCreateSite";
 import {AdminCreateTransit} from "./components/AdminCreateTransit/AdminCreateTransit";
 import {AdminManageTransit} from "./components/AdminManageTransit/AdminManageTransit";
+import {ManagerCreateEvent} from "./components/ManagerCreateEvent/ManagerCreateEvent";
 
 class App extends Component {
 
@@ -39,6 +40,7 @@ class App extends Component {
                     <Route path="/create_site" component={AdminCreateSite} />
                     <Route path="/create_transit" component={AdminCreateTransit} />
                     <Route path="/manage_transit" component={AdminManageTransit} />
+                    <Route path="/create_event" component={ManagerCreateEvent} />
                 </div>
             </Router>
         );

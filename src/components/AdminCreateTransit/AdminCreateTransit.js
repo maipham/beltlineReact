@@ -131,7 +131,6 @@ export class AdminCreateTransit extends Component {
                                     <TableCell align="center">{site}</TableCell>
                                 </TableRow>);
                             })}
-
                         </TableBody>
                     </Table>
                 </Grid>
