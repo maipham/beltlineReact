@@ -1,20 +1,29 @@
 
 export class DailyDetail {
-    constructor(event_name, staff_names, visits, revenue) {
-        this._ename = event_name;
-        this._snames = staff_names;
-        this._visits = visits;
+    constructor(eventname, staffs, visits, revenue, date) {
+        this._eventname = eventname;
+        this._staffs = staffs;
+        this._totalVisits = visits;
         this._revenue = revenue;
+        this._date = date;
     }
 
-    get event_name() {
-        return this._ename;
+    get date() {
+        return this._date;
     }
-    get staff_name() {
-        return this._snames;
+
+    set date(d) {
+        this._date = d;
+    }
+
+    get eventname() {
+        return this._eventname;
+    }
+    get staffs() {
+        return this._staffs;
     }
     get visits() {
-        return this._visits;
+        return this._totalVisits;
     }
     get revenue() {
         return this._revenue;

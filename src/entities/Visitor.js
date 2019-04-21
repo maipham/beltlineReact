@@ -1,5 +1,5 @@
 import {User} from "./User";
-import {user_type} from "./enums";
+import {user_type} from "./constants";
 
 export class Visitor extends User {
     constructor() {

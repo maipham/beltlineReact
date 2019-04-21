@@ -7,7 +7,8 @@ export const status = {
 export const user_type = {
     USER: 'User',
     VISITOR: 'Visitor',
-    EMP: 'Employee'
+    EMP: 'Employee',
+    EMP_VIS: 'Employee, Visitor'
 
 };
 

@@ -1,0 +1,11 @@
+.event-container {
+    border: thin black solid;
+    width: 100%;
+}
+.description-text {
+    width: 70%;
+}
+
+.event-table {
+    width: 100%;
+}
