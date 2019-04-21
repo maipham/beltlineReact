@@ -14,11 +14,7 @@ import {ManageUser} from "../../entities/ManageUser";
 
 const userTypes = ["User", "Visitor", "Staff", "Manager"];
 const status = ["Approved", "Pending", "Declined"];
-
-const testingOnlyUsers = [new ManageUser("cwilson", 2, "Manager", "Pending"),
-    new ManageUser("jasonlee", 1, "User", "Delined"),
-    new ManageUser("jjohnson", 5, "Staff", "Approved"),
-    new ManageUser("mwilson", 3, "Employee", "Pending")];
+const adminUser = "james.smith";
 
 export class AdminManageUser extends Component {
     constructor(props) {
@@ -30,8 +26,8 @@ export class AdminManageUser extends Component {
             anchorEl: null,
             anchorEl2: null,
             selected: null,
-            initialUsers: testingOnlyUsers,
-            filteredUsers: testingOnlyUsers
+            initialUsers: [],
+            filteredUsers: []
         }
     }
 
@@ -74,6 +70,27 @@ export class AdminManageUser extends Component {
     };
 
     isSelected = id => id === this.state.selected;
+
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/a_manage_user?';
+
+        hr.open('GET', url + "username=" + adminUser);
+
+        hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                this.setState({
+                    initialUsers: data,
+                    filteredUsers: data
+                });
+                console.log(data);
+
+            }
+        };
+
+        hr.send();
+    }
 
     render() {
         const {anchorEl, anchorEl2} = this.state;
@@ -157,8 +174,8 @@ export class AdminManageUser extends Component {
                                                           key={i}
                                                           onClick={event => this.handleRowClick(event, i)}>
                                             <TableCell align="right">{user.username}</TableCell>
-                                            <TableCell align="right">{user.emailcounter}</TableCell>
-                                            <TableCell align="right">{user.type}</TableCell>
+                                            <TableCell align="right">{user.email_count}</TableCell>
+                                            <TableCell align="right">{user.user_type}</TableCell>
                                             <TableCell align="right">{user.status}</TableCell>
                                         </TableRow>);
                                     })}
