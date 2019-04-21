@@ -26,11 +26,11 @@ export const validate = values => {
     return errors
 };
 
-export const renderField = ({input, label, type, meta: {touched, error, warning}}) => {
+export const renderField = ({input, label, defaultValue, type, meta: {touched, error, warning}}) => {
     return (
         <Grid container direction="column" justify="center">
             <Grid item>
-                <TextField {...input} label={label} type={type}/>
+                <TextField {...input} label={label} defaultValue={defaultValue} type={type}/>
             </Grid>
             <Grid item>
                 {touched && ((error && <span style={{"color": "red"}}>{error}</span>) || (warning &&
@@ -76,11 +76,10 @@ export const renderRadioGroup = ({input, ...rest}) => (
 );
 
 export const renderSelectField = ({input, label, meta: {touched, error}, children, ...custom}) => (
-    <Select
-        floatingLabelText={label}
-        errorText={touched && error}
+    <Select label={label}
         {...input}
         onChange={(event, index, value) => input.onChange(value)}
         children={children}
-        {...custom}/>
+        {...custom}>
+    </Select>
 );

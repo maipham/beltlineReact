@@ -8,19 +8,24 @@ import {user_type} from "../../entities/constants";
 import {Visitor} from "../../entities/Visitor";
 import {Employee} from "../../entities/Employee";
 
+const us_states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID',
+    'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
+    'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK',
+    'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV',
+    'WI', 'WY'];
 
 export class Register_view extends Component {
+    isEmployee = false;
     constructor(props) {
         super(props);
-        console.log("this is props from view");
-        console.log(props.location.hash);
         this.state = {
             user: null,
             anchorEl: null,
             andhorEl2: null,
-            usertype: null,
+            usertype: "Manager",
             curr_state: "AL",
         };
+        this.initUser(props.location.hash);
     }
 
     initUser(hash) {
@@ -37,14 +42,15 @@ export class Register_view extends Component {
                 this.state.user = new Employee();
                 this.state.user.is_visitor(true);
                 this.state.usertype = user_type.EMP_VIS;
+                this.isEmployee = true;
                 break;
             case '#employee':
                 this.state.user = new Employee();
                 this.state.usertype = user_type.EMP;
+                this.isEmployee = true;
                 break;
         }
     }
-
 
     handleTypeClick = event => {
         this.setState({anchorEl: event.currentTarget});
@@ -85,12 +91,9 @@ export class Register_view extends Component {
 
     handleSubmit = (e) => {
         console.log(e);
-        // console.log(e['email']);
-    };
+        console.log(e['email']);
 
-    handleAddEmail = (e) => {
-        console.log("from register view");
-        console.log(e);
+        // this.state.user = new User(e.username, e.email, e.password);
     };
 
     render() {
@@ -98,10 +101,9 @@ export class Register_view extends Component {
             <div>
                 <Grid container justify="center" item xs={12}><h1>Register User</h1></Grid>
                 <RegisterForm onSubmit={this.handleSubmit} handleTypeClick={this.handleTypeClick}
-                              user={this.state.user}
                               handleClose={this.handleClose} handleMenuClick={this.handleMenuClick}
                               anchorEl={this.state.anchorEl} userType={this.state.usertype}
-                              anchorEl2={this.state.anchorEl2} addEmail={this.handleAddEmail}
+                              anchorEl2={this.state.anchorEl2} states={us_states}
                               handleStateClick={this.handleStateClick} handleStateMenuClick={this.handleStateMenuClick}
                               curr_state={this.state.curr_state}/>
             </div>
