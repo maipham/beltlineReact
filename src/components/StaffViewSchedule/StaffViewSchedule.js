@@ -30,7 +30,7 @@ export class StaffViewSchedule extends Component {
         this.setState({startDate: event.target.value});
     }
 
-    handleStartDate = (event) => {
+    handleEndDate = (event) => {
         this.setState({endDate: event.target.value});
     }
 
@@ -80,7 +80,7 @@ export class StaffViewSchedule extends Component {
                 {/*container for the start date and the end date*/}
                 <Grid style={{marginTop: '20px'}} container justify="center">
                     <Grid item style={{marginRight: '80px'}}>
-                        <InputLabel style={{marginRight: '15px'}}>First Name</InputLabel>
+                        <InputLabel style={{marginRight: '15px'}}>Start Date</InputLabel>
                         <TextField id="startdate"
                                    type="date"
                                    defaultValue="01/01/2019"
@@ -88,12 +88,12 @@ export class StaffViewSchedule extends Component {
                                    style={{width: '145px'}} onChange={this.handleStartDate}/>
                     </Grid>
                     <Grid item>
-                        <InputLabel style={{marginRight: '15px'}}>Last Name</InputLabel>
+                        <InputLabel style={{marginRight: '15px'}}>End Date</InputLabel>
                         <TextField id="enddate"
                                    type="date"
                                    defaultValue="01/01/2019"
                                    InputLabelProps={{shrink: true}}
-                                   style={{width: '145px'}} onChange={this.handleStartDate}/>
+                                   style={{width: '145px'}} onChange={this.handleEndDate}/>
                     </Grid>
                 </Grid>
 
