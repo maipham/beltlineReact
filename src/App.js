@@ -54,9 +54,6 @@ class App extends Component {
                     <Route path="/view_schedule" component={StaffViewSchedule} />
                     <Route path="/site_detail" component={SiteDetail}/>
                     <Route path="/explore_event" component={VisitorExploreEvent} />
-                    <Route path="/site_detail" component={SiteDetail}/>
-                    <Route path="/explore_event" component={VisitorExploreEvent} />
-                    <Route path="/site_detail" component={SiteDetail}/>
                     <Route path="/explore_site" component={VisitorExploreSite}/>
                 </div>
             </Router>
