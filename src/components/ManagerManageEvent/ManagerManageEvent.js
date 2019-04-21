@@ -106,6 +106,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
+                {/*container for the name and the description keyword text fields*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '0px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Name</InputLabel>
@@ -118,6 +119,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
+                {/*container for the start date and the end date text fields*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '10px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Start Date</InputLabel>
@@ -138,6 +140,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
+                {/*container for the duration range  and the visit range text fields*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '15px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Duration Range</InputLabel>
@@ -152,6 +155,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
+                {/*container for the revenue range text fields*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item>
                         <InputLabel style={{marginRight: '10px'}}>Total Revenue Range</InputLabel>
