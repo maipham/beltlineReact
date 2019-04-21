@@ -7,7 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
@@ -100,7 +99,7 @@ export class User_take_transit extends Component {
         this.setState({
             selected: i
         })
-    }
+    };
 
     handleFilter = () => {
         const siteFilter = this.state.sitefilter;

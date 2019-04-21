@@ -12,6 +12,7 @@ import {AdminManageUser} from "./components/AdminManageUser/AdminManageUser";
 import {ManageSite} from "./components/AdminManageSite/AdminManageSite";
 import {AdminEditSite} from "./components/AdminEditSite/AdminEditSite";
 import {AdminCreateSite} from "./components/AdminCreateSite/AdminCreateSite";
+import {AdminCreateTransit} from "./components/AdminCreateTransit/AdminCreateTransit";
 
 class App extends Component {
 
@@ -35,6 +36,7 @@ class App extends Component {
                     <Route path="/manage_site" component={ManageSite} />
                     <Route path="/edit_site" component={AdminEditSite} />
                     <Route path="/create_site" component={AdminCreateSite} />
+                    <Route path="/create_transit" component={AdminCreateTransit} />
                 </div>
             </Router>
         );
