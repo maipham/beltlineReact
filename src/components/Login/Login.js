@@ -37,9 +37,9 @@ export class Login extends Component {
                             user_type: user_type
                         }
                     );
-                    return (
-
-                    )
+                    // return (
+                    //
+                    // )
                 }
             }
         };
