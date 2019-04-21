@@ -25,79 +25,82 @@ export class EmployeeManageProfile extends Component {
         }
     }
 
+
     handleUpdate = (e) => {
         console.log(e);
     };
 
     render() {
         return (
-            <Grid container>
-                <Grid item md={6}>
-                    <TextField
-                        label="First Name"
-                        value={this.state.employee.fname}
-                        onChange={this.handleInfo('first')}
-                    />
-                </Grid>
-                <Grid item md={6}>
-                    <TextField
-                        label="Last Name"
-                        value={this.state.employee.lname}
-                        onChange={this.handleInfo('last')}
-                    />
-                </Grid>
+            <div>
+                <Grid container justify="center" item xs={12}><h1>Manage Profile</h1></Grid>
+                <Grid container justify="center">
+                    <Grid item md={6}>
+                        <TextField
+                            label="First Name"
+                            value={this.state.employee.fname}
+                            onChange={this.handleInfo('first')}
+                        />
+                    </Grid>
+                    <Grid item md={6}>
+                        <TextField
+                            label="Last Name"
+                            value={this.state.employee.lname}
+                            onChange={this.handleInfo('last')}
+                        />
+                    </Grid>
 
-                <Grid item md={6}>
-                    <strong>User name: </strong> {this.state.employee.username}
-                </Grid>
-                <Grid item md={6}>
-                    <strong>Site name: </strong> {this.state.employee.site}
-                </Grid>
+                    <Grid item md={6}>
+                        <strong>User name: </strong> {this.state.employee.username}
+                    </Grid>
+                    <Grid item md={6}>
+                        <strong>Site name: </strong> {this.state.employee.site}
+                    </Grid>
 
-                <Grid item md={6}>
-                    <strong>Employee ID: </strong> {this.state.employee.id}
-                </Grid>
-                <Grid item md={6}>
-                    <TextField
-                        label="Phone"
-                        value={this.state.employee.phone}
-                        onChange={this.handleInfo('phone')}
-                    />
-                </Grid>
-                <Grid item md={12}>
-                    <strong>Address: </strong> {this.state.employee.address}
-                </Grid>
+                    <Grid item md={6}>
+                        <strong>Employee ID: </strong> {this.state.employee.id}
+                    </Grid>
+                    <Grid item md={6}>
+                        <TextField
+                            label="Phone"
+                            value={this.state.employee.phone}
+                            onChange={this.handleInfo('phone')}
+                        />
+                    </Grid>
+                    <Grid item md={12}>
+                        <strong>Address: </strong> {this.state.employee.address}
+                    </Grid>
 
-                <Grid item md={12}>
-                    <TextField
-                        label="New Email"
-                        value={this.state.enterEmail}
-                        onChange={this.handleInfo('newEmail')}
-                    />
-                    <Button variant="contained" onClick={this.handleAddEmail}
-                            disabled={!(this.state.enterEmail &&
-                                !this.state.employee.emails.includes(this.state.enterEmail)
-                                && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.enterEmail))}>
-                        Add Email
-                    </Button>
-                </Grid>
-                {
+                    <Grid item md={12}>
+                        <TextField
+                            label="New Email"
+                            value={this.state.enterEmail}
+                            onChange={this.handleInfo('newEmail')}
+                        />
+                        <Button variant="contained" onClick={this.handleAddEmail}
+                                disabled={!(this.state.enterEmail &&
+                                    !this.state.employee.emails.includes(this.state.enterEmail)
+                                    && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.enterEmail))}>
+                            Add Email
+                        </Button>
+                    </Grid>
+                    {
 
-                    this.state.employee.emails.map((email, indx) => (
-                        <Grid item md={8} key={indx}>
-                            <strong> {email} </strong> < Button variant={"outlined"}
-                                                                onClick={this.handleRemove(email, indx)}> Remove </Button>
-                        </Grid>
-                    ))
-                }
+                        this.state.employee.emails.map((email, indx) => (
+                            <Grid item md={8} key={indx}>
+                                <strong> {email} </strong> < Button variant={"outlined"}
+                                                                    onClick={this.handleRemove(email, indx)}> Remove </Button>
+                            </Grid>
+                        ))
+                    }
 
-                <Grid item md={6}>
-                    <Button color={"primary"} variant={"outlined"} onClick={this.update}>Update</Button>
-                </Grid>
-                <Grid item md={6}>
-                    <Button color={"primary"} variant={"outlined"} onClick={this.back}>Back</Button>
-                </Grid>
-            </Grid>
+                    <Grid item md={6}>
+                        <Button color={"primary"} variant={"outlined"} onClick={this.update}>Update</Button>
+                    </Grid>
+                    <Grid item md={6}>
+                        <Button color={"primary"} variant={"outlined"} onClick={this.back}>Back</Button>
+                    </Grid>
+                </Grid></div>
         )
     }
 
