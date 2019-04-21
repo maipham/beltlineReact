@@ -27,7 +27,6 @@ import {VisitorExploreEvent} from "./components/VisitorExploreEvent/VisitorExplo
 import {SiteDetail} from "./components/SiteDetail/SiteDetail";
 import {VisitorExploreSite} from "./components/VisitorExploreSite/VisitorExploreSite";
 import {TransitDetail} from "./components/TransitDetail/TransitDetail";
-import ManageProfile from "./components/ManageProfile/ManageProfile";
 
 class App extends Component {
 
