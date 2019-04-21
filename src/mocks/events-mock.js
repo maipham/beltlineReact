@@ -7,18 +7,18 @@ export const mock_events = [
         [
             {
                 date: 'today',
-                visits: 123,
-                revenue: 4321
+                visits: 1,
+                revenue: 2
             },
             {
                 date: 'yesterday',
-                visits: 123,
-                revenue: 4321
+                visits: 5,
+                revenue: 4
             },
             {
                 date: 'tomorrow',
-                visits: 123,
-                revenue: 4321
+                visits: 10,
+                revenue: 9
             },
         ]
     ),
