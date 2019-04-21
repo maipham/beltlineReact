@@ -22,6 +22,7 @@ import {StaffViewSchedule} from "./components/StaffViewSchedule/StaffViewSchedul
 import {VisitorExploreEvent} from "./components/VisitorExploreEvent/VisitorExploreEvent";
 import {SiteDetail} from "./components/SiteDetail/SiteDetail";
 import {VisitorExploreSite} from "./components/VisitorExploreSite/VisitorExploreSite";
+import {TransitDetail} from "./components/TransitDetail/TransitDetail";
 
 class App extends Component {
 
@@ -54,6 +55,7 @@ class App extends Component {
                     <Route path="/view_schedule" component={StaffViewSchedule} />
                     <Route path="/site_detail" component={SiteDetail}/>
                     <Route path="/explore_event" component={VisitorExploreEvent} />
+                    <Route path="/transit_detail" component={TransitDetail}/>
                     <Route path="/explore_site" component={VisitorExploreSite}/>
                 </div>
             </Router>
