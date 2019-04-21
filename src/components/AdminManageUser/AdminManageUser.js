@@ -11,6 +11,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {ManageUser} from "../../entities/ManageUser";
+import {Link} from "react-router-dom";
+
 
 const userTypes = ["User", "Visitor", "Staff", "Manager"];
 const status = ["Approved", "Pending", "Declined"];
@@ -90,7 +92,6 @@ export class AdminManageUser extends Component {
                     filteredUsers: data
                 });
                 console.log(data);
-
             }
         };
 
@@ -107,6 +108,7 @@ export class AdminManageUser extends Component {
                         let filtered = this.state.filteredUsers;
                         filtered[this.state.selected].status = 'Approved';
                         console.log("HELP");
+
                         this.setState({
                             filteredUsers: filtered
                         });
@@ -222,7 +224,7 @@ export class AdminManageUser extends Component {
 
                     <Grid container justify="center" style={{marginTop: '20px'}}>
                         <Grid item>
-                            <Button color="primary" variant="contained" style={{paddingRight: '30px', paddingLeft: '30px'}}>Back</Button>
+                            <Button color="primary" component={Link} to={"/functionality"} variant="contained" style={{paddingRight: '30px', paddingLeft: '30px'}}>Back</Button>
                         </Grid>
                     </Grid>
 
