@@ -1,6 +1,6 @@
 
 export class Schedule {
-    constructor(event_name, site_name, start_date, end_date, staff_count) {
+    constructor(end_date, event_name, site_name, staff_count, start_date) {
         this._ename = event_name;
         this._sname = site_name;
         this._sDate = start_date;

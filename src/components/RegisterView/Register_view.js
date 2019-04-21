@@ -39,14 +39,13 @@ export class Register_view extends Component {
                 this.state.usertype = user_type.VISITOR;
                 break;
             case '#employee-visitor':
-                this.state.user = new Employee();
-                this.state.user.is_visitor(true);
-                this.state.usertype = user_type.EMP_VIS;
+                this.state.user = new Employee(null,null,null, null,null,null,user_type.EMP_VIS,
+                    null, true, null,null);
                 this.isEmployee = true;
                 break;
             case '#employee':
-                this.state.user = new Employee();
-                this.state.usertype = user_type.EMP;
+                this.state.user = new Employee(null,null,null, null,null,null,user_type.EMP,
+                    null, false, null,null);
                 this.isEmployee = true;
                 break;
         }
@@ -100,7 +99,7 @@ export class Register_view extends Component {
         return (
             <div>
                 <Grid container justify="center" item xs={12}><h1>Register User</h1></Grid>
-                <RegisterForm onSubmit={this.handleSubmit} handleTypeClick={this.handleTypeClick}
+                <RegisterForm onSubmit={this.handleSubmit} handleTypeClick={this.handleTypeClick} isEmployee={this.isEmployee}
                               handleClose={this.handleClose} handleMenuClick={this.handleMenuClick}
                               anchorEl={this.state.anchorEl} userType={this.state.usertype}
                               anchorEl2={this.state.anchorEl2} states={us_states}

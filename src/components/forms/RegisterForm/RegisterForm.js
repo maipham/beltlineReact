@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './RegisterForm.css';
 import {Field, reduxForm, FieldArray, formValueSelector} from 'redux-form';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -12,11 +12,10 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
-
 const validate = values => {
     const errors = {};
     const requiredFields = ['firstName', 'lastName', 'email', 'password', 'cpassword', 'username', 'phone', 'address', 'city', 'zipcode',
-                            'city'];
+        'city'];
     requiredFields.forEach(field => {
         if (!values[field]) {
             errors[field] = 'Required'
@@ -72,7 +71,7 @@ export class RegisterForm extends Component {
         this.state = {
             emails: [],
             email: ''
-        }
+        };
     }
 
     handleAddEmail = () => {
@@ -83,7 +82,7 @@ export class RegisterForm extends Component {
         this.state.emails = a.slice();
         this.state.email = '';
         this.setState(this.state);
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     handleEmailDelete = (e, i) => {
@@ -97,11 +96,11 @@ export class RegisterForm extends Component {
         this.setState({
             email: e.target.value
         });
-    }
+    };
 
     render() {
         const {
-            handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
+            handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose, isEmployee,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
             curr_state
         } = this.props;
@@ -123,19 +122,23 @@ export class RegisterForm extends Component {
                         <Field name="username" component={renderField} label="Username"/>
                     </Grid>
 
-                    <Grid item>
-                        <Button variant="outlined" aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
-                                onClick={handleTypeClick}>{userType}</Button>
-                        <Menu
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}>
+                    {isEmployee ?
+                        <Grid item>
+                            <Button variant="outlined" aria-owns={anchorEl ? 'simple-menu' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={handleTypeClick}>{userType}</Button>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}>
 
-                            <MenuItem onClick={handleMenuClick} value="Manager">Manager</MenuItem>
-                            <MenuItem onClick={handleMenuClick} value="Staff">Staff</MenuItem>
-                        </Menu>
-                    </Grid>
+                                <MenuItem onClick={handleMenuClick} value="Manager">Manager</MenuItem>
+                                <MenuItem onClick={handleMenuClick} value="Staff">Staff</MenuItem>
+                            </Menu>
+                        </Grid>
+                        : null
+                    }
                 </Grid>
 
                 {/*password and confirm password grid section*/}
@@ -148,44 +151,49 @@ export class RegisterForm extends Component {
                     </Grid>
                 </Grid>
 
-                {/*phone and address grid*/}
-                <Grid container spacing={32} justify="center" direction="row">
-                    <Grid item>
-                        <Field name="phone" component={renderField} label="Phone"/>
+                {isEmployee ?
+                    <Grid container spacing={32} justify="center" direction="row">
+                        <Grid item>
+                            <Field name="phone" component={renderField} label="Phone"/>
+                        </Grid>
+                        <Grid item>
+                            <Field name="address" component={renderField} label="Address"/>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Field name="address" component={renderField} label="Address"/>
+                    : null
+                }
+
+                {isEmployee ?
+                    <Grid container spacing={32} justify="center" direction="row">
+                        <Grid item>
+                            <Field name="city" component={renderField} label={"City"}/>
+                        </Grid>
+
+                        <Grid item>
+
+
+                            <Button variant="outlined" aria-owns={anchorEl2 ? 'state-menu' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={handleStateClick}>{curr_state}</Button>
+                            <Menu
+                                id="state-menu"
+                                anchorEl={anchorEl2}
+                                open={Boolean(anchorEl2)}
+                                onClose={handleClose}>
+
+                                {states.map((state, i) => (
+                                    <MenuItem key={i} onClick={handleStateMenuClick}
+                                              value={states[i]}>{states[i]}</MenuItem>
+                                ))}
+                            </Menu>
+                        </Grid>
+
+                        <Grid item>
+                            <Field name="zipcode" component={renderField} label={"Zipcode"}/>
+                        </Grid>
                     </Grid>
-                </Grid>
-
-                {/*city, state, and zipcode grid*/}
-                <Grid container spacing={32} justify="center" direction="row">
-                    <Grid item>
-                        <Field name="city" component={renderField} label={"City"}/>
-                    </Grid>
-
-                    <Grid item>
-
-
-                        <Button variant="outlined" aria-owns={anchorEl2 ? 'state-menu' : undefined} aria-haspopup="true"
-                                onClick={handleStateClick}>{curr_state}</Button>
-                        <Menu
-                            id="state-menu"
-                            anchorEl={anchorEl2}
-                            open={Boolean(anchorEl2)}
-                            onClose={handleClose}>
-
-                            {states.map((state, i) => (
-                                <MenuItem key={i} onClick={handleStateMenuClick}
-                                          value={states[i]}>{states[i]}</MenuItem>
-                            ))}
-                        </Menu>
-                    </Grid>
-
-                    <Grid item>
-                        <Field name="zipcode" component={renderField} label={"Zipcode"}/>
-                    </Grid>
-                </Grid>
+                    : null
+                }
 
                 {/*display of entered emails*/}
                 <Grid container spacing={32} justify="center" direction="row">
