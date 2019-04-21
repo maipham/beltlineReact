@@ -10,7 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const testManagers = ["James Johnson", "Michael Smith", "Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"]
 
-export class AdminEditSite extends Component {
+export class AdminCreateSite extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +18,7 @@ export class AdminEditSite extends Component {
             zipcode:  '',
             address: '',
             manager: testManagers[0],
-            openEveryday: null,
+            openEveryday: false,
             anchorEl: null
         }
     }
@@ -67,19 +67,19 @@ export class AdminEditSite extends Component {
             <div>
                 {/*Container that holds the header*/}
                 <Grid container justify="center">
-                    <h1>Edit Site</h1>
+                    <h1>Create Site</h1>
                 </Grid>
 
                 {/*Container that holds the Name and Zipcode TextFields*/}
                 <Grid container justify="center">
                     <Grid item style={{marginRight: '20px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Name</InputLabel>
-                        <TextField defaultValue={this.state.name} onChange={this.handleNameChange}/>
+                        <TextField onChange={this.handleNameChange}/>
                     </Grid>
 
                     <Grid item>
                         <InputLabel defaultValue={this.state.zipcode} style={{marginRight: '10px'}}>Zipcode</InputLabel>
-                        <TextField defaultValue={this.state.zipcode} onChange={this.handleZipChange}/>
+                        <TextField onChange={this.handleZipChange}/>
                     </Grid>
                 </Grid>
 
@@ -87,7 +87,7 @@ export class AdminEditSite extends Component {
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '0px'}}>
                         <InputLabel>Address</InputLabel>
-                        <TextField defaultValue={this.state.address} onChange={this.handleAddressChange} style={{width: '420px'}}/>
+                        <TextField onChange={this.handleAddressChange} style={{width: '420px'}}/>
                     </Grid>
                     <div>
                     </div>
@@ -127,7 +127,7 @@ export class AdminEditSite extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button disabled={!(parseInt(this.state.zipcode, 10) > 9999 && this.state.name)} color='primary' variant='contained' style={{paddingRight: '60px', paddingLeft: '60px'}}>Update</Button>
+                        <Button disabled={!(this.state.name && this.state.zipcode && parseInt(this.state.zipcode, 10) > 9999)} color='primary' variant='contained' style={{paddingRight: '60px', paddingLeft: '60px'}}>Create</Button>
                     </Grid>
                 </Grid>
 
