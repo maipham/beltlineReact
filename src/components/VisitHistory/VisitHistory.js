@@ -12,13 +12,13 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {TransitHistoryObject} from "../../entities/TransitHistoryObject";
+import {VisitHistoryObject} from "../../entities/VisitHistoryObject";
 
 
 const allTransportTypes = ['ALL'];
 const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
-const testingHistory = [new TransitHistoryObject("2019-02-01", 816, "Bus", 2.5),
-    new TransitHistoryObject("2019-02-03", "Red", "Bus", 3.5),
-    new TransitHistoryObject("2019-02-09", "Blue", "Bike", 4.5)];
+const testingHistory = [new VisitHistoryObject("2019-02-01", "Arboretum Walking Tour", "Inman Park", 0),
+    new VisitHistoryObject("2019-02-02", "", "Inman Park", 0)];
 
 export class VisitHistory extends Component {
     constructor(props) {
@@ -61,6 +61,10 @@ export class VisitHistory extends Component {
     handleEventChange = (event) => {
         this.setState({eventName: event.target.value});
         console.log("Changed event name");
+    }
+
+    handleFilterClick = (event) => {
+        console.log("We have clicked, boys");
     }
 
     render() {
@@ -120,7 +124,7 @@ export class VisitHistory extends Component {
                     {/*container for the Filter Button*/}
                     <Grid container justify="center" style={{marginTop: '25px'}}>
                         <Grid item>
-                            <Button color='primary' variant='contained'>Filter</Button>
+                            <Button onClick = {this.handleFilterClick} color='primary' variant='contained'>Filter</Button>
                         </Grid>
 
                     </Grid>
@@ -132,8 +136,8 @@ export class VisitHistory extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="right">Date</TableCell>
-                                        <TableCell align="right">Route</TableCell>
-                                        <TableCell align="right">Transport Type</TableCell>
+                                        <TableCell align="right">Event</TableCell>
+                                        <TableCell align="right">Site</TableCell>
                                         <TableCell align="right">Price</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -142,8 +146,8 @@ export class VisitHistory extends Component {
                                         return (<TableRow hover
                                                           key={i}>
                                             <TableCell align="right">{transit.date}</TableCell>
-                                            <TableCell align="right">{transit.route}</TableCell>
-                                            <TableCell align="right">{transit.transport_type}</TableCell>
+                                            <TableCell align="right">{transit.event}</TableCell>
+                                            <TableCell align="right">{transit.site}</TableCell>
                                             <TableCell align="right">{transit.price}</TableCell>
                                         </TableRow>);
                                     })}
