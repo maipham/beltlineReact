@@ -39,14 +39,13 @@ export class Register_view extends Component {
                 this.state.usertype = user_type.VISITOR;
                 break;
             case '#employee-visitor':
-                this.state.user = new Employee();
-                this.state.user.is_visitor(true);
-                this.state.usertype = user_type.EMP_VIS;
+                this.state.user = new Employee(null,null,null, null,null,null,user_type.EMP_VIS,
+                    null, true, null,null);
                 this.isEmployee = true;
                 break;
             case '#employee':
-                this.state.user = new Employee();
-                this.state.usertype = user_type.EMP;
+                this.state.user = new Employee(null,null,null, null,null,null,user_type.EMP,
+                    null, false, null,null);
                 this.isEmployee = true;
                 break;
         }

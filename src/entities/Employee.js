@@ -79,6 +79,9 @@ export class Employee extends User{
             }
         }
     }
+    set set_is_visitor(bool) {
+        this._is_visitor = bool;
+    }
 
     get userType() {
         return user_type.EMP;
