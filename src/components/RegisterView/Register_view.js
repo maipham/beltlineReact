@@ -53,6 +53,7 @@ export class Register_view extends Component {
 
     handleTypeClick = event => {
         this.setState({anchorEl: event.currentTarget});
+        console.log("Changed type to " + event.currentTarget);
     };
 
     handleClose = (event, value) => {

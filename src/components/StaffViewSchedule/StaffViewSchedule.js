@@ -20,9 +20,9 @@ export class StaffViewSchedule extends Component {
             initSchedule: [],
             filterSchedule: [],
             selected: null,
-            currUser: "staff1" //props.location.hash;
+            currUser: props.location.hash === null ? null : props.location.hash.slice(1)
         }
-        console.log(props);
+        console.log(props.location.hash);
     }
 
     handleStartDate = (event) => {
@@ -88,6 +88,15 @@ export class StaffViewSchedule extends Component {
     //     }
     // }
 
+    handleGoBack = (event) => {
+        let pathname = "/functionality";
+        this.props.history.push(pathname);
+    }
+
+    handleViewEvent = (event) => {
+        let pathname = "/"
+    }
+
     render() {
         const {anchorEl} = this.state;
         return (
@@ -138,7 +147,7 @@ export class StaffViewSchedule extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button color="primary" variant="contained">View Event</Button>
+                        <Button onClick = {this.handleViewEvent} color="primary" variant="contained">View Event</Button>
                     </Grid>
                 </Grid>
 
@@ -177,7 +186,7 @@ export class StaffViewSchedule extends Component {
                 {/*container for the back button*/}
                 <Grid style={{marginTop: '40px'}} container justify="center">
                     <Grid item>
-                        <Button style={{width: '100px'}} color="primary" variant="contained">Back</Button>
+                        <Button onClick = {this.handleGoBack} style={{width: '100px'}} color="primary" variant="contained">Back</Button>
                     </Grid>
                 </Grid>
 
