@@ -7,7 +7,6 @@ import FunctionalityView from "../FunctionalityView/FunctionalityView";
 import {Button} from "@material-ui/core";
 
 export class Login extends Component {
-    auth = false;
 
     constructor(props) {
         super(props);
@@ -33,7 +32,6 @@ export class Login extends Component {
                 const username = response.username;
                 console.log(message);
                 if (message === response_messages.account_exists) {
-                    console.log("THIS SHIT EXISTS");
                     this.state.signIn_success = true;
                     this.state.username = username;
                     this.setState(
@@ -48,8 +46,6 @@ export class Login extends Component {
 
 
     render() {
-        const {signIn_success} = this.state;
-        console.log(signIn_success);
         return (
             <div>
                 {this.state.signIn_success ?

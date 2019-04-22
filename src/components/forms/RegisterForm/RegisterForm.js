@@ -135,11 +135,11 @@ export class RegisterForm extends Component {
                 {/*first name and last name grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="firstName" onChange={this.handleUpdate('fname')} component={renderField}
+                        <Field name="firstname" onChange={this.handleUpdate('fname')} component={renderField}
                                label="First Name"/>
                     </Grid>
                     <Grid item>
-                        <Field name="lastName" onChange={this.handleUpdate('lname')} component={renderField}
+                        <Field name="lastname" onChange={this.handleUpdate('lname')} component={renderField}
                                label="Last Name"/>
                     </Grid>
                 </Grid>
@@ -147,7 +147,7 @@ export class RegisterForm extends Component {
                 {/*username and user type grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="username" onChange={this.handleUpdate('userName')} component={renderField}
+                        <Field name="username" onChange={this.handleUpdate('username')} component={renderField}
                                label="Username"/>
                     </Grid>
 
@@ -201,7 +201,7 @@ export class RegisterForm extends Component {
                 {isEmployee ?
                     <Grid container spacing={32} justify="center" direction="row">
                         <Grid item>
-                            <Field name="city" component={renderField} label={"City"}/>
+                            <Field name="city" component={renderField} onChange={this.handleUpdate('city')} label={"City"}/>
                         </Grid>
 
                         <Grid item>

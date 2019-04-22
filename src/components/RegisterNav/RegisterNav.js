@@ -13,7 +13,7 @@ export default class RegisterNav extends Component {
         ['User Only', 'user'],
         ['Visitor Only', 'visitor'],
         ['Employee Only', 'employee'],
-        ['Employee-Visitor', 'employee-visitor']
+        ['Employee-Visitor', 'employee_visitor']
     ];
 
     render() {

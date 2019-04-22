@@ -32,7 +32,8 @@ today = mm + '-' + dd + '-' + yyyy;
 
 
 export class User_take_transit extends Component {
-
+    hr = new XMLHttpRequest();
+    url = 'https://localhost:5000/';
     constructor(props) {
         super(props);
         this.state = {
@@ -49,8 +50,8 @@ export class User_take_transit extends Component {
     }
 
     componentDidMount() {
-        fetch(API + query).then(response => response.json()).then(data => {this.setState({transits: data});
-            console.log(data)});
+        const url = 'takes_transit'
+        this.hr.open()
     }
 
     handleSiteClick = event => {
