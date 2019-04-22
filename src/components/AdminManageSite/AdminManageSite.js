@@ -15,11 +15,6 @@ import {ManageSiteObject} from "../../entities/ManageSiteObject";
 import {Link} from "react-router-dom";
 
 const openStatus = ['Yes', 'No', '--'];
-const testManagers = ["ALL", "James Johnson", "Michael Smith", "Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"]
-const testSites = ['ALL', 'Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
-const testManageSite = [new ManageSiteObject("Atlanta Beltline Center", "James Johnson", "Yes"),
-    new ManageSiteObject("Gorden-White Park", "Michael Smith", "No"),
-    new ManageSiteObject("Inman Park", "Frank Zhou", "Yes")];
 
 export class ManageSite extends Component {
     constructor(props) {
@@ -32,8 +27,10 @@ export class ManageSite extends Component {
             anchorEl1: null,
             anchorEl2: null,
             selected: null,
-            initialManageSite: testManageSite,
-            filteredManageSite: testManageSite
+            initialManageSite: [],
+            filteredManageSite: [],
+            allSites: [],
+            allManagers: []
         }
     }
 
@@ -47,11 +44,22 @@ export class ManageSite extends Component {
             // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
+                let a = [];
+                let b = [];
+                ret_dat[1].forEach(function(element) {
+                    a.push(element.name);
+                });
+                ret_dat[2].forEach(function(element) {
+                    b.push(element.manager_name);
+                })
+                console.log(a);
                 console.log(ret_dat);
                 this.setState({
-                    initialManageSite: ret_dat,
-                    filteredManageSite: ret_dat
-                })
+                    initialManageSite: ret_dat[0],
+                    filteredManageSite: ret_dat[0],
+                    allSites: a,
+                    allManagers: b
+                });
             }
         };
         hr.send();
@@ -130,7 +138,7 @@ export class ManageSite extends Component {
                             open={Boolean(anchorEl2)}
                             onClose={this.handleClose}
                         >
-                            {testSites.map((sites, index) =>
+                            {this.state.allSites.map((sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick}
                                           value={sites}>{sites}</MenuItem>)}
                         </Menu>
@@ -147,7 +155,7 @@ export class ManageSite extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {testManagers.map((manager, index) =>
+                            {this.state.allManagers.map((manager, index) =>
                                 <MenuItem key={index} onClick={this.handleManagerOptionClick}
                                           value={manager}>{manager}</MenuItem>)}
                         </Menu>

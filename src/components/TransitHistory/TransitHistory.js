@@ -15,12 +15,10 @@ import {TransitHistoryObject} from "../../entities/TransitHistoryObject";
 
 
 const allTransportTypes = ['ALL', 'MARTA', 'Bus', 'Bike'];
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
-const testingHistory = [new TransitHistoryObject("2019-02-01", 816, "Bus", 2.5),
-    new TransitHistoryObject("2019-02-03", "Red", "Bus", 3.5),
-    new TransitHistoryObject("2019-02-09", "Blue", "Bike", 4.5)];
 
 export class TransitHistory extends Component {
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/transit_history?';
     constructor(props) {
         super(props);
         this.state = {
@@ -31,8 +29,9 @@ export class TransitHistory extends Component {
             endDate: '',
             anchorEl: null,
             anchorEl2: null,
-            historyObjects: testingHistory,
-            filteredHistory: testingHistory
+            historyObjects: [],
+            filteredHistory: [],
+            siteNames: []
         };
     }
     handleTransportClick = event => {
@@ -68,6 +67,31 @@ export class TransitHistory extends Component {
 
     handleStartDate = (event) => {
         this.setState({endDate: event.target.value});
+    }
+
+    componentDidMount() {
+        const full = this.url + 'username=' + this.props.location.hash.substring(1);
+        console.log(full);
+
+        this.hr.open('GET', full);
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                let a = [];
+                data[1].forEach(function(element) {
+                    a.push(element.name);
+                });
+
+                this.setState({
+                    historyObjects: data[0],
+                    filteredHistory: data[0],
+                    siteNames: a
+                });
+                console.log(data);
+            }
+        };
+
+        this.hr.send();
     }
 
     render() {
@@ -110,7 +134,7 @@ export class TransitHistory extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {site_names.map( (sites, index) =>
+                            {this.state.siteNames.map( (sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>

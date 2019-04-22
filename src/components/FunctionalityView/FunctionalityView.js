@@ -20,6 +20,7 @@ export default class FunctionalityView extends Component {
             isUser : true,
             isEmployee : false
         };
+        // console.log(props.location.hash);
     }
     componentDidMount() {
         this._isMounted = true;

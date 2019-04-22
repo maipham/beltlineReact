@@ -12,16 +12,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {Transit} from "../../entities/Transit";
 
-const API = 'http://localhost:8080';
-const query = '/transit';
-
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 const type = ['ALL', 'MARTA', 'Bus', 'Bike'];
 
-const initial_transits = [new Transit("816", "Bus", "2.5", "4"),
-    new Transit("200", "Bike", "2.5", "4"),
-    new Transit("200", "MARTA", "4.5", "10"),
-    new Transit("Blue", "Bus", "5", "12")];
 
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
@@ -32,13 +24,16 @@ today = mm + '-' + dd + '-' + yyyy;
 
 
 export class User_take_transit extends Component {
-
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/takes_transit';
     constructor(props) {
         super(props);
         this.state = {
-            transits: initial_transits,
+            transits: [],
+            filteredTransits: [],
             sitefilter: 'ALL',
             transportfilter: 'ALL',
+            site_names: [],
             pricelow: 0,
             pricehigh: 0,
             anchorEl: null,
@@ -49,8 +44,25 @@ export class User_take_transit extends Component {
     }
 
     componentDidMount() {
-        fetch(API + query).then(response => response.json()).then(data => {this.setState({transits: data});
-            console.log(data)});
+        this.hr.open('GET', this.url);
+
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                let a = [];
+                data[1].forEach(function(element) {
+                   a.push(element.name);
+                });
+                this.setState({
+                    filteredTransits: data[0],
+                    transits: data[0],
+                    site_names: a
+                });
+                console.log(data);
+            }
+        };
+
+        this.hr.send();
     }
 
     handleSiteClick = event => {
@@ -106,14 +118,14 @@ export class User_take_transit extends Component {
         const transportFilter = this.state.transportfilter;
         const priceLow = this.state.pricelow;
         const priceHigh = this.state.pricehigh;
-        let newTransits = initial_transits;
+        let newTransits = this.state.transits;
 
         if (siteFilter === 'ALL'
             && transportFilter === 'ALL'
             && (priceLow === 0 || priceLow === '0' || priceLow === '')
             && (priceLow === 0 || priceHigh === '0' || priceHigh === '')) {
             this.setState({
-                transits: initial_transits
+                filteredTransits: this.state.transits
             });
         } else {
             if (transportFilter !== 'ALL') {
@@ -128,13 +140,12 @@ export class User_take_transit extends Component {
                 newTransits = newTransits.filter(transit => parseInt(transit.price, 10) <= parseInt(priceHigh, 10));
             }
             this.setState({
-                transits: newTransits
+                filteredTransits: newTransits
             });
         }
     }
 
     isSelected = id => id === this.state.selected;
-
 
     render() {
         const { anchorEl } = this.state;
@@ -161,7 +172,7 @@ export class User_take_transit extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {site_names.map( (sites, index) =>
+                            {this.state.site_names.map( (sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
@@ -177,7 +188,7 @@ export class User_take_transit extends Component {
                             onClose={this.handleClose}
                         >
                             {type.map((transports, index) =>
-                                <MenuItem key={index}onClick={this.handleTransportOptionClick} value={transports}>{transports}</MenuItem>)}
+                                <MenuItem key={index} onClick={this.handleTransportOptionClick} value={transports}>{transports}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -208,7 +219,7 @@ export class User_take_transit extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.transits.map((transit, i) => {
+                            {this.state.filteredTransits.map((transit, i) => {
                                 const isSelected = this.isSelected(i);
                                 return (<TableRow hover
                                           aria-checked={!(() => this.isSelected(i))}

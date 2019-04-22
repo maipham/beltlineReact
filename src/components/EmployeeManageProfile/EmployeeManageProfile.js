@@ -12,8 +12,11 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import ProfileForm from "../forms/ProfileForm/ProfileForm";
 import {Employee} from "../../entities/Employee";
+import {response_messages} from "../../entities/constants";
 
 export class EmployeeManageProfile extends Component {
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/e_manage_profile?';
     constructor(props) {
         super(props);
         this.state = {
@@ -25,6 +28,22 @@ export class EmployeeManageProfile extends Component {
         }
     }
 
+    componentDidMount() {
+        const full = this.url + 'username=' + this.props.location.hash.substring(1);
+        console.log(full);
+        this.hr.open('GET', full);
+
+        this.hr.onreadystatechange = (e) => {
+            // console.log(e);
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const response = JSON.parse(e.target.responseText);
+                this.setState({
+                    employee: response[0]
+                });
+            }
+        };
+        this.hr.send();
+    }
 
     handleUpdate = (e) => {
         console.log(e);
@@ -38,14 +57,14 @@ export class EmployeeManageProfile extends Component {
                     <Grid item md={6}>
                         <TextField
                             label="First Name"
-                            value={this.state.employee.fname}
+                            value={this.state.employee.first_name}
                             onChange={this.handleInfo('first')}
                         />
                     </Grid>
                     <Grid item md={6}>
                         <TextField
                             label="Last Name"
-                            value={this.state.employee.lname}
+                            value={this.state.employee.last_name}
                             onChange={this.handleInfo('last')}
                         />
                     </Grid>
@@ -86,7 +105,7 @@ export class EmployeeManageProfile extends Component {
                     </Grid>
                     {
 
-                        this.state.employee.emails.map((email, indx) => (
+                        this.state.employee.email.split(',').map((email, indx) => (
                             <Grid item md={8} key={indx}>
                                 <strong> {email} </strong> < Button variant={"outlined"}
                                                                     onClick={this.handleRemove(email, indx)}> Remove </Button>
