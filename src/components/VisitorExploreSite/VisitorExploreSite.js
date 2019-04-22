@@ -32,7 +32,10 @@ export class VisitorExploreSite extends Component {
             anchorEl: null,
             anchorEl2: null,
             selected: null,
-            event: [1,2,3,4,5]
+            initialSites: [],
+            filteredSites: [],
+            sites: [],
+            currUser: props.location.hash === null ? null : props.location.hash.slice(1)
         }
     }
 
@@ -106,6 +109,37 @@ export class VisitorExploreSite extends Component {
         })
     };
 
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/v_explore_site?';
+
+        console.log(this.state.currUser);
+
+        hr.open('GET', url + "username=" +this.state.currUser);
+
+        hr.onreadystatechange = (event) => {
+            {/* Stage 4 is ready state, status 200 is ready status */}
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                {/*Response Text is data from backend*/}
+                const data = JSON.parse(event.target.responseText);
+
+                console.log("Hello?" + data[1]);
+
+                var arr = data[1].map((siteObj, i) => {return siteObj.name});
+
+                console.log(arr);
+                this.setState({
+                    initialSites: data[0],
+                    filteredSites: data[0],
+                    sites: arr
+                });
+                //console.log(data);
+            }
+        };
+
+        hr.send();
+    }
+
     render() {
         const {anchorEl, anchorEl2} = this.state;
         return (
@@ -128,24 +162,24 @@ export class VisitorExploreSite extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {site_names.map( (sites, index) =>
+                            {this.state.sites.map( (sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
 
                     <Grid item>
-                        <InputLabel style={{marginRight: '15px'}}>Open Everyday</InputLabel>
+                        <InputLabel>Site</InputLabel>
                         <Button aria-owns={anchorEl2 ? 'site_menu' : undefined}
                                 aria-haspopup="true"
-                                onClick={this.handleOpenClick}> {this.state.openEveryday} </Button>
+                                onClick={this.handleSiteClick}> {this.state.siteName} </Button>
                         <Menu
                             id="site_menu"
                             anchorEl={anchorEl2}
                             open={Boolean(anchorEl2)}
                             onClose={this.handleClose}
                         >
-                            {openEveryday.map( (option, index) =>
-                                <MenuItem key={index} onClick={this.handleOpenClickOption} value={option}>{option}</MenuItem>)}
+                            {this.state.sites.map( (sites, index) =>
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -225,16 +259,16 @@ export class VisitorExploreSite extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.event.map((transit, i) => {
+                                {this.state.filteredSites.map((transit, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow selected={isSelected}
                                                       hover
                                                       key={i}
                                                       onClick={event => this.handleRowClick(event, i)}>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
+                                        <TableCell align="right">{transit.site_name}</TableCell>
+                                        <TableCell align="right">{transit.event_count}</TableCell>
+                                        <TableCell align="right">{transit.total_visits}</TableCell>
+                                        <TableCell align="right">{transit.my_visits}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>
