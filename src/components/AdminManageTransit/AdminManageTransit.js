@@ -29,6 +29,7 @@ export class AdminManageTransit extends Component {
             siteFilter: 'ALL',
             priceLow: '',
             priceHigh: '',
+            site_names: [],
             anchorEl: null,
             anchorEl2: null,
             selected: null,
@@ -41,9 +42,15 @@ export class AdminManageTransit extends Component {
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);
+                console.log(data);
+                let a = [];
+                data[1].forEach(function(element) {
+                    a.push(element.name);
+                });
                 this.setState({
-                    initialTransits: data,
-                    filteredTransits: data
+                    initialTransits: data[0],
+                    filteredTransits: data[0],
+                    site_names: a
                 });
             }
         };
@@ -180,7 +187,7 @@ export class AdminManageTransit extends Component {
                             open={Boolean(anchorEl2)}
                             onClose={this.handleClose}
                         >
-                            {site_names.map( (sites, index) =>
+                            {this.state.site_names.map( (sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>

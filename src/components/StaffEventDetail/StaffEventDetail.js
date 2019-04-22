@@ -46,7 +46,7 @@ export default class StaffEventDetail extends Component {
                         Staffs:
                     </strong>
                         {
-                            this.state.event.staffs.map(staff => (
+                            this.state.event.schedule.map(staff => (
                                 <div>
                                     <strong>{staff}</strong>
                                 </div>

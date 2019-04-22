@@ -21,7 +21,7 @@ export default class ViewEditEvent extends Component {
     init() {
         this.state = {
             event: mock_events[0], // pass event from props to this event in state
-            allStaffs: ['staff1', 'staff2', 'staff3', 'staff4', 'staff5'], // Call API to get a list of all staffs
+            allStaffs: ['staff1', 'staff2', 'staff3', 'staff4', 'staff5'], // Call API to get a list of all schedule
             startVisitCount: '',
             endVisitCount: '',
             startRevenue: '',
@@ -29,7 +29,7 @@ export default class ViewEditEvent extends Component {
             filteredStats: [...mock_events[0].stats],
         };
         this.state.allStaffs.forEach((staff) => {
-            this.state[staff] = this.state.event.staffs.includes(staff);
+            this.state[staff] = this.state.event.schedule.includes(staff);
         });
         console.log(this.state);
     }

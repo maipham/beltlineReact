@@ -61,6 +61,7 @@ export class Register_view extends Component {
 
     handleTypeClick = event => {
         this.setState({anchorEl: event.currentTarget});
+        console.log("Changed type to " + event.currentTarget);
     };
 
     handleClose = (event, value) => {
@@ -107,11 +108,7 @@ export class Register_view extends Component {
     }
 
     register = (data) => (e) => {
-        console.log("his is e");
-        console.log(e);
-        console.log(data);
         const new_obj = this.createNewUser(this.hash, data);
-        console.log(new_obj);
         const new_user = new_obj[0];
         const _path = new_obj[1];
         console.log(this.url + _path);

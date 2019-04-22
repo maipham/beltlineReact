@@ -10,6 +10,9 @@ import Grid from "@material-ui/core/Grid";
 import React, { Component } from 'react';
 
 export class ManagerManageEvent extends Component {
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/m_manage_event';
+
     constructor(props) {
         super(props);
         this.state = {
@@ -24,7 +27,7 @@ export class ManagerManageEvent extends Component {
             revenueLow: '',
             revenueHigh: '',
             selected: null,
-            justTesting: [1,2,3,4,5]
+            data: []
         }
     }
 
@@ -95,6 +98,22 @@ export class ManagerManageEvent extends Component {
             visitHigh: event.target.value
         });
     };
+
+    componentDidMount() {
+        this.hr.open('GET', this.url);
+
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                console.log(data);
+                this.setState({
+                    data: data
+                });
+            }
+        };
+
+        this.hr.send();
+    }
 
     render() {
         return (
@@ -197,18 +216,18 @@ export class ManagerManageEvent extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.justTesting.map((transit, i) => {
+                                {this.state.data.map((transit, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow hover
                                                       aria-checked={!(() => this.isSelected(i))}
                                                       selected={isSelected}
                                                       key={i}
                                                       onClick={event => this.handleRowClick(event, i)}>
-                                        <TableCell align="right">Bus Tour</TableCell>
-                                        <TableCell align="right">4</TableCell>
-                                        <TableCell align="right">1</TableCell>
-                                        <TableCell align="right">80</TableCell>
-                                        <TableCell align="right">2000</TableCell>
+                                        <TableCell align="right">{transit.event_name}</TableCell>
+                                        <TableCell align="right">{transit.staff_count}</TableCell>
+                                        <TableCell align="right">{transit.duration}</TableCell>
+                                        <TableCell align="right">{transit.total_visits}</TableCell>
+                                        <TableCell align="right">{transit.total_revenue}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>

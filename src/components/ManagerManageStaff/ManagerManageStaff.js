@@ -23,8 +23,33 @@ export class ManagerManageStaff extends Component {
             startDate: '',
             endDate: '',
             staff: [1,2,3,4,5],
-            anchorEl: null
+            anchorEl: null,
+            schedule: []
         }
+    }
+
+
+    componentDidMount() {
+        this._isMounted = true;
+
+        const hr = new XMLHttpRequest();
+        let url = null;
+        if (this.state.site === "ALL") {
+            url = 'http://localhost:5000/m_manage_staff?site_name=';
+        } else {
+            url = 'http://localhost:5000/m_manage_staff?site_name=' + this.state.site;
+        }
+        hr.open('GET', url);
+        hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
+                this.state.schedule = ret_dat;
+                this.setState(this.state);
+
+            }
+        };
+        hr.send();
     }
 
     handleSiteClick = event => {
@@ -142,11 +167,12 @@ export class ManagerManageStaff extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.staff.map((transit, i) => {
+                                {this.state.schedule.map((transit, i) => {
+                                    console.log(transit);
                                     return (<TableRow hover
                                                       key={i}>
-                                        <TableCell align="right">Alice Smith</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
+                                        <TableCell align="right">{transit.staff_name}</TableCell>
+                                        <TableCell align="right">{transit.event_shifts}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>

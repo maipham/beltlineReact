@@ -39,171 +39,174 @@ export default class SiteReport extends Component {
 
     render() {
         return (
-            <Grid container spacing={24}>
-                <Grid item md={6}>
-                    <form noValidate>
+            <div>
+                <Grid container justify="center" item xs={12}><h1>Site Report</h1></Grid>
+                <Grid container spacing={24} justify="center">
+                    <Grid container justify="center" item xs={6}>
+                        <form noValidate>
+                            <TextField
+                                label="Start Date"
+                                type="date"
+                                defaultValue={moment().format('YYYY-MM-DD')}
+                                value={this.state.dateRange[0]}
+                                className={'start-date'}
+                                onChange={this.handleDateRange('start')}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </form>
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <form noValidate>
+                            <TextField
+                                label="End Date"
+                                type="date"
+                                defaultValue={moment().format('YYYY-MM-DD')}
+                                value={this.state.dateRange[1]}
+                                onChange={this.handleDateRange('end')}
+                                className={'end-date'}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </form>
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <strong>
+                            Event Count Range:
+                        </strong>
                         <TextField
-                            label="Start Date"
-                            type="date"
-                            defaultValue={moment().format('YYYY-MM-DD')}
-                            value={this.state.dateRange[0]}
-                            className={'start-date'}
-                            onChange={this.handleDateRange('start')}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                            label=""
+                            value={this.state.eventCountRange[0]}
+                            onChange={this.handleEventCountRange('start')}
+                            margin="normal"
                         />
-                    </form>
-                </Grid>
-                <Grid item md={6}>
-                    <form noValidate>
+                        <strong>
+                            to
+                        </strong>
                         <TextField
-                            label="End Date"
-                            type="date"
-                            defaultValue={moment().format('YYYY-MM-DD')}
-                            value={this.state.dateRange[1]}
-                            onChange={this.handleDateRange('end')}
-                            className={'end-date'}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                            label=""
+                            value={this.state.eventCountRange[1]}
+                            onChange={this.handleEventCountRange('end')}
+                            margin="normal"
                         />
-                    </form>
-                </Grid>
-                <Grid md={6}>
-                    <strong>
-                        Event Count Range:
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.eventCountRange[0]}
-                        onChange={this.handleEventCountRange('start')}
-                        margin="normal"
-                    />
-                    <strong>
-                        to
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.eventCountRange[1]}
-                        onChange={this.handleEventCountRange('end')}
-                        margin="normal"
-                    />
-                </Grid>
-                <Grid md={6}>
-                    <strong>
-                        Staff Count Range:
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.staffCountRange[0]}
-                        onChange={this.handleStaffCountRange('start')}
-                        margin="normal"
-                    />
-                    <strong>
-                        to
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.staffCountRange[1]}
-                        onChange={this.handleStaffCountRange('end')}
-                        margin="normal"
-                    />
-                </Grid>
-                <Grid md={6}>
-                    <strong>
-                        Total Visits Range:
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.totalVisitsRange[0]}
-                        onChange={this.handleTotalVisitRange('start')}
-                        margin="normal"
-                    />
-                    <strong>
-                        to
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.totalVisitsRange[1]}
-                        onChange={this.handleTotalVisitRange('end')}
-                        margin="normal"
-                    />
-                </Grid>
-                <Grid md={6}>
-                    <strong>
-                        Total Revenue Range:
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.totalRevenueRange[0]}
-                        onChange={this.handleTotalRevenueRange('start')}
-                        margin="normal"
-                    />
-                    <strong>
-                        to
-                    </strong>
-                    <TextField
-                        label=""
-                        value={this.state.totalRevenueRange[1]}
-                        onChange={this.handleTotalRevenueRange('end')}
-                        margin="normal"
-                    />
-                </Grid>
-                <Grid item md={6}>
-                    <Button variant="contained" onClick={this.reset}>
-                        Reset
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={this.filter}>
-                        Filter
-                    </Button>
-                </Grid>
-                <Grid item md={6}>
-                    <Button variant="contained" color="primary" onClick={this.detail}>
-                        Daily Detail
-                    </Button>
-                </Grid>
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <strong>
+                            Staff Count Range:
+                        </strong>
+                        <TextField
+                            label=""
+                            value={this.state.staffCountRange[0]}
+                            onChange={this.handleStaffCountRange('start')}
+                            margin="normal"
+                        />
+                        <strong>
+                            to
+                        </strong>
+                        <TextField
+                            label=""
+                            value={this.state.staffCountRange[1]}
+                            onChange={this.handleStaffCountRange('end')}
+                            margin="normal"
+                        />
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <strong>
+                            Total Visits Range:
+                        </strong>
+                        <TextField
+                            label=""
+                            value={this.state.totalVisitsRange[0]}
+                            onChange={this.handleTotalVisitRange('start')}
+                            margin="normal"
+                        />
+                        <strong>
+                            to
+                        </strong>
+                        <TextField
+                            label=""
+                            value={this.state.totalVisitsRange[1]}
+                            onChange={this.handleTotalVisitRange('end')}
+                            margin="normal"
+                        />
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <strong>
+                            Total Revenue Range:
+                        </strong>
+                        <TextField
+                            label=""
+                            value={this.state.totalRevenueRange[0]}
+                            onChange={this.handleTotalRevenueRange('start')}
+                            margin="normal"
+                        />
+                        <strong>
+                            to
+                        </strong>
+                        <TextField
+                            label=""
+                            value={this.state.totalRevenueRange[1]}
+                            onChange={this.handleTotalRevenueRange('end')}
+                            margin="normal"
+                        />
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <Button variant="contained" onClick={this.reset}>
+                            Reset
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={this.filter}>
+                            Filter
+                        </Button>
+                    </Grid>
+                    <Grid container justify="center" item xs={6}>
+                        <Button variant="contained" color="primary" onClick={this.detail}>
+                            Daily Detail
+                        </Button>
+                    </Grid>
 
-                <Grid md={12}>
-                    <Paper>
-                        <Table className={'event-table'}>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Select</TableCell>
-                                    <TableCell>Date</TableCell>
-                                    <TableCell>Event Count</TableCell>
-                                    <TableCell>Staff Count</TableCell>
-                                    <TableCell>Total Visits</TableCell>
-                                    <TableCell>Total Revenue ($)</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {
-                                    this.state.filtered.map((detail, indx) => (
-                                            <TableRow key={indx}>
-                                                <TableCell>
-                                                    <Radio checked={this.state[detail.date]} value={indx}
-                                                           onChange={this.handleSelectedDetail} color={"primary"}/>
-                                                </TableCell>
-                                                <TableCell> {detail.date} </TableCell>
-                                                <TableCell> {detail.event_count.length} </TableCell>
-                                                <TableCell> {detail.staff_count.length} </TableCell>
-                                                <TableCell> {detail.visits} </TableCell>
-                                                <TableCell> {detail.revenue} </TableCell>
-                                            </TableRow>
+                    <Grid container justify="center" item xs={12}>
+                        <Paper>
+                            <Table className={'event-table'}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Select</TableCell>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell>Event Count</TableCell>
+                                        <TableCell>Staff Count</TableCell>
+                                        <TableCell>Total Visits</TableCell>
+                                        <TableCell>Total Revenue ($)</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        this.state.filtered.map((detail, indx) => (
+                                                <TableRow key={indx}>
+                                                    <TableCell>
+                                                        <Radio checked={this.state[detail.date]} value={indx}
+                                                               onChange={this.handleSelectedDetail} color={"primary"}/>
+                                                    </TableCell>
+                                                    <TableCell> {detail.date} </TableCell>
+                                                    <TableCell> {detail.event_count.length} </TableCell>
+                                                    <TableCell> {detail.staff_count.length} </TableCell>
+                                                    <TableCell> {detail.visits} </TableCell>
+                                                    <TableCell> {detail.revenue} </TableCell>
+                                                </TableRow>
+                                            )
                                         )
-                                    )
-                                }
-                            </TableBody>
-                        </Table>
-                    </Paper>
+                                    }
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    </Grid>
+                    <Grid container justify="center" item xs={12}>
+                        <Button item variant="contained" color="primary" onClick={this.back}>
+                            Back
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid md={12}>
-                    <Button item variant="contained" color="primary" onClick={this.back}>
-                        Back
-                    </Button>
-                </Grid>
-            </Grid>
+            </div>
         );
     }
 
