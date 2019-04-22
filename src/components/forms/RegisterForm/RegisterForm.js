@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
+
 const validate = values => {
     const errors = {};
     const requiredFields = ['firstName', 'lastName', 'email', 'password', 'cpassword', 'username', 'phone', 'address', 'city', 'zipcode',
@@ -70,8 +71,19 @@ export class RegisterForm extends Component {
         super(props);
         this.state = {
             emails: [],
-            email: ''
-        };
+            email: '',
+            fname: '',
+            lname: '',
+            userName: '',
+            pw: '',
+            confirm_pw: '',
+            phone: '',
+            address: '',
+            city: '',
+            zip: '',
+            type: '',
+            us_state: ''
+        }
     }
 
     handleAddEmail = () => {
@@ -82,7 +94,7 @@ export class RegisterForm extends Component {
         this.state.emails = a.slice();
         this.state.email = '';
         this.setState(this.state);
-        // console.log(this.state);
+        console.log(this.state);
     }
 
     handleEmailDelete = (e, i) => {
@@ -96,7 +108,21 @@ export class RegisterForm extends Component {
         this.setState({
             email: e.target.value
         });
-    };
+    }
+
+    handleType = (event) => {
+        this.props.handleTypeClick(event);
+        this.state.type = event.currentTarget.innerText;
+    }
+
+    handleState = (event) => {
+        this.props.handleStateClick(event);
+        this.state.us_state = event.currentTarget.innerText;
+    }
+
+    handleUpdate = (field) => (e) => {
+        this.state[field] = e.target.value;
+    }
 
     render() {
         const {
@@ -109,17 +135,20 @@ export class RegisterForm extends Component {
                 {/*first name and last name grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="firstName" component={renderField} label="First Name"/>
+                        <Field name="firstName" onChange={this.handleUpdate('fname')} component={renderField}
+                               label="First Name"/>
                     </Grid>
                     <Grid item>
-                        <Field name="lastName" component={renderField} label="Last Name"/>
+                        <Field name="lastName" onChange={this.handleUpdate('lname')} component={renderField}
+                               label="Last Name"/>
                     </Grid>
                 </Grid>
 
                 {/*username and user type grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="username" component={renderField} label="Username"/>
+                        <Field name="username" onChange={this.handleUpdate('userName')} component={renderField}
+                               label="Username"/>
                     </Grid>
 
                     {isEmployee ?
@@ -144,25 +173,31 @@ export class RegisterForm extends Component {
                 {/*password and confirm password grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="password" type="password" component={renderField} label="Password"/>
+                        <Field name="password" onChange={this.handleUpdate('pw')} type="password"
+                               component={renderField} label="Password"/>
                     </Grid>
                     <Grid item>
-                        <Field name="cpassword" type="password" component={renderField} label="Confirm Password"/>
+                        <Field name="cpassword" onChange={this.handleUpdate('confirm_pw')} type="password"
+                               component={renderField} label="Confirm Password"/>
                     </Grid>
                 </Grid>
 
+                {/*phone and address grid*/}
                 {isEmployee ?
                     <Grid container spacing={32} justify="center" direction="row">
                         <Grid item>
-                            <Field name="phone" component={renderField} label="Phone"/>
+                            <Field name="phone" onChange={this.handleUpdate('phone')} component={renderField}
+                                   label="Phone"/>
                         </Grid>
                         <Grid item>
-                            <Field name="address" component={renderField} label="Address"/>
+                            <Field name="address" onChange={this.handleUpdate('address')} component={renderField}
+                                   label="Address"/>
                         </Grid>
-                    </Grid>
-                    : null
+                    </Grid> :
+                    null
                 }
 
+                {/*city, state, and zipcode grid*/}
                 {isEmployee ?
                     <Grid container spacing={32} justify="center" direction="row">
                         <Grid item>
@@ -170,8 +205,6 @@ export class RegisterForm extends Component {
                         </Grid>
 
                         <Grid item>
-
-
                             <Button variant="outlined" aria-owns={anchorEl2 ? 'state-menu' : undefined}
                                     aria-haspopup="true"
                                     onClick={handleStateClick}>{curr_state}</Button>
@@ -189,23 +222,25 @@ export class RegisterForm extends Component {
                         </Grid>
 
                         <Grid item>
-                            <Field name="zipcode" component={renderField} label={"Zipcode"}/>
+                            <Field name="zipcode" onChange={this.handleUpdate('zip')} component={renderField}
+                                   label={"Zipcode"}/>
                         </Grid>
                     </Grid>
                     : null
                 }
-
                 {/*display of entered emails*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="email" value={this.state.email} component={renderField} label="Email"
+                        <Field name="email" onChange={this.handleUpdate('email')} value={this.state.email}
+                               component={renderField} label="Email"
                                onChange={this.inputHandler}/>
                         <List>
                             {this.state.emails.map((member, i) => (
                                 <ListItem key={i}>
                                     <ListItemText primary={member}/>
                                     <ListItemSecondaryAction key={i}>
-                                        <IconButton aria-label="Delete" onClick={e => this.handleEmailDelete(e, i)}>
+                                        <IconButton aria-label="Delete"
+                                                    onClick={e => this.handleEmailDelete(e, i)}>
                                             <DeleteIcon/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
@@ -226,7 +261,7 @@ export class RegisterForm extends Component {
                 </Grid>
 
                 <Grid container justify="center">
-                    <Button onClick={handleSubmit} variant="outlined">Register</Button>
+                    <Button onClick={this.props.register(this.state)} variant="outlined">Register</Button>
                 </Grid>
             </form>
         )
