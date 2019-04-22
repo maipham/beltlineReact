@@ -17,13 +17,12 @@ export class StaffViewSchedule extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            eventName: '',
-            keyword: '',
-            startDate: '',
-            endDate: '',
-            staff: [1,2,3,4,5],
-            selected: null
+            initSchedule: [],
+            filterSchedule: [],
+            selected: null,
+            currUser: "staff1" //props.location.hash;
         }
+        console.log(props);
     }
 
     handleStartDate = (event) => {
@@ -49,10 +48,45 @@ export class StaffViewSchedule extends Component {
     isSelected = id => id === this.state.selected;
 
     handleRowClick = (event, i) => {
-        this.setState({
-            selected: i
-        })
+        if (this.state.selected === i) {
+            this.setState({
+                selected: null
+            })
+        } else {
+            this.setState({
+                selected: i
+            })
+        }
     };
+
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/s_view_schedule?';
+
+        hr.open('GET', url + "staff_username=" +this.state.currUser);
+
+        hr.onreadystatechange = (event) => {
+            {/* Stage 4 is ready state, status 200 is ready status */}
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                {/*Response Text is data from backend*/}
+                const data = JSON.parse(event.target.responseText);
+                this.setState({
+                    initSchedule: data,
+                    filterSchedule: data
+                });
+                console.log(data);
+            }
+        };
+
+        hr.send();
+    }
+
+    // processData = (data) => {
+    //     for (let i = 0; i < data.length; i++) {
+    //         const row = data[i];
+    //         this.state.
+    //     }
+    // }
 
     render() {
         const {anchorEl} = this.state;
@@ -114,7 +148,7 @@ export class StaffViewSchedule extends Component {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="right">Staff Name</TableCell>
+                                    <TableCell align="right">Event Name</TableCell>
                                     <TableCell align="right">Site Name</TableCell>
                                     <TableCell align="right">Start Date</TableCell>
                                     <TableCell align="right">End Date</TableCell>
@@ -122,17 +156,17 @@ export class StaffViewSchedule extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.staff.map((transit, i) => {
+                                {this.state.filterSchedule.map((transit, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow selected={isSelected}
                                                       hover
                                                       key={i}
                                                       onClick={event => this.handleRowClick(event, i)}>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
+                                        <TableCell align="right">{transit.event_name}</TableCell>
+                                        <TableCell align="right">{transit.site_name}</TableCell>
+                                        <TableCell align="right">{transit.start_date}</TableCell>
+                                        <TableCell align="right">{transit.end_date}</TableCell>
+                                        <TableCell align="right">{transit.staff_count}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>
