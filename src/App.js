@@ -27,6 +27,7 @@ import {VisitorExploreEvent} from "./components/VisitorExploreEvent/VisitorExplo
 import {SiteDetail} from "./components/SiteDetail/SiteDetail";
 import {VisitorExploreSite} from "./components/VisitorExploreSite/VisitorExploreSite";
 import {TransitDetail} from "./components/TransitDetail/TransitDetail";
+import {ManagerDailyDetail} from "./components/ManagerDailyDetail/ManagerDailyDetail";
 
 class App extends Component {
 
@@ -66,6 +67,7 @@ class App extends Component {
                     <Route path="/explore_event" component={VisitorExploreEvent} />
                     <Route path="/transit_detail" component={TransitDetail}/>
                     <Route path="/explore_site" component={VisitorExploreSite}/>
+                    <Route path="/daily_detail" component={ManagerDailyDetail} />
                 </div>
             </Router>
         );
