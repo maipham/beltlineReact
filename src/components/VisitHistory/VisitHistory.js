@@ -29,8 +29,10 @@ export class VisitHistory extends Component {
             startDate: '',
             endDate: '',
             anchorEl: null,
-            historyObjects: testingHistory,
-            filteredHistory: testingHistory
+            initialHistory: [],
+            filteredHistory: [],
+            currUser: "mary.smith",//props.location.hash === null ? null : props.location.hash.slice(1),
+            sites: []
         };
     }
 
@@ -66,6 +68,33 @@ export class VisitHistory extends Component {
         console.log("We have clicked, boys");
     }
 
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/v_visit_history?';
+
+        hr.open('GET', url + "username=" +this.state.currUser);
+
+        hr.onreadystatechange = (event) => {
+            {/* Stage 4 is ready state, status 200 is ready status */}
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                {/*Response Text is data from backend*/}
+                const data = JSON.parse(event.target.responseText);
+
+                var arr = data[1].map((siteObj, i) => {return siteObj.name});
+
+                console.log(arr);
+                this.setState({
+                    initialHistory: data[0],
+                    filteredHistory: data[0],
+                    sites: arr
+                });
+                //console.log(data);
+            }
+        };
+
+        hr.send();
+    }
+
     render() {
         const {anchorEl} = this.state;
         return (
@@ -97,7 +126,7 @@ export class VisitHistory extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {site_names.map( (sites, index) =>
+                            {this.state.sites.map( (sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>

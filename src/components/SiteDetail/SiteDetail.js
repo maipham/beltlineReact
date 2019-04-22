@@ -34,8 +34,10 @@ export class SiteDetail extends Component {
     }
 
     handleGoBack = (event) => {
-        console.log("Let's go back!");
+        let pathname = "/explore_site";
+        this.props.history.push(pathname);
     }
+
 
     render() {
         return (
