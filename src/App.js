@@ -41,6 +41,7 @@ class App extends Component {
         return (
             <Router>
                 <div className="App">
+                    <Route exact path="/" component={Login}/>
                     <Route path="/visit_history" component={VisitHistory}/>
                     <Route path="/register" component={Register_view}/>
                     <Route path="/functionality" component={FunctionalityView}/>
@@ -60,7 +61,7 @@ class App extends Component {
                     <Route path="/manage_transit" component={AdminManageTransit} />
                     <Route path="/create_event" component={ManagerCreateEvent} />
                     <Route path="/manage_event" component={ManagerManageEvent} />
-                    <Route path="/edit_transit" component={AdminEditTransit} />
+                    <Route path="/edit_transit" render={(props) => <AdminEditTransit {... props} />} />
                     <Route path="/manage_staff" component={ManagerManageStaff} />
                     <Route path="/view_schedule" component={StaffViewSchedule} />
                     <Route path="/site_detail" component={SiteDetail}/>

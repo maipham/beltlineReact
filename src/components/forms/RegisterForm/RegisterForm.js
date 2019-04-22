@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './RegisterForm.css';
 import {Field, reduxForm, FieldArray, formValueSelector} from 'redux-form';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -16,7 +16,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const validate = values => {
     const errors = {};
     const requiredFields = ['firstName', 'lastName', 'email', 'password', 'cpassword', 'username', 'phone', 'address', 'city', 'zipcode',
-                            'city'];
+        'city'];
     requiredFields.forEach(field => {
         if (!values[field]) {
             errors[field] = 'Required'
@@ -126,7 +126,7 @@ export class RegisterForm extends Component {
 
     render() {
         const {
-            handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose,
+            handleSubmit, handleStateClick, handleStateMenuClick, handleTypeClick, handleClose, isEmployee,
             handleMenuClick, pristine, reset, submitting, employee, anchorEl, userType, anchorEl2, states,
             curr_state
         } = this.props;
@@ -135,94 +135,112 @@ export class RegisterForm extends Component {
                 {/*first name and last name grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="firstName" onChange={this.handleUpdate('fname')} component={renderField} label="First Name"/>
+                        <Field name="firstName" onChange={this.handleUpdate('fname')} component={renderField}
+                               label="First Name"/>
                     </Grid>
                     <Grid item>
-                        <Field name="lastName" onChange={this.handleUpdate('lname')} component={renderField} label="Last Name"/>
+                        <Field name="lastName" onChange={this.handleUpdate('lname')} component={renderField}
+                               label="Last Name"/>
                     </Grid>
                 </Grid>
 
                 {/*username and user type grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="username" onChange={this.handleUpdate('userName')} component={renderField} label="Username"/>
+                        <Field name="username" onChange={this.handleUpdate('userName')} component={renderField}
+                               label="Username"/>
                     </Grid>
 
-                    <Grid item>
-                        <Button variant="outlined" aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true"
-                                onClick={handleTypeClick}>{userType}</Button>
-                        <Menu
-                            id="simple-menu"
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}>
+                    {isEmployee ?
+                        <Grid item>
+                            <Button variant="outlined" aria-owns={anchorEl ? 'simple-menu' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={handleTypeClick}>{userType}</Button>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}>
 
-                            <MenuItem onClick={handleMenuClick} value="Manager">Manager</MenuItem>
-                            <MenuItem onClick={handleMenuClick} value="Staff">Staff</MenuItem>
-                        </Menu>
-                    </Grid>
+                                <MenuItem onClick={handleMenuClick} value="Manager">Manager</MenuItem>
+                                <MenuItem onClick={handleMenuClick} value="Staff">Staff</MenuItem>
+                            </Menu>
+                        </Grid>
+                        : null
+                    }
                 </Grid>
 
                 {/*password and confirm password grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="password" onChange={this.handleUpdate('pw')}type="password" component={renderField} label="Password"/>
+                        <Field name="password" onChange={this.handleUpdate('pw')} type="password"
+                               component={renderField} label="Password"/>
                     </Grid>
                     <Grid item>
-                        <Field name="cpassword" onChange={this.handleUpdate('confirm_pw')} type="password" component={renderField} label="Confirm Password"/>
+                        <Field name="cpassword" onChange={this.handleUpdate('confirm_pw')} type="password"
+                               component={renderField} label="Confirm Password"/>
                     </Grid>
                 </Grid>
 
                 {/*phone and address grid*/}
-                <Grid container spacing={32} justify="center" direction="row">
-                    <Grid item>
-                        <Field name="phone" onChange={this.handleUpdate('phone')} component={renderField} label="Phone"/>
-                    </Grid>
-                    <Grid item>
-                        <Field name="address" onChange={this.handleUpdate('address') }component={renderField} label="Address"/>
-                    </Grid>
-                </Grid>
+                {isEmployee ?
+                    <Grid container spacing={32} justify="center" direction="row">
+                        <Grid item>
+                            <Field name="phone" onChange={this.handleUpdate('phone')} component={renderField}
+                                   label="Phone"/>
+                        </Grid>
+                        <Grid item>
+                            <Field name="address" onChange={this.handleUpdate('address')} component={renderField}
+                                   label="Address"/>
+                        </Grid>
+                    </Grid> :
+                    null
+                }
 
                 {/*city, state, and zipcode grid*/}
-                <Grid container spacing={32} justify="center" direction="row">
-                    <Grid item>
-                        <Field name="city" onChange={this.handleUpdate('city')} component={renderField} label={"City"}/>
+                {isEmployee ?
+                    <Grid container spacing={32} justify="center" direction="row">
+                        <Grid item>
+                            <Field name="city" component={renderField} label={"City"}/>
+                        </Grid>
+
+                        <Grid item>
+                            <Button variant="outlined" aria-owns={anchorEl2 ? 'state-menu' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={handleStateClick}>{curr_state}</Button>
+                            <Menu
+                                id="state-menu"
+                                anchorEl={anchorEl2}
+                                open={Boolean(anchorEl2)}
+                                onClose={handleClose}>
+
+                                {states.map((state, i) => (
+                                    <MenuItem key={i} onClick={handleStateMenuClick}
+                                              value={states[i]}>{states[i]}</MenuItem>
+                                ))}
+                            </Menu>
+                        </Grid>
+
+                        <Grid item>
+                            <Field name="zipcode" onChange={this.handleUpdate('zip')} component={renderField}
+                                   label={"Zipcode"}/>
+                        </Grid>
                     </Grid>
-
-                    <Grid item>
-
-
-                        <Button variant="outlined" aria-owns={anchorEl2 ? 'state-menu' : undefined} aria-haspopup="true"
-                                onClick={handleStateClick}>{curr_state}</Button>
-                        <Menu
-                            id="state-menu"
-                            anchorEl={anchorEl2}
-                            open={Boolean(anchorEl2)}
-                            onClose={handleClose}>
-
-                            {states.map((state, i) => (
-                                <MenuItem key={i} onClick={handleStateMenuClick}
-                                          value={states[i]}>{states[i]}</MenuItem>
-                            ))}
-                        </Menu>
-                    </Grid>
-
-                    <Grid item>
-                        <Field name="zipcode" onChange={this.handleUpdate('zip')} component={renderField} label={"Zipcode"}/>
-                    </Grid>
-                </Grid>
-
+                    : null
+                }
                 {/*display of entered emails*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
-                        <Field name="email" onChange={this.handleUpdate('email')} value={this.state.email} component={renderField} label="Email"
+                        <Field name="email" onChange={this.handleUpdate('email')} value={this.state.email}
+                               component={renderField} label="Email"
                                onChange={this.inputHandler}/>
                         <List>
                             {this.state.emails.map((member, i) => (
                                 <ListItem key={i}>
                                     <ListItemText primary={member}/>
                                     <ListItemSecondaryAction key={i}>
-                                        <IconButton aria-label="Delete" onClick={e => this.handleEmailDelete(e, i)}>
+                                        <IconButton aria-label="Delete"
+                                                    onClick={e => this.handleEmailDelete(e, i)}>
                                             <DeleteIcon/>
                                         </IconButton>
                                     </ListItemSecondaryAction>

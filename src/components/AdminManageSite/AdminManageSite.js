@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,10 +12,11 @@ import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {ManageUser} from "../../entities/ManageUser";
 import {ManageSiteObject} from "../../entities/ManageSiteObject";
+import {Link} from "react-router-dom";
 
 const openStatus = ['Yes', 'No', '--'];
 const testManagers = ["ALL", "James Johnson", "Michael Smith", "Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"]
-const testSites = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
+const testSites = ['ALL', 'Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 const testManageSite = [new ManageSiteObject("Atlanta Beltline Center", "James Johnson", "Yes"),
     new ManageSiteObject("Gorden-White Park", "Michael Smith", "No"),
     new ManageSiteObject("Inman Park", "Frank Zhou", "Yes")];
@@ -34,6 +35,26 @@ export class ManageSite extends Component {
             initialManageSite: testManageSite,
             filteredManageSite: testManageSite
         }
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/a_manage_site';
+        hr.open('GET', url);
+        hr.onreadystatechange = (e) => {
+            // console.log(e);
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
+                this.setState({
+                    initialManageSite: ret_dat,
+                    filteredManageSite: ret_dat
+                })
+            }
+        };
+        hr.send();
     }
 
     handleOpenClick = event => {
@@ -55,7 +76,8 @@ export class ManageSite extends Component {
     };
     handleManagerClick = event => {
         this.setState({
-            anchorEl: event.currentTarget});
+            anchorEl: event.currentTarget
+        });
     };
 
     handleSiteOptionClick = event => {
@@ -69,9 +91,11 @@ export class ManageSite extends Component {
     };
 
     handleClose = (event, value) => {
-        this.setState({ anchorEl: null,
+        this.setState({
+            anchorEl: null,
             anchorEl2: null,
-            anchorEl1: null});
+            anchorEl1: null
+        });
     };
 
     handleRowClick = (event, i) => {
@@ -107,7 +131,8 @@ export class ManageSite extends Component {
                             onClose={this.handleClose}
                         >
                             {testSites.map((sites, index) =>
-                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick}
+                                          value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
 
@@ -122,8 +147,9 @@ export class ManageSite extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {testManagers.map( (manager, index) =>
-                                <MenuItem key={index} onClick={this.handleManagerOptionClick} value={manager}>{manager}</MenuItem>)}
+                            {testManagers.map((manager, index) =>
+                                <MenuItem key={index} onClick={this.handleManagerOptionClick}
+                                          value={manager}>{manager}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -141,8 +167,9 @@ export class ManageSite extends Component {
                             open={Boolean(anchorEl1)}
                             onClose={this.handleClose}
                         >
-                            {openStatus.map( (status, index) =>
-                                <MenuItem key={index} onClick={this.handleOpenOptionClick} value={status}>{status}</MenuItem>)}
+                            {openStatus.map((status, index) =>
+                                <MenuItem key={index} onClick={this.handleOpenOptionClick}
+                                          value={status}>{status}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -150,13 +177,13 @@ export class ManageSite extends Component {
                 {/*Container to hold all the buttons, including Filter, Create, Edit, and Delete*/}
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '120px'}}>
-                        <Button variant="contained" color="primary">Filter</Button>
+                        <Button component={Link}  variant="contained" color="primary">Filter</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button variant="contained" color="primary">Create</Button>
+                        <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button variant="contained" color="primary">Edit</Button>
+                        <Button component={Link} to={'/edit_site'} variant="contained" color="primary">Edit</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
                         <Button variant="contained" color="primary">Delete</Button>
@@ -182,9 +209,9 @@ export class ManageSite extends Component {
                                                       selected={isSelected}
                                                       key={i}
                                                       onClick={event => this.handleRowClick(event, i)}>
-                                        <TableCell align="right">{site.siteName}</TableCell>
-                                        <TableCell align="right">{site.manager}</TableCell>
-                                        <TableCell align="right">{site.open}</TableCell>
+                                        <TableCell align="right">{site.site_name}</TableCell>
+                                        <TableCell align="right">{site.name}</TableCell>
+                                        <TableCell align="right">{site.open_everyday}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>
