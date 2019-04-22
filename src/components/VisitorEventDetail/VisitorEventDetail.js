@@ -85,6 +85,7 @@ export default class VisitorEventDetail extends Component {
         console.log("Visit Date Change");
         console.log(e.target.value);
         this.state.event.visitDate = e.target.value;
+        this.setState(this.state);
     }
 
     logVisit = (e) => {
