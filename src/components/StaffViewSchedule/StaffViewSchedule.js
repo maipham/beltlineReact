@@ -63,7 +63,7 @@ export class StaffViewSchedule extends Component {
         const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/s_view_schedule?';
 
-        hr.open('GET', url + "staff_username=" +this.state.currUser);
+        hr.open('GET', url + "staff_username=" + this.state.currUser);
 
         hr.onreadystatechange = (event) => {
             {/* Stage 4 is ready state, status 200 is ready status */}

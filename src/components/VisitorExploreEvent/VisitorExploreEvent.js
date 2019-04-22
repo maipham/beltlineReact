@@ -33,7 +33,10 @@ export class VisitorExploreEvent extends Component {
             includeSoldOut: null,
             anchorEl: null,
             selected: null,
-            event: [1,2,3,4,5]
+            initialEvents: [],
+            filteredEvents: [],
+            sites: [],
+            currUser: "mary.smith" //props.location.hash === null ? null : props.location.hash.slice(1)
         }
     }
 
@@ -99,6 +102,38 @@ export class VisitorExploreEvent extends Component {
             selected: i
         })
     };
+
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/v_explore_event?';
+
+        hr.open('GET', url + "username=" + this.state.currUser);
+
+        hr.onreadystatechange = (event) => {
+            {/* Stage 4 is ready state, status 200 is ready status */
+            }
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                {/*Response Text is data from backend*/
+                }
+                const data = JSON.parse(event.target.responseText);
+
+                console.log(data);
+                console.log("Hello?" + data[1]);
+
+                // var arr = data[1].map((siteObj, i) => {
+                //     return siteObj.name
+                // });
+
+                this.setState({
+                    initialEvents: data,
+                    filteredEvents: data,
+                });
+                console.log(data);
+            }
+        };
+
+        hr.send();
+    }
 
     render() {
         const {anchorEl} = this.state;
@@ -222,18 +257,18 @@ export class VisitorExploreEvent extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.event.map((transit, i) => {
+                                {this.state.filteredEvents.map((transit, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow selected={isSelected}
                                                       hover
                                                       key={i}
                                                       onClick={event => this.handleRowClick(event, i)}>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
-                                        <TableCell align="right">{i}</TableCell>
+                                        <TableCell align="right">{transit.event_name}</TableCell>
+                                        <TableCell align="right">{transit.site_name}</TableCell>
+                                        <TableCell align="right">{transit.ticket_price}</TableCell>
+                                        <TableCell align="right">{transit.tickets_remaining}</TableCell>
+                                        <TableCell align="right">{transit.total_visits}</TableCell>
+                                        <TableCell align="right">{transit.my_visits}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>
