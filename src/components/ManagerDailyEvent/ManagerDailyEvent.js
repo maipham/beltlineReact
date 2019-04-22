@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import {mock_daily_events} from "../../mocks/daily-details-mock";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 export default class ManagerDailyEvent extends Component {
     constructor(props) {
@@ -48,7 +49,14 @@ export default class ManagerDailyEvent extends Component {
                         })}
                     </TableBody>
                 </Table>
+                <Grid md={12}>
+                    <Button color={"primary"} variant={"contained"} onClick={this.back}>Back</Button>
+                </Grid>
             </Grid>
         );
+    }
+
+    back = (e) => {
+        console.log("Back");
     }
 }
