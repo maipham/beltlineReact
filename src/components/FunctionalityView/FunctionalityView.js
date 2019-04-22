@@ -59,6 +59,10 @@ export default class FunctionalityView extends Component {
                     if (cur_resp === 'Staff') {
                         temp_state.isStaff = true;
                     }
+                    if (cur_resp === 'Employee, Visitor') {
+                        temp_state.isAdmin = true;
+                        temp_state.isVisitor = true;
+                    }
                 }
                 this.setState(temp_state);
 
