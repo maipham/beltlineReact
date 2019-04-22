@@ -105,7 +105,7 @@ export class RegisterForm extends Component {
             curr_state
         } = this.props;
         return (
-            <form onSubmit={handleSubmit}>
+            <form>
                 {/*first name and last name grid section*/}
                 <Grid container spacing={32} justify="center" direction="row">
                     <Grid item>
@@ -226,7 +226,7 @@ export class RegisterForm extends Component {
                 </Grid>
 
                 <Grid container justify="center">
-                    <Button type="submit" variant="outlined">Register</Button>
+                    <Button onClick={handleSubmit} variant="outlined">Register</Button>
                 </Grid>
             </form>
         )
