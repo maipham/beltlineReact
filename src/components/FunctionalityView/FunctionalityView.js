@@ -7,9 +7,11 @@ import {BrowserRouter as Router, Route, Redirect, Link} from "react-router-dom";
 import {VisitHistory} from "../VisitHistory/VisitHistory";
 
 export default class FunctionalityView extends Component {
-
+    _isMounted = false;
+    hash = null;
     constructor(props) {
         super(props);
+        this.hash = props.location.hash.substring(1);
         this.state = {
             isAdmin : false,
             isStaff : false,
@@ -19,15 +21,15 @@ export default class FunctionalityView extends Component {
             isEmployee : false
         };
     }
-
-    showFunctionalityOps(hash) {
+    componentDidMount() {
+        this._isMounted = true;
 
         const hr = new XMLHttpRequest();
-        const url = 'http://localhost:5000/get_user_info?username=' + hash;
-        console.log(hash);
+        const url = 'http://localhost:5000/get_user_info?username=' + this.hash;
+        console.log(this.hash);
         hr.open('GET', url);
         hr.onreadystatechange = (e) => {
-             console.log(e);
+            // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
                 console.log(ret_dat);
@@ -57,15 +59,22 @@ export default class FunctionalityView extends Component {
                     if (cur_resp === 'Staff') {
                         temp_state.isStaff = true;
                     }
+                    if (cur_resp === 'Employee, Visitor') {
+                        temp_state.isAdmin = true;
+                        temp_state.isVisitor = true;
+                    }
                 }
                 this.setState(temp_state);
 
             }
         };
         hr.send();
-
-
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
 
 
     render() {
@@ -76,8 +85,8 @@ export default class FunctionalityView extends Component {
         const item = {
             width: 'fit-content'
         };
-        const hash = this.props.location.hash;
-        this.showFunctionalityOps(hash.substring(1));
+        // const hash = this.props.location.hash;
+        // this.showFunctionalityOps(hash.substring(1));
         return (
             <div>
                 <Grid container justify="center" item xs={12}><h1>Functionality</h1></Grid>
@@ -86,14 +95,18 @@ export default class FunctionalityView extends Component {
                       spacing={16}>
                     {this.state.isEmployee ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/manage_profile'}>Manage
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/manage_profile', hash: this.hash}}
+                            >Manage
                                 Profile</Button>
                         </Grid>
                         : null
                     }
                     {this.state.isAdmin ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/manage_user'}>Manage
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/manage_user', hash: this.hash}}
+                            >Manage
                                 Users</Button>
                         </Grid>
                         : null
@@ -101,7 +114,9 @@ export default class FunctionalityView extends Component {
 
                     {this.state.isAdmin ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/manage_transit'}>Manage
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/manage_transit', hash: this.hash}}
+                            >Manage
                                 Transit</Button>
                         </Grid>
                         : null
@@ -109,14 +124,18 @@ export default class FunctionalityView extends Component {
 
                     {this.state.isAdmin ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/manage_site'}>Manage
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/manage_site', hash: this.hash}}
+                            >Manage
                                 Site</Button>
                         </Grid>
                         : null
                     }
                     {this.state.isManager ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/manage_event'}>Manage
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/manage_event', hash: this.hash}}
+                            >Manage
                                 Event</Button>
                         </Grid>
                         : null
@@ -124,14 +143,18 @@ export default class FunctionalityView extends Component {
 
                     {this.state.isManager ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/manage_staff'}>View
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/manage_staff', hash: this.hash}}
+                            >View
                                 Staff</Button>
                         </Grid>
                         : null
                     }
                     {this.state.isManager ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/site_report'}>View Site
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/site_report', hash: this.hash}}
+                            >View Site
                                 Report</Button>
                         </Grid>
                         : null
@@ -139,38 +162,50 @@ export default class FunctionalityView extends Component {
 
                     {this.state.isStaff ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/view_schedule'}>View
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/view_schedule', hash: this.hash}}
+                            >View
                                 Schedule</Button>
                         </Grid>
                         : null
                     }
                     {this.state.isVisitor ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/explore_event'}>Explore
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/explore_event', hash: this.hash}}
+                            >Explore
                                 Event</Button>
                         </Grid>
                         : null
                     }
                     {this.state.isVisitor ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/explore_site'}>Explore
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/explore_site', hash: this.hash}}
+                            >Explore
                                 Site</Button>
                         </Grid>
                         : null
                     }
                     {this.state.isVisitor ?
                         <Grid item={true} container justify='center' style={item} xs={4}>
-                            <Button variant="contained" style={button} component={Link} to={'/visit_history'}>View Visit
+                            <Button variant="contained" style={button} component={Link}
+                                    to={{pathname: '/visit_history', hash: this.hash}}
+                            >View Visit
                                 History</Button>
                         </Grid>
                         : null
                     }
                     <Grid item={true} container justify='center' style={item} xs={4}>
-                        <Button variant="contained" style={button} component={Link} to={'/take_transit'}>Take
+                        <Button variant="contained" style={button} component={Link}
+                                to={{pathname: '/take_transit', hash: this.hash}}
+                        >Take
                             Transit</Button>
                     </Grid>
                     <Grid item={true} container justify='center' style={item} xs={4}>
-                        <Button variant="contained" style={button} component={Link} to={'/transit_history'}>View Transit
+                        <Button variant="contained" style={button} component={Link}
+                                to={{pathname: '/transit_history', hash: this.hash}}
+                        >View Transit
                             History</Button>
                     </Grid>
                 </Grid>

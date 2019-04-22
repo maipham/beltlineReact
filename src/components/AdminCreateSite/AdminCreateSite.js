@@ -8,16 +8,17 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const testManagers = ["James Johnson", "Michael Smith", "Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"]
-
 export class AdminCreateSite extends Component {
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/a_create_site';
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            zipcode:  '',
+            zipcode: '',
             address: '',
-            manager: testManagers[0],
+            manager: "--",
+            managers: [],
             openEveryday: false,
             anchorEl: null
         }
@@ -59,6 +60,40 @@ export class AdminCreateSite extends Component {
 
     handleChange = name => event => {
         this.setState({ openEveryday: event.target.checked });
+    };
+
+    componentDidMount() {
+        this.hr.open('GET', this.url);
+
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                this.setState({
+                    managers: data
+                });
+                console.log(data);
+            }
+        };
+
+        this.hr.send();
+    }
+
+    handleCreateClick = () => {
+        this.hr.open('POST', this.url);
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                console.log("successful");
+            }
+        };
+        const name = this.state.name;
+        const zip = this.state.zipcode;
+        const address = this.state.address;
+        const open = this.state.openEveryday ? 'Yes' : 'No';
+        const manager = this.state.manager;
+        const obj = {'name': name, 'address': address, 'zip': zip, 'manager': manager, 'open': open};
+        this.hr.send(JSON.stringify(obj));
+        console.log(JSON.stringify(obj));
     };
 
     render() {
@@ -106,8 +141,8 @@ export class AdminCreateSite extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {testManagers.map((manager, index) =>
-                                <MenuItem key={index} onClick={this.handleManagerOptionClick} value={manager}>{manager}</MenuItem>)}
+                            {this.state.managers.map((manager, index) =>
+                                <MenuItem key={index} onClick={this.handleManagerOptionClick} value={manager.manager_name}>{manager.manager_name}</MenuItem>)}
                         </Menu>
                     </Grid>
 
@@ -127,7 +162,10 @@ export class AdminCreateSite extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button disabled={!(this.state.name && this.state.zipcode && parseInt(this.state.zipcode, 10) > 9999)} color='primary' variant='contained' style={{paddingRight: '60px', paddingLeft: '60px'}}>Create</Button>
+                        <Button disabled={!(this.state.manager !== '--' && this.state.name && this.state.zipcode && parseInt(this.state.zipcode, 10) > 9999)} color='primary'
+                                variant='contained'
+                                style={{paddingRight: '60px', paddingLeft: '60px'}}
+                                onClick={this.handleCreateClick}>Create</Button>
                     </Grid>
                 </Grid>
 
