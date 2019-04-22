@@ -13,6 +13,7 @@ import TableBody from "@material-ui/core/TableBody";
 import {mock_daily_events} from "../../mocks/site-report-mock";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
+import {Link} from "react-router-dom";
 
 export default class SiteReport extends Component {
     constructor(props) {
@@ -161,9 +162,12 @@ export default class SiteReport extends Component {
                         </Button>
                     </Grid>
                     <Grid container justify="center" item xs={6}>
-                        <Button variant="contained" color="primary" onClick={this.detail}>
-                            Daily Detail
-                        </Button>
+                        {/*<Button variant="contained" color="primary" onClick={this.detail}>*/}
+                            {/*Daily Detail*/}
+                        {/*</Button>*/}
+                        <Button variant="contained"  component={Link} color="primary"
+                                to={{pathname: '/daily_detail', hash: this.hash}}
+                        >Daily Detail</Button>
                     </Grid>
 
                     <Grid container justify="center" item xs={12}>
@@ -262,6 +266,7 @@ export default class SiteReport extends Component {
     }
 
     detail = (event) => {
+
     }
 
     back = (event) => {

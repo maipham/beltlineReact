@@ -18,6 +18,25 @@ export class ManagerDailyDetail extends Component {
         }
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/get_user_info?username=' + this.hash;
+        console.log(this.hash);
+        hr.open('GET', url);
+        hr.onreadystatechange = (e) => {
+            // console.log(e);
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
+                const response = ret_dat[0];
+
+            }
+        };
+        hr.send();
+    }
+
     render() {
         return (
             <div>
