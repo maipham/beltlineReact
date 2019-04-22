@@ -16,6 +16,8 @@ const type = ['MARTA', 'Bus', 'Bike'];
 const site_names = ['Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
 export class AdminCreateTransit extends Component {
+    hr = new XMLHttpRequest();
+    url = 'http://localhost:5000/a_create_transit';
     constructor(props) {
         super(props);
         this.state = {
@@ -73,6 +75,28 @@ export class AdminCreateTransit extends Component {
         this.setState({
             price: event.target.value
         });
+    };
+
+    handleCreateClick = () => {
+        this.hr.open('POST', this.url);
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                console.log("successful");
+            }
+        };
+        const type = this.state.transportType;
+        const route = this.state.route;
+        const price = parseFloat(this.state.price);
+        let connectedSites = '';
+        const size = this.state.connectedIndexes.length - 1;
+        this.state.connectedIndexes.forEach(function(element, i) {
+          connectedSites += site_names[parseInt(element, 10)];
+          if (i !== size) {
+              connectedSites += ',';
+          }
+        });
+        this.hr.send(JSON.stringify({'type': type, 'route': route, 'price': price, 'sites': connectedSites}));
     };
 
     render() {
@@ -144,7 +168,8 @@ export class AdminCreateTransit extends Component {
 
                     <Grid item>
                         <Button disabled={!(this.state.route && this.state.price && this.state.connectedIndexes.length >= 2)}
-                                style={{width: "120px"}} variant="contained" color="primary">Create</Button>
+                                style={{width: "120px"}} variant="contained" color="primary"
+                                onClick={this.handleCreateClick}>Create</Button>
                     </Grid>
 
                 </Grid>

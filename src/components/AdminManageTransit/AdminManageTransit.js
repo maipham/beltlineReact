@@ -112,10 +112,9 @@ export class AdminManageTransit extends Component {
         }
     };
 
-    //need to implement this
     handleDeleteClick = () => {
         if (this.state.selected !== null) {
-                this.hr.open('POST', this.url);
+                this.hr.open('DELETE', this.url);
                 this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                 this.hr.onreadystatechange = (event) => {
                     if (event.target.readyState === 4 && event.target.status === 200) {
@@ -128,11 +127,11 @@ export class AdminManageTransit extends Component {
                         });
                     }
                 };
-                const username = this.state.initialUsers[this.state.selected].username;
-                // const body = {'username': username, 'status': 'Approved'};
-                this.hr.send(JSON.stringify({'username': username, 'status': 'Approved'}));
+                const type = this.state.initialTransits[this.state.selected].type;
+                const route = this.state.initialTransits[this.state.selected].route;
+                this.hr.send(JSON.stringify({'type': type, 'route': route}));
         }
-    }
+    };
 
     render() {
         const {anchorEl, anchorEl2} = this.state;
@@ -208,7 +207,7 @@ export class AdminManageTransit extends Component {
                         {/*<Link to={{pathname: '/edit_transit'}} />*/}
                     </Grid>
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button variant="contained" color="primary">Delete</Button>
+                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)} variant="contained" color="primary" onClick={this.handleDeleteClick}>Delete</Button>
                     </Grid>
                 </Grid>
 

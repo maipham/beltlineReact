@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {ManageUser} from "../../entities/ManageUser";
 import {ManageSiteObject} from "../../entities/ManageSiteObject";
+import {Link} from "react-router-dom";
 
 const openStatus = ['Yes', 'No', '--'];
 const testManagers = ["ALL", "James Johnson", "Michael Smith", "Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"]
@@ -176,13 +177,13 @@ export class ManageSite extends Component {
                 {/*Container to hold all the buttons, including Filter, Create, Edit, and Delete*/}
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '120px'}}>
-                        <Button variant="contained" color="primary">Filter</Button>
+                        <Button component={Link}  variant="contained" color="primary">Filter</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button variant="contained" color="primary">Create</Button>
+                        <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button variant="contained" color="primary">Edit</Button>
+                        <Button component={Link} to={'/edit_site'} variant="contained" color="primary">Edit</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
                         <Button variant="contained" color="primary">Delete</Button>
