@@ -95,12 +95,16 @@ export class Register_view extends Component {
 
         // this.state.user = new User(e.username, e.email, e.password);
     };
+    register = (data) => (e) => {
+        console.log(data);
+    }
 
     render() {
         return (
             <div>
                 <Grid container justify="center" item xs={12}><h1>Register User</h1></Grid>
                 <RegisterForm onSubmit={this.handleSubmit} handleTypeClick={this.handleTypeClick}
+                              register={this.register}
                               handleClose={this.handleClose} handleMenuClick={this.handleMenuClick}
                               anchorEl={this.state.anchorEl} userType={this.state.usertype}
                               anchorEl2={this.state.anchorEl2} states={us_states}
