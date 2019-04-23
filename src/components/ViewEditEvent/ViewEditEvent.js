@@ -29,6 +29,7 @@ export default class ViewEditEvent extends Component {
             filteredStats: [...mock_events[0].stats],
         };
         console.log(props.location.hash);
+        console.log(props.location.state);
         this.hash = props.location.hash.substring(1);
         console.log(this.hash);
         const split_hash = this.hash.split('/');
@@ -37,10 +38,9 @@ export default class ViewEditEvent extends Component {
     };
 
     componentDidMount() {
-        const url = 'http://localhost:5000/m_edit_event?event_name=' + this.event_name + '&event_start=' + this.event_date;
+        const url = 'http://localhost:5000/m_edit_event?event_name=' + this.event_name + '&event_start=' + this.event_date + '&site_name=' + this.props.location.state.site_name;
         console.log(url);
         this.hr.open('GET', url);
-        //
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);

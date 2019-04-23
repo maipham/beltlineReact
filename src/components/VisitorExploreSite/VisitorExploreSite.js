@@ -7,14 +7,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 const openEveryday = ['ALL', 'YES', 'NO'];
 
 export class VisitorExploreSite extends Component {
@@ -65,7 +64,7 @@ export class VisitorExploreSite extends Component {
     };
 
     handleSiteClick = event => {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({anchorEl: event.currentTarget});
     };
 
     handleSiteOptionClick = event => {
@@ -76,7 +75,7 @@ export class VisitorExploreSite extends Component {
     };
 
     handleOpenClick = event => {
-        this.setState({ anchorEl2: event.currentTarget });
+        this.setState({anchorEl2: event.currentTarget});
     };
 
     handleOpenClickOption = event => {
@@ -99,7 +98,7 @@ export class VisitorExploreSite extends Component {
     };
 
     handleChangeVisited = name => event => {
-        this.setState({ includeVisited: event.target.checked });
+        this.setState({includeVisited: event.target.checked});
     };
 
     isSelected = id => id === this.state.selected;
@@ -116,17 +115,21 @@ export class VisitorExploreSite extends Component {
 
         console.log(this.state.currUser);
 
-        hr.open('GET', url + "username=" +this.state.currUser);
+        hr.open('GET', url + "username=" + this.state.currUser);
 
         hr.onreadystatechange = (event) => {
-            {/* Stage 4 is ready state, status 200 is ready status */}
+            {/* Stage 4 is ready state, status 200 is ready status */
+            }
             if (event.target.readyState === 4 && event.target.status === 200) {
-                {/*Response Text is data from backend*/}
+                {/*Response Text is data from backend*/
+                }
                 const data = JSON.parse(event.target.responseText);
 
-                console.log("Hello?" + data[1]);
+                console.log(data);
 
-                var arr = data[1].map((siteObj, i) => {return siteObj.name});
+                var arr = data[1].map((siteObj, i) => {
+                    return siteObj.name
+                });
 
                 console.log(arr);
                 this.setState({
@@ -163,8 +166,9 @@ export class VisitorExploreSite extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {this.state.sites.map( (sites, index) =>
-                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
+                            {this.state.sites.map((sites, index) =>
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick}
+                                          value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
 
@@ -179,8 +183,9 @@ export class VisitorExploreSite extends Component {
                             open={Boolean(anchorEl2)}
                             onClose={this.handleClose}
                         >
-                            {this.state.sites.map( (sites, index) =>
-                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
+                            {this.state.sites.map((sites, index) =>
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick}
+                                          value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -210,7 +215,7 @@ export class VisitorExploreSite extends Component {
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '15px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Total Visit Range</InputLabel>
-                        <TextField style={{width: '40px', marginRight: '10px'}}onClick={this.onVisitLowChange}/>
+                        <TextField style={{width: '40px', marginRight: '10px'}} onClick={this.onVisitLowChange}/>
                         <TextField style={{width: '40px', marginLeft: '10px'}} onClick={this.onVisitHighChange}/>
                     </Grid>
 
@@ -228,25 +233,39 @@ export class VisitorExploreSite extends Component {
                                 checked={!!this.state.includeVisited}
                                 onChange={this.handleChangeVisited('includeVisited')}
                                 value=""
-                                color="primary"/>}label={"Include Visited"} />
+                                color="primary"/>} label={"Include Visited"}/>
                     </Grid>
 
                 </Grid>
 
+                {/*BUTTONS*/}
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '100px'}}>
-                        <Button color='primary' variant='contained' style={{paddingRight: '30px', paddingLeft: '30px'}}>Filter</Button>
+                        <Button color='primary' variant='contained'
+                                style={{paddingRight: '30px', paddingLeft: '30px'}}>Filter</Button>
                     </Grid>
 
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/site_detail', hash: this.hash}}
-                        >Site Detail</Button>
+                        <Button color="primary" variant="contained" component={Link}
+                                to={{
+                                    pathname: '/site_detail',
+                                    state: {
+                                        site_name: this.state.selected === null ? null : this.state.initialSites[this.state.selected].site_name,
+                                        username: this.state.currUser
+                                    }
+                                }}>Site Detail
+                        </Button>
                     </Grid>
                     <Grid item>
-                        <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/transit_detail', hash: this.hash}}
-                        >Transit Detail</Button>
+                        <Button color="primary" variant="contained" component={Link}
+                                to={{
+                                    pathname: '/transit_detail',
+                                    state: {
+                                        site_name: this.state.selected === null ? null : this.state.initialSites[this.state.selected].site_name,
+                                        username: this.state.currUser
+                                    }
+                                }}>Transit Detail
+                        </Button>
                     </Grid>
                 </Grid>
 

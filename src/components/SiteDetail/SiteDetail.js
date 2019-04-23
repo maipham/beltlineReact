@@ -15,13 +15,35 @@ const date = new Date().getDate();
 var testSite = [new SiteDetailObject("Inman Park", "Yes", "Inman Park, Atlanta, GA 30307")];
 
 export class SiteDetail extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
-            visitDate: date
+            address: '',
+            open: '',
+            visitDate: ''
         }
+    }
 
+    componentDidMount() {
+        const url = 'http://localhost:5000/v_site_detail?site_name=' + this.props.location.state.site_name;
 
+        this.hr.open('GET', url);
+
+        this.hr.onreadystatechange = (event) => {
+            {/* Stage 4 is ready state, status 200 is ready status */}
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                {/*Response Text is data from backend*/}
+                const data = JSON.parse(event.target.responseText);
+
+                this.setState({
+                    address: data[0].address,
+                    open: data[0].open
+                });
+            }
+        };
+
+        this.hr.send();
     }
 
     handleDateChange = (event) => {
@@ -30,8 +52,20 @@ export class SiteDetail extends Component {
     }
 
     handleLogVisit = (event) => {
-        console.log("Logged a visit!");
-    }
+        const body = {
+            'date' : this.state.visitDate,
+            'username': this.props.location.state.username,
+            'site_name': this.props.location.state.site_name
+        };
+        this.hr.open('POST', 'http://localhost:5000/v_site_detail');
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                console.log('log sucess');
+            }
+        };
+        this.hr.send(JSON.stringify(body));
+    };
 
     handleGoBack = (event) => {
         let pathname = "/explore_site";
@@ -60,9 +94,9 @@ export class SiteDetail extends Component {
                             {testSite.map((detail, i) => {
                                 return (<TableRow hover
                                                   key={i}>
-                                    <TableCell align="right">{detail.site}</TableCell>
-                                    <TableCell align="right">{detail.address}</TableCell>
-                                    <TableCell align="right">{detail.openEveryday}</TableCell>
+                                    <TableCell align="right">{this.props.location.state.site_name}</TableCell>
+                                    <TableCell align="right">{this.state.address}</TableCell>
+                                    <TableCell align="right">{this.state.open}</TableCell>
                                 </TableRow>);
                             })}
                         </TableBody>

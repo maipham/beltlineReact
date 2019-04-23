@@ -7,26 +7,63 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Transit} from "../../entities/Transit";
 
 const tt_names = ['ALL', 'MARTA', 'Bike', 'Bus'];
-var siteName = "Inman Park";
 const date = new Date().getDate();
-const transits = [new Transit("Blue", "MARTA", 2.5, 5), new Transit("Red", "MARTA", 2.5, 3)];
 
 export class TransitDetail extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
-            staff: [1,2,3,4,5],
+            staff: [1, 2, 3, 4, 5],
+            transits: [],
             selected: null,
             anchorEl: null,
             tt: 'ALL',
-            transitDate: {date}
+            transitDate: {date},
+            username: ''
         }
+    }
+
+    componentDidMount() {
+        const url = 'http://localhost:5000/v_transit_detail?';
+        this.hr.open('GET', url + "site_name=" + this.props.location.state.site_name + "&type=" + this.state.tt);
+        console.log(this.state);
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                console.log(data);
+                this.setState({
+                    transits: data,
+                    username: this.props.location.state.username
+                });
+
+            }
+        };
+        this.hr.send();
+    }
+
+    logTransit = (e) => {
+        console.log(this.state)
+        const body = {
+            'username': this.state.username,
+            'type': this.state.transits[0].type,
+            'route': this.state.transits[0].route,
+            'transit_date': this.state.transitDate
+        };
+        this.hr.open('POST', 'http://localhost:5000/v_transit_detail');
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                console.log('log sucess');
+            }
+        };
+        this.hr.send(JSON.stringify(body));
     }
 
     handleTransitDate = (event) => {
@@ -43,7 +80,7 @@ export class TransitDetail extends Component {
     };
 
     handleTTClick = event => {
-        this.setState({ anchorEl: event.currentTarget});
+        this.setState({anchorEl: event.currentTarget});
     };
 
     handleTTOptionClick = event => {
@@ -66,7 +103,8 @@ export class TransitDetail extends Component {
                 {/*container for the first name and the last name*/}
                 <Grid style={{marginTop: '20px'}} container justify="center">
                     <Grid item style={{marginRight: '35px'}}>
-                        <InputLabel style={{marginRight: '15px'}}>Site: {siteName}</InputLabel>
+                        <InputLabel
+                            style={{marginRight: '15px'}}>Site: {this.props.location.state.site_name}</InputLabel>
                     </Grid>
 
                     <Grid item>
@@ -80,8 +118,9 @@ export class TransitDetail extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {tt_names.map( (sites, index) =>
-                                <MenuItem key={index} onClick={this.handleTTOptionClick} value={sites}>{sites}</MenuItem>)}
+                            {tt_names.map((sites, index) =>
+                                <MenuItem key={index} onClick={this.handleTTOptionClick}
+                                          value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -98,7 +137,9 @@ export class TransitDetail extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button color="primary" variant="contained">Log Transit</Button>
+                        <Button color="primary" variant="contained"
+                                onClick={this.logTransit}
+                        >Log Transit</Button>
                     </Grid>
                 </Grid>
 
@@ -115,7 +156,7 @@ export class TransitDetail extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {transits.map((transit, i) => {
+                                {this.state.transits.map((transit, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow selected={isSelected}
                                                       hover

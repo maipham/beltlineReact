@@ -15,6 +15,7 @@ import Radio from "@material-ui/core/Radio";
 import {Link} from "react-router-dom";
 
 export default class SiteReport extends Component {
+    hr = new XMLHttpRequest();
     hash = null;
     constructor(props) {
         super(props);
@@ -24,7 +25,7 @@ export default class SiteReport extends Component {
 
     init() {
         this.state = {
-            dateRange: ['', ''],
+            dateRange: ['2019-04-24', '2019-04-30'],
             eventCountRange: ['', ''],
             staffCountRange: ['', ''],
             totalVisitsRange: ['', ''],
@@ -40,7 +41,8 @@ export default class SiteReport extends Component {
     }
 
     componentDidMount() {
-
+        console.log(this.props);
+        this.hr.open('GET', 'http://localhost:5000/m_site_report'  )
     }
 
     render() {

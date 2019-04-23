@@ -31,7 +31,8 @@ export class ManagerManageEvent extends Component {
             revenueLow: '',
             revenueHigh: '',
             selected: -1,
-            data: []
+            data: [],
+            site_name: ''
         }
 
     }
@@ -47,6 +48,7 @@ export class ManagerManageEvent extends Component {
         this.setState({
             selected: i
         })
+        console.log(this.state.site_name)
     };
 
     onNameChange = (event) => {
@@ -111,15 +113,15 @@ export class ManagerManageEvent extends Component {
 
     componentDidMount() {
         this.hr.open('GET', this.url);
-
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);
-                console.log(data);
+                console.log(data[0]);
                 this.setState({
-                    data: data
+                    data: data,
+                    site_name: data[0].site_name
                 });
-                console.log(data);
+                console.log(this.state);
             }
         };
 
@@ -202,13 +204,18 @@ export class ManagerManageEvent extends Component {
 
                     <Grid item style={{marginRight: '20px'}}>
                         <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/create_event', hash: this.hash}}
+                                to={{pathname: '/create_event', hash: this.hash, state: {
+                                    }}}
                         >Create Event</Button>
                     </Grid>
 
                     <Grid item style={{marginRight: '20px'}}>
                         <Button disabled={this.state.selected < 0} color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/view_edit_event', hash: this.hash + this.eventHash}}
+                                to={{pathname: '/view_edit_event', hash: this.hash + this.eventHash,
+                                state: {
+                                    site_name : this.state.site_name
+                                    }}}
+
                         >View/Edit</Button>
                     </Grid>
 

@@ -7,12 +7,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export class VisitorExploreEvent extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ export class VisitorExploreEvent extends Component {
             initialEvents: [],
             filteredEvents: [],
             sites: [],
-            currUser: "mary.smith" //props.location.hash === null ? null : props.location.hash.slice(1)
+            currUser: (props.location.hash === null) ? '' : props.location.hash.substring(1)
         }
     }
 
@@ -63,7 +63,7 @@ export class VisitorExploreEvent extends Component {
     };
 
     handleSiteClick = event => {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({anchorEl: event.currentTarget});
     };
 
     handleSiteOptionClick = event => {
@@ -86,11 +86,11 @@ export class VisitorExploreEvent extends Component {
     };
 
     handleChangeVisited = name => event => {
-        this.setState({ includeVisited: event.target.checked });
+        this.setState({includeVisited: event.target.checked});
     };
 
     handleChangeEvent = name => event => {
-        this.setState({ includeSoldOut: event.target.checked });
+        this.setState({includeSoldOut: event.target.checked});
     };
 
     isSelected = id => id === this.state.selected;
@@ -114,11 +114,11 @@ export class VisitorExploreEvent extends Component {
                 {/*Response Text is data from backend*/
                 }
                 const data = JSON.parse(event.target.responseText);
-                console.log(data);
                 let sites = [];
-                data[1].forEach(function(e) {
+                data[1].forEach(function (e) {
                     sites.push(e.name);
                 });
+                console.log(data);
                 this.setState({
                     initialEvents: data[0],
                     filteredEvents: data[0],
@@ -166,8 +166,9 @@ export class VisitorExploreEvent extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {this.state.sites.map( (sites, index) =>
-                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
+                            {this.state.sites.map((sites, index) =>
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick}
+                                          value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
                 </Grid>
@@ -196,7 +197,7 @@ export class VisitorExploreEvent extends Component {
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '15px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Total Visit Range</InputLabel>
-                        <TextField style={{width: '40px', marginRight: '10px'}}onClick={this.onVisitLowChange}/>
+                        <TextField style={{width: '40px', marginRight: '10px'}} onClick={this.onVisitLowChange}/>
                         <TextField style={{width: '40px', marginLeft: '10px'}} onClick={this.onVisitHighChange}/>
                     </Grid>
 
@@ -214,7 +215,7 @@ export class VisitorExploreEvent extends Component {
                                 checked={!!this.state.includeVisited}
                                 onChange={this.handleChangeVisited('includeVisited')}
                                 value=""
-                                color="primary"/>}label={"Include Visited"} />
+                                color="primary"/>} label={"Include Visited"}/>
                     </Grid>
 
                     <Grid item>
@@ -223,19 +224,30 @@ export class VisitorExploreEvent extends Component {
                                 checked={!!this.state.includeSoldOut}
                                 onChange={this.handleChangeEvent('includeSoldOut')}
                                 value=""
-                                color="primary"/>}label={"Include Sold Out Event"} />
+                                color="primary"/>} label={"Include Sold Out Event"}/>
                     </Grid>
                 </Grid>
 
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '100px'}}>
-                        <Button color='primary' variant='contained' style={{paddingRight: '30px', paddingLeft: '30px'}}>Filter</Button>
+                        <Button color='primary' variant='contained'
+                                style={{paddingRight: '30px', paddingLeft: '30px'}}>Filter</Button>
                     </Grid>
 
                     <Grid item>
-                        <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/visitor_event_detail', hash: this.hash}}
-                        >Event Detail</Button>
+                        <Button color="primary" variant="contained" disabled={this.state.selected === null} component={Link}
+                                to={{
+                                    pathname: '/visitor_event_detail',
+                                    state: {
+                                        username: this.state.currUser,
+                                        event_name: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].event_name,
+                                        site_name: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].site_name,
+                                        price: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].ticket_price,
+                                        remaining: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].tickets_remaining,
+                                        start_date: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].event_start,
+                                    }
+                                }}>Edit
+                        </Button>
                     </Grid>
                 </Grid>
 
