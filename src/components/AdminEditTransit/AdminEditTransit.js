@@ -16,6 +16,7 @@ import {response_messages} from "../../entities/constants";
 const type = ['MARTA', 'Bus', 'Bike'];
 
 export class AdminEditTransit extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
@@ -24,35 +25,64 @@ export class AdminEditTransit extends Component {
             price: props.location.state.price,
             site_names: props.location.state.sites,
             connectedIndexes: [],
-            anchorEl: null
+            anchorEl: null,
+            new_route: ''
         }
     }
 
     componentDidMount() {
-        const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/a_edit_transit?';
         const type = 'type=' + this.state.transportType;
         const route = 'route=' + this.state.route;
-        hr.open('GET', url + type + '&' + route);
-        hr.onreadystatechange = (e) => {
+        this.hr.open('GET', url + type + '&' + route);
+        this.hr.onreadystatechange = (e) => {
             // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const response = JSON.parse(e.target.responseText);
+                console.log("rknakf");
                 console.log(response);
                 let indexes = [];
                 let sites = this.state.site_names;
                 response[0].connected_sites.forEach(function(element) {
                     indexes.push(sites.indexOf(element));
                 });
-                console.log(indexes);
+                const old_route = response[0]['route'];
                 this.setState({
-                    connectedIndexes: indexes
-                })
+                    connectedIndexes: indexes,
+                    new_route: old_route
+                });
                 console.log(this.state.connectedIndexes)
             }
         };
-        hr.send();
+        this.hr.send();
     }
+
+    updateTransit = () => {
+        const connected = this.state.connectedIndexes;
+        const all_sites = this.state.site_names;
+        let sites = '';
+        connected.forEach((ind) => {
+            sites = sites + ',' + all_sites[ind];
+        });
+        sites = sites.substring(1);
+        console.log(this.state.new_route);
+        const body = {
+            'old_type': this.state.transportType,
+            'old_route': this.state.route,
+            'type': this.state.transportType,
+            'route': this.state.new_route,
+            'price': this.state.price,
+            'sites': sites
+        };
+        this.hr.open('POST', 'http://localhost:5000/a_edit_transit');
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                console.log(e.target.responseText);
+            }
+        };
+        this.hr.send(JSON.stringify(body));
+    };
 
     handleTransportClick = event => {
         this.setState({anchorEl: event.currentTarget});
@@ -71,7 +101,7 @@ export class AdminEditTransit extends Component {
 
     handleRouteChange = (event) => {
         this.setState({
-            route: event.target.value
+            new_route: event.target.value
         });
     };
 
@@ -170,7 +200,9 @@ export class AdminEditTransit extends Component {
 
                     <Grid item>
                         <Button disabled={!(this.state.route && this.state.price && this.state.connectedIndexes.length >= 2)}
-                                style={{width: "120px"}} variant="contained" color="primary">Update</Button>
+                                style={{width: "120px"}} variant="contained" color="primary"
+                                onClick={this.updateTransit}
+                        >Update</Button>
                     </Grid>
 
                 </Grid>

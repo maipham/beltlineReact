@@ -13,7 +13,6 @@ import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
 
 const type = ['MARTA', 'Bus', 'Bike'];
-const site_names = ['Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
 export class AdminCreateTransit extends Component {
     hr = new XMLHttpRequest();
@@ -21,6 +20,7 @@ export class AdminCreateTransit extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            site_names: [],
             transportType: 'MARTA',
             route: '',
             price: '',
@@ -28,6 +28,20 @@ export class AdminCreateTransit extends Component {
             anchorEl: null
         }
     }
+    componentDidMount() {
+        const url = 'http://localhost:5000/a_create_transit';
+        this.hr.open('GET', url);
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const response = JSON.parse(e.target.responseText);
+                console.log(response);
+                this.state.site_names = response;
+                this.setState(this.state);
+            }
+        };
+        this.hr.send();
+    }
+
     handleTransportClick = event => {
         this.setState({anchorEl: event.currentTarget});
     };
@@ -87,11 +101,12 @@ export class AdminCreateTransit extends Component {
         };
         const type = this.state.transportType;
         const route = this.state.route;
+        const all_sites = this.state.site_names;
         const price = parseFloat(this.state.price);
         let connectedSites = '';
         const size = this.state.connectedIndexes.length - 1;
         this.state.connectedIndexes.forEach(function(element, i) {
-          connectedSites += site_names[parseInt(element, 10)];
+          connectedSites += all_sites[parseInt(element, 10)];
           if (i !== size) {
               connectedSites += ',';
           }
@@ -146,7 +161,7 @@ export class AdminCreateTransit extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {site_names.map((site, i) => {
+                            {this.state.site_names.map((site, i) => {
                                 const isSelected = this.isSelected(i);
                                 return (<TableRow hover
                                                   aria-checked={!(() => this.isSelected(i))}

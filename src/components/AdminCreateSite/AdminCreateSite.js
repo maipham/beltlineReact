@@ -168,7 +168,7 @@ export class AdminCreateSite extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button disabled={!(this.state.manager !== '--' && this.state.name && this.state.zipcode && parseInt(this.state.zipcode, 10) > 9999)} color='primary'
+                        <Button disabled={!(this.state.manager !== '--' && this.state.name && this.state.zipcode && this.state.zipcode.length > 4)} color='primary'
                                 variant='contained'
                                 style={{paddingRight: '60px', paddingLeft: '60px'}}
                                 onClick={this.handleCreateClick}>Create</Button>

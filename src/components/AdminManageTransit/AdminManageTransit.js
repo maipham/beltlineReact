@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,11 +14,12 @@ import {Transit} from "../../entities/Transit";
 import {Link} from "react-router-dom";
 
 const type = ['ALL', 'MARTA', 'Bus', 'Bike'];
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
+const site_names = ['ALL', 'Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
 export class AdminManageTransit extends Component {
     hr = new XMLHttpRequest();
     url = 'http://localhost:5000/manage_transit';
+
     constructor(props) {
         super(props);
         this.state = {
@@ -43,7 +44,7 @@ export class AdminManageTransit extends Component {
                 const data = JSON.parse(event.target.responseText);
                 console.log(data);
                 let a = [];
-                data[1].forEach(function(element) {
+                data[1].forEach(function (element) {
                     a.push(element.name);
                 });
                 this.setState({
@@ -68,8 +69,10 @@ export class AdminManageTransit extends Component {
     };
 
     handleClose = (event, value) => {
-        this.setState({ anchorEl: null,
-            anchorEl2: null});
+        this.setState({
+            anchorEl: null,
+            anchorEl2: null
+        });
     };
 
     handleRouteChange = (event) => {
@@ -79,7 +82,7 @@ export class AdminManageTransit extends Component {
     };
 
     handleSiteClick = event => {
-        this.setState({ anchorEl2: event.currentTarget });
+        this.setState({anchorEl2: event.currentTarget});
     };
 
     handleSiteOptionClick = event => {
@@ -120,22 +123,22 @@ export class AdminManageTransit extends Component {
 
     handleDeleteClick = () => {
         if (this.state.selected !== null) {
-                this.hr.open('DELETE', this.url);
-                this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                this.hr.onreadystatechange = (event) => {
-                    if (event.target.readyState === 4 && event.target.status === 200) {
-                        let filtered = this.state.filteredTransits;
-                        delete filtered[this.state.selected];
-                        console.log("deleted");
+            this.hr.open('DELETE', this.url);
+            this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            this.hr.onreadystatechange = (event) => {
+                if (event.target.readyState === 4 && event.target.status === 200) {
+                    let filtered = this.state.filteredTransits;
+                    delete filtered[this.state.selected];
+                    console.log("deleted");
 
-                        this.setState({
-                            filteredUsers: filtered
-                        });
-                    }
-                };
-                const type = this.state.initialTransits[this.state.selected].type;
-                const route = this.state.initialTransits[this.state.selected].route;
-                this.hr.send(JSON.stringify({'type': type, 'route': route}));
+                    this.setState({
+                        filteredUsers: filtered
+                    });
+                }
+            };
+            const type = this.state.initialTransits[this.state.selected].type;
+            const route = this.state.initialTransits[this.state.selected].route;
+            this.hr.send(JSON.stringify({'type': type, 'route': route}));
         }
     };
 
@@ -152,7 +155,7 @@ export class AdminManageTransit extends Component {
 
                 {/*container for transport type and route fields*/}
                 <Grid container justify="center">
-                    <Grid item style = {{marginRight: '200px'}}>
+                    <Grid item style={{marginRight: '200px'}}>
                         <InputLabel>Transport Type</InputLabel>
                         <Button aria-owns={anchorEl ? 'transport_menu' : undefined}
                                 aria-haspopup="true"
@@ -164,7 +167,8 @@ export class AdminManageTransit extends Component {
                             onClose={this.handleClose}
                         >
                             {type.map((transports, index) =>
-                                <MenuItem key={index}onClick={this.handleTransportOptionClick} value={transports}>{transports}</MenuItem>)}
+                                <MenuItem key={index} onClick={this.handleTransportOptionClick}
+                                          value={transports}>{transports}</MenuItem>)}
                         </Menu>
                     </Grid>
                     <Grid item>
@@ -186,8 +190,9 @@ export class AdminManageTransit extends Component {
                             open={Boolean(anchorEl2)}
                             onClose={this.handleClose}
                         >
-                            {this.state.site_names.map( (sites, index) =>
-                                <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
+                            {this.state.site_names.map((sites, index) =>
+                                <MenuItem key={index} onClick={this.handleSiteOptionClick}
+                                          value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
 
@@ -203,27 +208,30 @@ export class AdminManageTransit extends Component {
                 {/*Container for the buttons*/}
                 <Grid container justify="center" style={{marginTop: '20px'}}>
                     <Grid item style={{marginRight: '80px'}}>
-                       <Button variant="contained" color="primary">Filter</Button>
+                        <Button variant="contained" color="primary">Filter</Button>
                     </Grid>
                     <Grid item style={{marginRight: '10px', marginLeft: '40px'}}>
-                        <Button variant="contained" component={Link} to={'/create_transit'} color="primary">Create</Button>
+                        <Button variant="contained" component={Link} to={'/create_transit'}
+                                color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)} variant="contained" color="primary">
-                            <Link style={{textDecoration: 'none', color: 'white'}}
-                                  to={{
-                                pathname: '/edit_transit',
-                                state: {
-                                    type: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].type,
-                                    route: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].route,
-                                    price: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].price,
-                                    sites: this.state.site_names
-                                }
-                            }}>Edit</Link>
+                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)}
+                                variant="contained" color="primary"
+                                component={Link}
+                                to={{
+                                    pathname: '/edit_transit',
+                                    state: {
+                                        type: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].type,
+                                        route: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].route,
+                                        price: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].price,
+                                        sites: this.state.site_names
+                                    }
+                                }}>Edit
                         </Button>
                     </Grid>
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)} variant="contained" color="primary" onClick={this.handleDeleteClick}>Delete</Button>
+                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)}
+                                variant="contained" color="primary" onClick={this.handleDeleteClick}>Delete</Button>
                     </Grid>
                 </Grid>
 
@@ -260,9 +268,10 @@ export class AdminManageTransit extends Component {
                     </Grid>
                 </Grid>
 
-                <Grid container justify="center" style={{marginTop: '20px'}} >
+                <Grid container justify="center" style={{marginTop: '20px'}}>
                     <Grid item>
-                        <Button color="primary" component={Link} to={'/functionality'} variant="contained" style={{width: "80px"}}>Back</Button>
+                        <Button color="primary" component={Link} to={'/functionality'} variant="contained"
+                                style={{width: "80px"}}>Back</Button>
                     </Grid>
                 </Grid>
 

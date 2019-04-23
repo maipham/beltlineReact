@@ -17,6 +17,7 @@ import {Link} from "react-router-dom";
 const openStatus = ['Yes', 'No', '--'];
 
 export class ManageSite extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
@@ -35,12 +36,9 @@ export class ManageSite extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
-
-        const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/a_manage_site';
-        hr.open('GET', url);
-        hr.onreadystatechange = (e) => {
+        this.hr.open('GET', url);
+        this.hr.onreadystatechange = (e) => {
             // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
@@ -51,9 +49,7 @@ export class ManageSite extends Component {
                 });
                 ret_dat[2].forEach(function(element) {
                     b.push(element.manager_name);
-                })
-                console.log(a);
-                console.log(ret_dat);
+                });
                 this.setState({
                     initialManageSite: ret_dat[0],
                     filteredManageSite: ret_dat[0],
@@ -62,8 +58,32 @@ export class ManageSite extends Component {
                 });
             }
         };
-        hr.send();
+        this.hr.send();
     }
+
+    deleteSite = () => {
+        console.log(this.state);
+        const del_ind = this.state.selected;
+        const delete_site = this.state.allSites[del_ind];
+        const url = 'http://localhost:5000/delete_site?site_name=' + delete_site;
+        console.log(delete_site);
+
+        this.hr.open('DELETE', url);
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                console.log(e.target.responseText);
+                const all_sites = this.state.allSites;
+                all_sites.splice(del_ind, 0);
+                this.setState({
+                    allSites: all_sites
+                });
+                console.log(this.state.allSites);
+            }
+        };
+        this.hr.send();
+    };
+
+
 
     handleOpenClick = event => {
         this.setState({anchorEl1: event.currentTarget})
@@ -191,10 +211,12 @@ export class ManageSite extends Component {
                         <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button component={Link} to={'/edit_site'} disabled={this.state.selected > -1} variant="contained" color="primary">Edit</Button>
+                        <Button component={Link} to={'/edit_site'} disabled={this.state.selected < -1} variant="contained" color="primary">Edit</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button variant="contained" color="primary">Delete</Button>
+                        <Button variant="contained" disabled={this.state.selected < -1}
+                                onClick={this.deleteSite}
+                                color="primary">Delete</Button>
                     </Grid>
                 </Grid>
 
