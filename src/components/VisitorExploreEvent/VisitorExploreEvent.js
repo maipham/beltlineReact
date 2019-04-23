@@ -117,7 +117,8 @@ export class VisitorExploreEvent extends Component {
                 let sites = [];
                 data[1].forEach(function(e) {
                     sites.push(e.name);
-                })
+                });
+                console.log(data);
                 this.setState({
                     initialEvents: data[0],
                     filteredEvents: data[0],
@@ -226,15 +227,26 @@ export class VisitorExploreEvent extends Component {
                     </Grid>
                 </Grid>
 
+                {/*BUTTONS*/}
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '100px'}}>
                         <Button color='primary' variant='contained' style={{paddingRight: '30px', paddingLeft: '30px'}}>Filter</Button>
                     </Grid>
 
                     <Grid item>
-                        <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/visitor_event_detail', hash: this.hash}}
-                        >Event Detail</Button>
+                        <Button color="primary" variant="contained" >
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                      pathname: '/visitor_event_detail',
+                                      state: {
+                                          event_name: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].event_name,
+                                          site_name: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].site_name,
+                                          price: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].ticket_price,
+                                          remaining: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].tickets_remaining,
+                                          start_date: this.state.selected === null ? null : this.state.initialEvents[this.state.selected].event_start,
+                                      }
+                                  }}>Edit</Link>
+                        </Button>
                     </Grid>
                 </Grid>
 

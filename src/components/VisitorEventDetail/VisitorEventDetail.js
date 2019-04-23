@@ -7,15 +7,40 @@ import Button from "@material-ui/core/Button";
 import {event_detail} from "../../mocks/event-detail-mock";
 
 export default class VisitorEventDetail extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
-            event: event_detail
+            event: event_detail,
+            description: '',
+            end_date: ''
         };
     };
 
     back = (e) => {
         console.log("Back");
+    }
+
+    componentDidMount() {
+        let site = 'http://localhost:5000/v_event_detail?event_name=' + this.props.location.state.event_name + '&site_name='
+            + this.props.location.state.site_name + '&start_date=' + this.props.location.state.start_date;
+        this.hr.open('GET', site);
+        console.log(site);
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                console.log(data);
+                this.setState({
+                    address: data[0].address,
+                    zipcode: data[0].zipcode,
+                    description: data[0].description,
+                    end_date: data[0].end_date
+                })
+
+            }
+        };
+
+        this.hr.send();
     }
 
     render() {
@@ -26,42 +51,42 @@ export default class VisitorEventDetail extends Component {
                 </Grid>
                 <Grid item container justify="center" xs={6}>
                     <strong> Event: </strong>
-                    {this.state.event.name}
+                    {this.props.location.state.event_name}
                 </Grid>
                 <Grid item container justify="center" xs={6}>
                     <strong> Site: </strong>
-                    {this.state.event.site}
+                    {this.props.location.state.site_name}
                 </Grid>
                 <Grid item container justify="center" xs={6}>
                     <strong>
                         Start Date:
                     </strong>
-                    {this.state.event.startDate}
+                    {this.props.location.state.start_date}
                 </Grid>
                 <Grid item container justify="center" xs={6}>
                     <strong>
                         End Date:
                     </strong>
-                    {this.state.event.endDate}
+                    {this.state.end_date}
                 </Grid>
                 <Grid item container justify="center" xs={6}>
                     <strong>
                         Price:
                     </strong>
-                    {this.state.event.ticketPrice}
+                    {this.props.location.state.price}
                 </Grid>
                 <Grid item container justify="center" xs={6}>
                     <strong>
                         Ticket Remains:
                     </strong>
-                    {this.state.event.ticketsRemain}
+                    {this.props.location.state.remaining}
                 </Grid>
 
                 <Grid item container justify="center" xs={6}>
                     <strong>
                         Description:
                     </strong>
-                    {this.state.event.description}
+                    {this.state.description}
                 </Grid>
                 <Grid item container justify="center" xs={12}>
                     <InputLabel style={{marginRight: '15px'}}>Visit Date</InputLabel>

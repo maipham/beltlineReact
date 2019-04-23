@@ -18,10 +18,31 @@ export class SiteDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visitDate: date
+            address: '',
+            open: '',
         }
+    }
 
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/v_site_detail?site_name=' + this.props.location.state.site_name;
 
+        hr.open('GET', url);
+
+        hr.onreadystatechange = (event) => {
+            {/* Stage 4 is ready state, status 200 is ready status */}
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                {/*Response Text is data from backend*/}
+                const data = JSON.parse(event.target.responseText);
+
+                this.setState({
+                    address: data[0].address,
+                    open: data[0].open
+                });
+            }
+        };
+
+        hr.send();
     }
 
     handleDateChange = (event) => {
@@ -60,9 +81,9 @@ export class SiteDetail extends Component {
                             {testSite.map((detail, i) => {
                                 return (<TableRow hover
                                                   key={i}>
-                                    <TableCell align="right">{detail.site}</TableCell>
-                                    <TableCell align="right">{detail.address}</TableCell>
-                                    <TableCell align="right">{detail.openEveryday}</TableCell>
+                                    <TableCell align="right">{this.props.location.state.site_name}</TableCell>
+                                    <TableCell align="right">{this.state.address}</TableCell>
+                                    <TableCell align="right">{this.state.open}</TableCell>
                                 </TableRow>);
                             })}
                         </TableBody>

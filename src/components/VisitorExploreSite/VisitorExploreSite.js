@@ -14,7 +14,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 const openEveryday = ['ALL', 'YES', 'NO'];
 
 export class VisitorExploreSite extends Component {
@@ -124,7 +123,7 @@ export class VisitorExploreSite extends Component {
                 {/*Response Text is data from backend*/}
                 const data = JSON.parse(event.target.responseText);
 
-                console.log("Hello?" + data[1]);
+                console.log(data);
 
                 var arr = data[1].map((siteObj, i) => {return siteObj.name});
 
@@ -233,20 +232,33 @@ export class VisitorExploreSite extends Component {
 
                 </Grid>
 
+                {/*BUTTONS*/}
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '100px'}}>
                         <Button color='primary' variant='contained' style={{paddingRight: '30px', paddingLeft: '30px'}}>Filter</Button>
                     </Grid>
 
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/site_detail', hash: this.hash}}
-                        >Site Detail</Button>
+                        <Button color="primary" variant="contained">
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                      pathname: '/site_detail',
+                                      state: {
+                                          site_name: this.state.selected === null ? null : this.state.initialSites[this.state.selected].site_name,
+                                      }
+                                  }}>Site Detail</Link>
+                        </Button>
                     </Grid>
                     <Grid item>
-                        <Button color="primary" variant="contained"  component={Link}
-                                to={{pathname: '/transit_detail', hash: this.hash}}
-                        >Transit Detail</Button>
+                        <Button color="primary" variant="contained">
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                      pathname: '/transit_detail',
+                                      state: {
+                                          site_name: this.state.selected === null ? null : this.state.initialSites[this.state.selected].site_name,
+                                      }
+                                  }}>Transit Detail</Link>
+                        </Button>
                     </Grid>
                 </Grid>
 

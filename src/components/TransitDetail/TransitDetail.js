@@ -22,10 +22,35 @@ export class TransitDetail extends Component {
         super(props);
         this.state = {
             staff: [1,2,3,4,5],
+            transits: [],
             selected: null,
             anchorEl: null,
             tt: 'ALL',
             transitDate: {date}
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.tt !== this.state.tt && this.state !== 'ALL') {
+            const hr = new XMLHttpRequest();
+            const url = 'http://localhost:5000/v_transit_detail?';
+
+            hr.open('GET', url + "site_name=" + this.props.location.state.site_name + "&type=" + this.state.tt);
+
+            hr.onreadystatechange = (event) => {
+                {/* Stage 4 is ready state, status 200 is ready status */
+                }
+                if (event.target.readyState === 4 && event.target.status === 200) {
+                    {/*Response Text is data from backend*/
+                    }
+                    const data = JSON.parse(event.target.responseText);
+                    console.log(data);
+                    this.setState({
+                        transits: data
+                    });
+                }
+            };
+            hr.send();
         }
     }
 
@@ -66,7 +91,7 @@ export class TransitDetail extends Component {
                 {/*container for the first name and the last name*/}
                 <Grid style={{marginTop: '20px'}} container justify="center">
                     <Grid item style={{marginRight: '35px'}}>
-                        <InputLabel style={{marginRight: '15px'}}>Site: {siteName}</InputLabel>
+                        <InputLabel style={{marginRight: '15px'}}>Site: {this.props.location.state.site_name}</InputLabel>
                     </Grid>
 
                     <Grid item>
@@ -115,7 +140,7 @@ export class TransitDetail extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {transits.map((transit, i) => {
+                                {this.state.transits.map((transit, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow selected={isSelected}
                                                       hover
