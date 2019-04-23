@@ -11,7 +11,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import {mock_daily_events} from "../../mocks/site-report-mock";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import {Link} from "react-router-dom";
 
@@ -38,6 +37,10 @@ export default class SiteReport extends Component {
         mock_daily_events.forEach(e => {
             this.state[e.date] = false;
         });
+    }
+
+    componentDidMount() {
+
     }
 
     render() {

@@ -24,32 +24,37 @@ export class ManagerManageStaff extends Component {
             endDate: '',
             staff: [1,2,3,4,5],
             anchorEl: null,
-            schedule: []
+            schedule: [],
+            site_names: []
         }
     }
 
-
-    componentDidMount() {
-        this._isMounted = true;
-
-        const hr = new XMLHttpRequest();
-        let url = null;
-        if (this.state.site === "ALL") {
-            url = 'http://localhost:5000/m_manage_staff?site_name=';
-        } else {
-            url = 'http://localhost:5000/m_manage_staff?site_name=' + this.state.site;
-        }
-        hr.open('GET', url);
-        hr.onreadystatechange = (e) => {
-            if (e.target.readyState === 4 && e.target.status === 200) {
-                const ret_dat = JSON.parse(e.target.responseText);
-                console.log(ret_dat);
-                this.state.schedule = ret_dat;
-                this.setState(this.state);
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.site !== this.state.site) {
+            let url = null;
+            const hr = new XMLHttpRequest();
+            if (this.state.site === "ALL") {
+                url = 'http://localhost:5000/m_manage_staff?site_name=';
+            } else {
+                url = 'http://localhost:5000/m_manage_staff?site_name=' + this.state.site;
             }
-        };
-        hr.send();
+            hr.open('GET', url);
+            hr.onreadystatechange = (e) => {
+                if (e.target.readyState === 4 && e.target.status === 200) {
+                    const ret_dat = JSON.parse(e.target.responseText);
+                    let a = [];
+                    ret_dat[1].forEach(function(element) {
+                        a.push(element.name);
+                    })
+                    console.log(ret_dat);
+                    this.setState({
+                        site_names: a,
+                        schedule: ret_dat[0]
+                    });
+                }
+            };
+            hr.send();
+        }
     }
 
     handleSiteClick = event => {
@@ -168,7 +173,6 @@ export class ManagerManageStaff extends Component {
                             </TableHead>
                             <TableBody>
                                 {this.state.schedule.map((transit, i) => {
-                                    console.log(transit);
                                     return (<TableRow hover
                                                       key={i}>
                                         <TableCell align="right">{transit.staff_name}</TableCell>

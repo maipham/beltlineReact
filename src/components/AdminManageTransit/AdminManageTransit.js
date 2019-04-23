@@ -109,7 +109,6 @@ export class AdminManageTransit extends Component {
     isSelected = id => id === this.state.selected;
 
     handleRowClick = (event, i) => {
-        let currentComponent = this;
         if (this.state.selected === i) {
             this.setState({
                 selected: null

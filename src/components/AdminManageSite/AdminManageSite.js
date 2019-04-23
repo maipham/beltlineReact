@@ -27,7 +27,7 @@ export class ManageSite extends Component {
             anchorEl: null,
             anchorEl1: null,
             anchorEl2: null,
-            selected: -1,
+            selected: null,
             initialManageSite: [],
             filteredManageSite: [],
             allSites: [],
@@ -127,9 +127,15 @@ export class ManageSite extends Component {
     };
 
     handleRowClick = (event, i) => {
-        this.setState({
-            selected: i
-        })
+        if (this.state.selected === i) {
+            this.setState({
+                selected: null
+            })
+        } else {
+            this.setState({
+                selected: i
+            })
+        }
     };
 
     isSelected = id => id === this.state.selected;
@@ -211,10 +217,20 @@ export class ManageSite extends Component {
                         <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button component={Link} to={'/edit_site'} disabled={this.state.selected < -1} variant="contained" color="primary">Edit</Button>
+                        <Button disabled={!!(this.state.selected === null)} variant="contained" color="primary">
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                      pathname: '/edit_site',
+                                      state: {
+                                          site_name: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].site_name,
+                                          name: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].name,
+                                          open: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].open_everyday,
+                                      }
+                                  }}>Edit</Link>
+                        </Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button variant="contained" disabled={this.state.selected < -1}
+                        <Button variant="contained" disabled={this.state.selected === null}
                                 onClick={this.deleteSite}
                                 color="primary">Delete</Button>
                     </Grid>

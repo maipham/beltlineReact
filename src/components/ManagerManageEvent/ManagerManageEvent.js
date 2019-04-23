@@ -194,7 +194,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
-                {/*container that holds the buttons filter, create, view/edit, and delete*/}
+                {/*container that holds the BUTTONS filter, create, view/edit, and delete*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '150px'}}>
                         <Button color="primary" variant="contained">Filter</Button>

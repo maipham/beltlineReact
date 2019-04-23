@@ -11,28 +11,34 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 const testManagers = ["James Johnson", "Michael Smith", "Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"]
 
 export class AdminEditSite extends Component {
+     hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            name: this.props.location.state.site_name,
             zipcode:  '',
             address: '',
-            manager: testManagers[0],
-            openEveryday: null,
+            manager: this.props.location.state.name,
+            openEveryday: this.props.location.state.open_everyday,
             anchorEl: null
         }
     }
 
 
     componentDidMount() {
-        this.hr.open('GET', 'http://localhost:5000/edit_site');
-        console.log(this.url);
+        let site = 'http://localhost:5000/edit_site?site_name=' + this.state.name
+        this.hr.open('GET', site);
+        console.log(site);
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);
-                this.state.managers = data;
-                this.setState(this.state);
                 console.log(data);
+                console.log(data[0].address)
+                this.setState({
+                    address: data[0].address,
+                    zipcode: data[0].zipcode
+                })
+
             }
         };
 
@@ -94,8 +100,8 @@ export class AdminEditSite extends Component {
                     </Grid>
 
                     <Grid item>
-                        <InputLabel defaultValue={this.state.zipcode} style={{marginRight: '10px'}}>Zipcode</InputLabel>
-                        <TextField defaultValue={this.state.zipcode} onChange={this.handleZipChange}/>
+                        <InputLabel style={{marginRight: '10px'}}>Zipcode</InputLabel>
+                        <TextField value={this.state.zipcode} onChange={this.handleZipChange}/>
                     </Grid>
                 </Grid>
 
@@ -103,7 +109,7 @@ export class AdminEditSite extends Component {
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '0px'}}>
                         <InputLabel>Address</InputLabel>
-                        <TextField defaultValue={this.state.address} onChange={this.handleAddressChange} style={{width: '420px'}}/>
+                        <TextField defaultValue={this.state.address} value={this.state.address} onChange={this.handleAddressChange} style={{width: '420px'}}/>
                     </Grid>
                     <div>
                     </div>
@@ -130,7 +136,7 @@ export class AdminEditSite extends Component {
                     <Grid item>
                         <FormControlLabel control={
                             <Checkbox
-                                checked={!!this.state.openEveryday}
+                                checked={(this.state.openEveryday !== "No")}
                                 onChange={this.handleChange('openEveryday')}
                                 value=""
                                 color="primary"/>}label={"Open Everyday"} />
@@ -143,7 +149,7 @@ export class AdminEditSite extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button disabled={!(parseInt(this.state.zipcode, 10) > 9999 && this.state.name)} color='primary' variant='contained' style={{paddingRight: '60px', paddingLeft: '60px'}}>Update</Button>
+                        <Button disabled={!(this.state.zipcode.length > 4 && this.state.name)} color='primary' variant='contained' style={{paddingRight: '60px', paddingLeft: '60px'}}>Update</Button>
                     </Grid>
                 </Grid>
 
