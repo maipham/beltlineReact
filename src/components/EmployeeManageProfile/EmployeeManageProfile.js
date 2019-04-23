@@ -34,16 +34,17 @@ export class EmployeeManageProfile extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        const url = 'http://localhost:5000/manage_profile?username=' + this.hash;
+        const url = 'http://localhost:5000/e_manage_profile?username=' + this.hash;
         console.log(this.hash);
         this.hr.open('GET', url);
         this.hr.onreadystatechange = (e) => {
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
-                console.log(ret_dat);
-                console.log(ret_dat['email'].split(', '));
-                this.state.employee = ret_dat;
-                this.state.employee.emails = ret_dat['email'].split(', ');
+                console.log(ret_dat[0]);
+                console.log(ret_dat[0]['email'].split(','));
+                this.state.emails = ret_dat[0]['email'].split(',');
+                this.state.employee = ret_dat[0];
+                this.state.employee.emails = ret_dat[0]['email'].split(',');
                 console.log(this.state);
                 this.setState(this.state);
             }
@@ -69,14 +70,14 @@ export class EmployeeManageProfile extends Component {
                         <Grid item md={6}>
                             <strong>First name:</strong>
                             <TextField
-                                value={this.state.employee.fname}
+                                value={this.state.employee.first_name}
                                 onChange={this.handleInfo('first')}
                             />
                         </Grid>
                         <Grid item md={6}>
                             <strong>Last name:</strong>
                             <TextField
-                                value={this.state.employee.lname}
+                                value={this.state.employee.last_name}
                                 onChange={this.handleInfo('last')}
                             />
                         </Grid>
@@ -89,7 +90,7 @@ export class EmployeeManageProfile extends Component {
                         </Grid>
 
                         <Grid item md={6}>
-                            <strong>Employee ID: </strong> {this.state.employee.emp_id}
+                            <strong>Employee ID: </strong> {this.state.employee.emp_ID}
                         </Grid>
                         <Grid item md={6}>
                             <strong>Phone: </strong>
@@ -99,7 +100,7 @@ export class EmployeeManageProfile extends Component {
                             />
                         </Grid>
                         <Grid item md={12}>
-                            <strong>Address: </strong> {this.state.employee.address}
+                            {/*<strong>Address: </strong> {this.state.employee[0].address}*/}
                         </Grid>
 
                         <Grid item md={12}>
@@ -164,14 +165,14 @@ export class EmployeeManageProfile extends Component {
         });
         emailList = emailList.substring(1);
         const body = {
-            'emp_id' : this.state.employee.emp_id,
-            'fname' : this.state.employee.fname,
-            'lname' : this.state.employee.lname,
+            'emp_id' : this.state.employee.emp_ID,
+            'fname' : this.state.employee.first_name,
+            'lname' : this.state.employee.last_name,
             'phone': this.state.employee.phone,
             'emails' : emailList
         };
         console.log(body);
-        this.hr.open('POST', 'http://localhost:5000/manage_profile');
+        this.hr.open('POST', 'http://localhost:5000/e_manage_profile');
         this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         this.hr.onreadystatechange = (e) => {
             if (e.target.readyState === 4 && e.target.status === 200) {

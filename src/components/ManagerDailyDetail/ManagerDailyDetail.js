@@ -11,29 +11,30 @@ export class ManagerDailyDetail extends Component {
         super(props);
 
         this.state = {
-            listOfSites: [{eventName: 'Arborelum Walking Tour', staffName: 'Jason Lee', visit: 20, revenue: 0},
-                {eventName: 'Bus Tour', staffName: 'Catherine White', visit: 80, revenue: 2000},
-                {eventName: 'Eastside Trailr', staffName: 'Alice Smith', visit: 68, revenue: 0},
-                {eventName: 'Private Bus Tour', staffName: 'Elizabeth Jones', visit: 32, revenue: 1280}]
+            details: []
         }
     }
 
+    hr = new XMLHttpRequest();
     componentDidMount() {
-        this._isMounted = true;
-        const hr = new XMLHttpRequest();
-        const url = 'http://localhost:5000/get_user_info?username=' + this.hash;
-        console.log(this.hash);
-        hr.open('GET', url);
-        hr.onreadystatechange = (e) => {
+        console.log(this.props.location);
+        const username = this.props.location.hash.substring(1);
+        const date = this.props.location.state.date;
+        const url = 'http://localhost:5000/m_daily_detail?manager_username='
+            + username
+            + '&date=' + date;
+        this.hr.open('GET', url);
+        this.hr.onreadystatechange = (e) => {
             // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
                 console.log(ret_dat);
-                const response = ret_dat[0];
+                this.state.details = ret_dat;
+                this.setState(this.state);
 
             }
         };
-        hr.send();
+        this.hr.send();
     }
 
     render() {
@@ -56,13 +57,17 @@ export class ManagerDailyDetail extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.listOfSites.map((transit, i) => {
+                            {this.state.details.map((det, i) => {
                                 return (<TableRow hover
                                                   key={i}>
-                                    <TableCell align="right">{transit.eventName}</TableCell>
-                                    <TableCell align="right">{transit.staffName}</TableCell>
-                                    <TableCell align="right">{transit.visit}</TableCell>
-                                    <TableCell align="right">{transit.revenue}</TableCell>
+                                    <TableCell align="right">{det.event_name}</TableCell>
+                                    <TableCell align="right">
+                                        {det.staff_names.map((name,i) => {
+                                            return <div key={i}>{name}</div>
+                                        })}
+                                    </TableCell>
+                                    <TableCell align="right">{det.visits}</TableCell>
+                                    <TableCell align="right">{det.revenue}</TableCell>
                                 </TableRow>);
                             })}
                         </TableBody>

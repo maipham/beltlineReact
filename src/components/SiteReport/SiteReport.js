@@ -25,15 +25,16 @@ export default class SiteReport extends Component {
 
     init() {
         this.state = {
-            dateRange: ['2019-04-24', '2019-04-30'],
+            dateRange: ['2019-02-01', '2019-03-01'],
             eventCountRange: ['', ''],
             staffCountRange: ['', ''],
             totalVisitsRange: ['', ''],
             totalRevenueRange: ['', ''],
-            selectedDetail: undefined,
-            selectedDetailIndx: undefined,
+            selectedDetail: '',
+            selectedDetailIndx: '',
             detail: mock_daily_events,
-            filtered: [...mock_daily_events]
+            filtered: [],
+            chosenDate: ''
         };
         mock_daily_events.forEach(e => {
             this.state[e.date] = false;
@@ -41,8 +42,19 @@ export default class SiteReport extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
-        this.hr.open('GET', 'http://localhost:5000/m_site_report'  )
+        this.hash = this.props.location.hash.substring(1);
+        this.hr.open('GET',
+        'http://localhost:5000/m_site_report?username=' + this.hash
+        + '&start_date=' + this.state.dateRange[0] + '&end_date=' + this.state.dateRange[1]);
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                console.log(data);
+                this.state.filtered = data;
+                this.setState(this.state);
+            }
+        };
+        this.hr.send();
     }
 
     render() {
@@ -59,9 +71,6 @@ export default class SiteReport extends Component {
                                 value={this.state.dateRange[0]}
                                 className={'start-date'}
                                 onChange={this.handleDateRange('start')}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
                             />
                         </form>
                     </Grid>
@@ -74,9 +83,6 @@ export default class SiteReport extends Component {
                                 value={this.state.dateRange[1]}
                                 onChange={this.handleDateRange('end')}
                                 className={'end-date'}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
                             />
                         </form>
                     </Grid>
@@ -108,7 +114,6 @@ export default class SiteReport extends Component {
                             label=""
                             value={this.state.staffCountRange[0]}
                             onChange={this.handleStaffCountRange('start')}
-                            margin="normal"
                         />
                         <strong>
                             to
@@ -117,7 +122,6 @@ export default class SiteReport extends Component {
                             label=""
                             value={this.state.staffCountRange[1]}
                             onChange={this.handleStaffCountRange('end')}
-                            margin="normal"
                         />
                     </Grid>
                     <Grid container justify="center" item xs={6}>
@@ -128,7 +132,6 @@ export default class SiteReport extends Component {
                             label=""
                             value={this.state.totalVisitsRange[0]}
                             onChange={this.handleTotalVisitRange('start')}
-                            margin="normal"
                         />
                         <strong>
                             to
@@ -157,7 +160,6 @@ export default class SiteReport extends Component {
                             label=""
                             value={this.state.totalRevenueRange[1]}
                             onChange={this.handleTotalRevenueRange('end')}
-                            margin="normal"
                         />
                     </Grid>
                     <Grid container justify="center" item xs={6}>
@@ -173,7 +175,13 @@ export default class SiteReport extends Component {
                             {/*Daily Detail*/}
                         {/*</Button>*/}
                         <Button variant="contained"  component={Link} color="primary"
-                                to={{pathname: '/daily_detail', hash: this.hash}}>Daily Detail</Button>
+                                to={{
+                                    pathname: '/daily_detail',
+                                    hash: this.hash,
+                                    state: {
+                                        date: this.state.chosenDate
+                                    }
+                                }}>Daily Detail</Button>
                     </Grid>
 
                     <Grid container justify="center" item xs={12}>
@@ -198,10 +206,10 @@ export default class SiteReport extends Component {
                                                                onChange={this.handleSelectedDetail} color={"primary"}/>
                                                     </TableCell>
                                                     <TableCell> {detail.date} </TableCell>
-                                                    <TableCell> {detail.event_count.length} </TableCell>
-                                                    <TableCell> {detail.staff_count.length} </TableCell>
-                                                    <TableCell> {detail.visits} </TableCell>
-                                                    <TableCell> {detail.revenue} </TableCell>
+                                                    <TableCell> {detail.event_count} </TableCell>
+                                                    <TableCell> {detail.staff_count} </TableCell>
+                                                    <TableCell> {detail.total_visits} </TableCell>
+                                                    <TableCell> {detail.total_revenue} </TableCell>
                                                 </TableRow>
                                             )
                                         )
@@ -226,6 +234,17 @@ export default class SiteReport extends Component {
     }
 
     filter = (event) => {
+        // this.hash = this.props.location.hash.substring(1);
+        // this.hr.open('GET',
+        //     'http://localhost:5000/m_site_report?username=' + this.hash
+        //     + '&start_date=' + this.state.dateRange[0] + '&end_date=' + this.state.dateRange[1]);
+        // this.hr.onreadystatechange = (event) => {
+        //     if (event.target.readyState === 4 && event.target.status === 200) {
+        //         const data = JSON.parse(event.target.responseText);
+        //         console.log(data);
+        //     }
+        // };
+        // this.hr.send();
         let filtered_vals = [];
         let tmp = undefined;
         this.state.detail.forEach(d => {
@@ -281,7 +300,7 @@ export default class SiteReport extends Component {
     handleStaffCountRange = (type) => event => {
         if (type === 'start') {
             this.state.staffCountRange[0] = event.target.value;
-        } else if (type == 'end') {
+        } else if (type === 'end') {
             this.state.staffCountRange[1] = event.target.value;
         }
         this.setState(this.state);
@@ -290,7 +309,7 @@ export default class SiteReport extends Component {
     handleEventCountRange = (type) => event => {
         if (type === 'start') {
             this.state.eventCountRange[0] = event.target.value;
-        } else if (type == 'end') {
+        } else if (type === 'end') {
             this.state.eventCountRange[1] = event.target.value;
         }
         this.setState(this.state);
@@ -299,7 +318,7 @@ export default class SiteReport extends Component {
     handleTotalVisitRange = (type) => event => {
         if (type === 'start') {
             this.state.totalVisitsRange[0] = event.target.value;
-        } else if (type == 'end') {
+        } else if (type === 'end') {
             this.state.totalVisitsRange[1] = event.target.value;
         }
         this.setState(this.state);
@@ -308,7 +327,7 @@ export default class SiteReport extends Component {
     handleTotalRevenueRange = (type) => event => {
         if (type === 'start') {
             this.state.totalRevenueRange[0] = event.target.value;
-        } else if (type == 'end') {
+        } else if (type === 'end') {
             this.state.totalRevenueRange[1] = event.target.value;
         }
         this.setState(this.state);
@@ -323,8 +342,9 @@ export default class SiteReport extends Component {
             this.state[d.date] = false;
         });
         this.state[e_date] = true;
-        console.log(this.state);
+        this.state.chosenDate = this.state.selectedDetail._date;
         this.setState(this.state);
+        console.log(this.state.chosenDate);
     }
 
     handleDateRange = (type) => event => {

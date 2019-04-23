@@ -15,6 +15,8 @@ export class ManagerManageEvent extends Component {
     url = 'http://localhost:5000/m_manage_event';
     hash = null;
     eventHash = '';
+    event_name = '';
+    event_start = '';
 
     constructor(props) {
         super(props);
@@ -44,6 +46,8 @@ export class ManagerManageEvent extends Component {
         console.log(this.state.data[i]);
         const chosenEvent = this.state.data[i];
         this.eventHash = '/' + chosenEvent.event_name + '/' + chosenEvent.start_date;
+        this.event_name = chosenEvent.event_name;
+        this.event_start = chosenEvent.start_date;
         console.log(this.eventHash);
         this.setState({
             selected: i
@@ -127,6 +131,18 @@ export class ManagerManageEvent extends Component {
 
         this.hr.send();
     }
+     deleteEvent = (e) => {
+        console.log(this.event_start)
+         console.log(this.event_name)
+         this.hr.open('DELETE',
+             'http://localhost:5000/m_manage_event?event_name=' + this.event_name + '&event_start=' + this.event_start)
+         this.hr.onreadystatechange = (event) => {
+             if (event.target.readyState === 4 && event.target.status === 200) {
+                 console.log('success');
+             }
+         };
+         this.hr.send();
+     };
 
     render() {
         return (
@@ -220,7 +236,9 @@ export class ManagerManageEvent extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button color="primary" variant="contained">Delete</Button>
+                        <Button color="primary" variant="contained"
+                        onClick={this.deleteEvent}
+                        >Delete</Button>
                     </Grid>
                 </Grid>
 

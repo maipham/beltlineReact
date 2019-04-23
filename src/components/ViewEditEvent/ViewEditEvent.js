@@ -38,7 +38,7 @@ export default class ViewEditEvent extends Component {
     };
 
     componentDidMount() {
-        const url = 'http://localhost:5000/m_edit_event?event_name=' + this.event_name + '&event_start=' + this.event_date + '&site_name=' + this.props.location.state.site_name;
+        const url = 'http://localhost:5000/m_edit_event?event_name=' + this.event_name + '&event_start=' + this.event_date;
         console.log(url);
         this.hr.open('GET', url);
         this.hr.onreadystatechange = (event) => {
@@ -62,6 +62,7 @@ export default class ViewEditEvent extends Component {
             'new_descr': this.state.event.description,
             'staffs': this.state.event.staff_usernames
         };
+        console.log(body);
         this.hr.open('POST', url);
         this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         this.hr.onreadystatechange = (e) => {

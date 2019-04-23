@@ -147,7 +147,12 @@ export class StaffViewSchedule extends Component {
 
                     <Grid item>
                         <Button variant="contained"  component={Link} color="primary"
-                                to={{pathname: '/staff_event_detail', hash: this.hash}}>View Event</Button>
+                                to={{pathname: '/staff_event_detail',
+                                    hash: this.hash,
+                                    state: {
+                                        event: this.state.filterSchedule[this.state.selected]
+                                    }
+                                }}>View Event</Button>
                     </Grid>
                 </Grid>
 

@@ -7,11 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
-import React, { Component } from 'react';
-
-const staff = ["Reece Gao", "Frank Zhou", "Mai Pham", "Alex McQuilken"];
+import React, {Component} from 'react';
 
 export class ManagerCreateEvent extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
@@ -19,13 +18,59 @@ export class ManagerCreateEvent extends Component {
             price: '',
             capacity: '',
             minStaff: '',
-            startDate: '',
-            endDate: '',
+            startDate: '2019-04-23',
+            endDate: '2019-04-30',
             description: '',
-            availStaff: staff,
+            availStaff: [],
             assignedStaff: []
         }
     }
+
+    componentDidMount() {
+
+        this.hr.open('GET',
+            'http://localhost:5000/m_create_event?start_date=2019-04-23&end_date=2019-04-30');
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
+                this.state.availStaff = ret_dat;
+                this.setState(this.state);
+            }
+        };
+        this.hr.send();
+    }
+
+    createEvent = (e) => {
+        if (this.state.name.length > 1) {
+            this.hr.open('POST',
+                'http://localhost:5000/m_create_event');
+            this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            let staffs = '';
+            this.state.assignedStaff.forEach((i) => {
+                staffs = staffs + ',' + this.state.availStaff[i].username;
+            });
+            console.log(staffs);
+            const body = {
+                'event_name': this.state.name,
+                'event_start': this.state.startDate,
+            'site_name': 'Inman Park',
+            'end_date': this.state.endDate,
+            'min_staff': this.state.minStaff,
+            'price': this.state.price,
+            'capacity': this.state.capacity,
+            'description': this.state.description,
+            'staffs': staffs.substring(1)
+            };
+            console.log(body);
+            this.hr.onreadystatechange = (e) => {
+                if (e.target.readyState === 4 && e.target.status === 200) {
+                    console.log('sucess');
+                }
+            };
+            this.hr.send(JSON.stringify(body));
+        }
+    };
 
     isSelected = id => this.state.assignedStaff.includes(id);
 
@@ -75,12 +120,34 @@ export class ManagerCreateEvent extends Component {
         this.setState({
             startDate: event.target.value
         });
+        this.hr.open('GET',
+            'http://localhost:5000/m_create_event?start_date=' + this.state.startDate + '&end_date=2019-04-30');
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
+                this.state.availStaff = ret_dat;
+                this.setState(this.state);
+            }
+        };
+        this.hr.send();
     };
 
     handleEndDateChange = (event) => {
         this.setState({
             endDate: event.target.value
         });
+        this.hr.open('GET',
+            'http://localhost:5000/m_create_event?start_date=' + this.state.startDate + '&end_date=' + this.state.endDate);
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const ret_dat = JSON.parse(e.target.responseText);
+                console.log(ret_dat);
+                this.state.availStaff = ret_dat;
+                this.setState(this.state);
+            }
+        };
+        this.hr.send();
     };
 
     handleDescriptionChange = (event) => {
@@ -127,12 +194,12 @@ export class ManagerCreateEvent extends Component {
                 <Grid container style={{marginTop: '25px'}} justify="center">
                     <Grid item>
                         <InputLabel style={{marginRight: '25px'}}>Start Date</InputLabel>
-                        <TextField onChange={this.handleStartDateChange}/>
+                        <TextField defaultValue={'2019-04-23'} onChange={this.handleStartDateChange}/>
                     </Grid>
 
                     <Grid item>
                         <InputLabel style={{marginRight: '25px'}}>End Date</InputLabel>
-                        <TextField onChange={this.handleEndDateChange}/>
+                        <TextField defaultValue={'2019-04-30'} onChange={this.handleEndDateChange}/>
                     </Grid>
                 </Grid>
 
@@ -142,7 +209,8 @@ export class ManagerCreateEvent extends Component {
                         <InputLabel>Description</InputLabel>
                     </Grid>
                     <Grid item>
-                        <TextField onChange={this.handleDescriptionChange} margin="normal" variant="outlined" multiline rows="6" style={{width: '500px'}}/>
+                        <TextField onChange={this.handleDescriptionChange} margin="normal" variant="outlined" multiline
+                                   rows="6" style={{width: '500px'}}/>
                     </Grid>
                 </Grid>
 
@@ -156,14 +224,14 @@ export class ManagerCreateEvent extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {staff.map((staff, i) => {
+                                {this.state.availStaff.map((staff, i) => {
                                     const isSelected = this.isSelected(i);
                                     return (<TableRow hover
                                                       aria-checked={!(() => this.isSelected(i))}
                                                       selected={isSelected}
                                                       key={i}
                                                       onClick={event => this.handleRowClick(event, i)}>
-                                        <TableCell align="center">{staff}</TableCell>
+                                        <TableCell align="center">{staff.staff_name}</TableCell>
                                     </TableRow>);
                                 })}
                             </TableBody>
@@ -173,11 +241,16 @@ export class ManagerCreateEvent extends Component {
 
                 <Grid container justify="center" style={{marginTop: '40px'}}>
                     <Grid item>
-                        <Button color="primary" variant="contained" style={{marginRight: '110px', width: '120px'}}>Back</Button>
+                        <Button color="primary" variant="contained"
+                                style={{marginRight: '110px', width: '120px'}}>Back</Button>
                     </Grid>
 
                     <Grid item>
-                        <Button color="primary" variant="contained" style={{marginLeft: '110px', width: '120px'}}>Create</Button>
+                        <Button color="primary" variant="contained"
+                                disabled={(
+                                    !(this.state.assignedStaff.length > 0) && (this.state.name === ''))
+                                } onClick={this.createEvent}
+                                style={{marginLeft: '110px', width: '120px'}}>Create</Button>
                     </Grid>
                 </Grid>
             </div>
