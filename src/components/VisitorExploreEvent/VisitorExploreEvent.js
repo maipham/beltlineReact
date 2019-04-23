@@ -14,9 +14,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 
-const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
-
-
 export class VisitorExploreEvent extends Component {
     constructor(props) {
         super(props);
@@ -117,17 +114,14 @@ export class VisitorExploreEvent extends Component {
                 {/*Response Text is data from backend*/
                 }
                 const data = JSON.parse(event.target.responseText);
-
-                console.log(data);
-                console.log("Hello?" + data[1]);
-
-                // var arr = data[1].map((siteObj, i) => {
-                //     return siteObj.name
-                // });
-
+                let sites = [];
+                data[1].forEach(function(e) {
+                    sites.push(e.name);
+                })
                 this.setState({
-                    initialEvents: data,
-                    filteredEvents: data,
+                    initialEvents: data[0],
+                    filteredEvents: data[0],
+                    sites: sites
                 });
                 console.log(data);
             }
@@ -171,7 +165,7 @@ export class VisitorExploreEvent extends Component {
                             open={Boolean(anchorEl)}
                             onClose={this.handleClose}
                         >
-                            {site_names.map( (sites, index) =>
+                            {this.state.sites.map( (sites, index) =>
                                 <MenuItem key={index} onClick={this.handleSiteOptionClick} value={sites}>{sites}</MenuItem>)}
                         </Menu>
                     </Grid>
