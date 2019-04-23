@@ -11,20 +11,47 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import {Link} from "react-router-dom";
+import {response_messages} from "../../entities/constants";
 
 const type = ['MARTA', 'Bus', 'Bike'];
-const site_names = ['Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
 export class AdminEditTransit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            transportType: 'MARTA',
-            route: '',
-            price: '',
+            transportType: props.location.state.type,
+            route: props.location.state.route,
+            price: props.location.state.price,
+            site_names: props.location.state.sites,
             connectedIndexes: [],
             anchorEl: null
         }
+    }
+
+    componentDidMount() {
+        const hr = new XMLHttpRequest();
+        const url = 'http://localhost:5000/a_edit_transit?';
+        const type = 'type=' + this.state.transportType;
+        const route = 'route=' + this.state.route;
+        hr.open('GET', url + type + '&' + route);
+        hr.onreadystatechange = (e) => {
+            // console.log(e);
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                const response = JSON.parse(e.target.responseText);
+                console.log(response);
+                let indexes = [];
+                let sites = this.state.site_names;
+                response[0].connected_sites.forEach(function(element) {
+                    indexes.push(sites.indexOf(element));
+                });
+                console.log(indexes);
+                this.setState({
+                    connectedIndexes: indexes
+                })
+                console.log(this.state.connectedIndexes)
+            }
+        };
+        hr.send();
     }
 
     handleTransportClick = event => {
@@ -60,13 +87,10 @@ export class AdminEditTransit extends Component {
                     connectedIndexes: newClicked
                 });
             }
-            console.log(newClicked);
         } else {
             newClicked.push(i);
-            console.log(newClicked);
-            this.setState({
-                connectedIndex: newClicked
-            });
+            this.state.connectedIndexes = newClicked;
+            this.setState(this.state);
         }
     };
 
@@ -106,12 +130,12 @@ export class AdminEditTransit extends Component {
 
                     <Grid item style={{marginRight: '40px'}}>
                         <InputLabel style={{marginRight: '10px'}}>Route</InputLabel>
-                        <TextField style={{width: '120px'}} onChange={this.handleRouteChange}/>
+                        <TextField style={{width: '120px'}} defaultValue={this.state.route} onChange={this.handleRouteChange}/>
                     </Grid>
 
                     <Grid item>
                         <InputLabel style={{marginRight: '10px'}}>Price($)</InputLabel>
-                        <TextField style={{width: '40px'}} onChange={this.handlePriceChange}/>
+                        <TextField style={{width: '40px'}} defaultValue={this.state.price} onChange={this.handlePriceChange}/>
                     </Grid>
                 </Grid>
 
@@ -124,7 +148,7 @@ export class AdminEditTransit extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {site_names.map((site, i) => {
+                            {this.state.site_names.map((site, i) => {
                                 const isSelected = this.isSelected(i);
                                 return (<TableRow hover
                                                   aria-checked={!(() => this.isSelected(i))}

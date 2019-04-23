@@ -38,7 +38,6 @@ export class AdminManageTransit extends Component {
 
     componentDidMount() {
         this.hr.open('GET', this.url);
-
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);
@@ -54,7 +53,6 @@ export class AdminManageTransit extends Component {
                 });
             }
         };
-
         this.hr.send();
     }
 
@@ -108,6 +106,7 @@ export class AdminManageTransit extends Component {
     isSelected = id => id === this.state.selected;
 
     handleRowClick = (event, i) => {
+        let currentComponent = this;
         if (this.state.selected === i) {
             this.setState({
                 selected: null
@@ -210,8 +209,18 @@ export class AdminManageTransit extends Component {
                         <Button variant="contained" component={Link} to={'/create_transit'} color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)} variant="contained" component={Link} to={'/edit_transit'} color="primary">Edit</Button>
-                        {/*<Link to={{pathname: '/edit_transit'}} />*/}
+                        <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)} variant="contained" color="primary">
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                pathname: '/edit_transit',
+                                state: {
+                                    type: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].type,
+                                    route: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].route,
+                                    price: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].price,
+                                    sites: this.state.site_names
+                                }
+                            }}>Edit</Link>
+                        </Button>
                     </Grid>
                     <Grid item style={{marginRight: '10px'}}>
                         <Button disabled={!(this.state.selected !== null && this.state.selected >= 0)} variant="contained" color="primary" onClick={this.handleDeleteClick}>Delete</Button>
