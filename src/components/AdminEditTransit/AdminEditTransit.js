@@ -39,8 +39,6 @@ export class AdminEditTransit extends Component {
             // console.log(e);
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const response = JSON.parse(e.target.responseText);
-                console.log("rknakf");
-                console.log(response);
                 let indexes = [];
                 let sites = this.state.site_names;
                 response[0].connected_sites.forEach(function(element) {

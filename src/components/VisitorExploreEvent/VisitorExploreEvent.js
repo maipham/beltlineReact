@@ -114,10 +114,11 @@ export class VisitorExploreEvent extends Component {
                 {/*Response Text is data from backend*/
                 }
                 const data = JSON.parse(event.target.responseText);
+                console.log(data);
                 let sites = [];
                 data[1].forEach(function(e) {
                     sites.push(e.name);
-                })
+                });
                 this.setState({
                     initialEvents: data[0],
                     filteredEvents: data[0],

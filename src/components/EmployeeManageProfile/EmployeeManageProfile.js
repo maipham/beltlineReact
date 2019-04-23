@@ -34,11 +34,10 @@ export class EmployeeManageProfile extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/manage_profile?username=' + this.hash;
         console.log(this.hash);
-        hr.open('GET', url);
-        hr.onreadystatechange = (e) => {
+        this.hr.open('GET', url);
+        this.hr.onreadystatechange = (e) => {
             if (e.target.readyState === 4 && e.target.status === 200) {
                 const ret_dat = JSON.parse(e.target.responseText);
                 console.log(ret_dat);
@@ -49,7 +48,7 @@ export class EmployeeManageProfile extends Component {
                 this.setState(this.state);
             }
         };
-        hr.send();
+        this.hr.send();
     }
 
     componentWillUnmount() {
@@ -58,6 +57,7 @@ export class EmployeeManageProfile extends Component {
 
     handleUpdate = (e) => {
         console.log(e);
+        console.log('mai')
     };
 
     render() {
@@ -158,6 +158,27 @@ export class EmployeeManageProfile extends Component {
 
     update = e => {
         console.log(this.state);
+        let emailList = '';
+        this.state.employee.emails.forEach((ema) => {
+            emailList = emailList + ',' + ema;
+        });
+        emailList = emailList.substring(1);
+        const body = {
+            'emp_id' : this.state.employee.emp_id,
+            'fname' : this.state.employee.fname,
+            'lname' : this.state.employee.lname,
+            'phone': this.state.employee.phone,
+            'emails' : emailList
+        };
+        console.log(body);
+        this.hr.open('POST', 'http://localhost:5000/manage_profile');
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                console.log('success');
+            }
+        };
+        this.hr.send(JSON.stringify(body));
     };
 
     handleInfo = (type) => e => {

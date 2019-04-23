@@ -216,14 +216,13 @@ export class ManageSite extends Component {
                 {/*Container to hold all the buttons, including Filter, Create, Edit, and Delete*/}
                 <Grid container justify="center" style={{marginTop: '30px'}}>
                     <Grid item style={{marginRight: '120px'}}>
-                        <Button component={Link}  variant="contained" color="primary">Filter</Button>
+                        <Button variant="contained" color="primary">Filter</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
                         <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button disabled={!!(this.state.selected === null)} variant="contained" color="primary">
-                            <Link style={{textDecoration: 'none', color: 'white'}}
+                        <Button disabled={!!(this.state.selected === null)} variant="contained" color="primary" component={Link}
                                   to={{
                                       pathname: '/edit_site',
                                       state: {
@@ -231,7 +230,7 @@ export class ManageSite extends Component {
                                           name: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].name,
                                           open: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].open_everyday,
                                       }
-                                  }}>Edit</Link>
+                                  }}>Edit
                         </Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>

@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
 export class ManagerManageStaff extends Component {
+    hr = new XMLHttpRequest();
     constructor(props) {
         super(props);
         this.state = {
@@ -32,16 +33,16 @@ export class ManagerManageStaff extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.site !== this.state.site) {
             let url = null;
-            const hr = new XMLHttpRequest();
             if (this.state.site === "ALL") {
                 url = 'http://localhost:5000/m_manage_staff?site_name=';
             } else {
                 url = 'http://localhost:5000/m_manage_staff?site_name=' + this.state.site;
             }
-            hr.open('GET', url);
-            hr.onreadystatechange = (e) => {
+            this.hr.open('GET', url);
+            this.hr.onreadystatechange = (e) => {
                 if (e.target.readyState === 4 && e.target.status === 200) {
                     const ret_dat = JSON.parse(e.target.responseText);
+                    console.log(ret_dat);
                     let a = [];
                     ret_dat[1].forEach(function(element) {
                         a.push(element.name);
@@ -53,7 +54,7 @@ export class ManagerManageStaff extends Component {
                     });
                 }
             };
-            hr.send();
+            this.hr.send();
         }
     }
 
