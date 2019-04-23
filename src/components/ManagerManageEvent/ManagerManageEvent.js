@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 
 export class ManagerManageEvent extends Component {
     hr = new XMLHttpRequest();
@@ -183,7 +184,7 @@ export class ManagerManageEvent extends Component {
                     </Grid>
                 </Grid>
 
-                {/*container that holds the buttons filter, create, view/edit, and delete*/}
+                {/*container that holds the BUTTONS filter, create, view/edit, and delete*/}
                 <Grid style={{marginTop: '30px'}} container justify="center">
                     <Grid item style={{marginRight: '150px'}}>
                         <Button color="primary" variant="contained">Filter</Button>
@@ -194,7 +195,18 @@ export class ManagerManageEvent extends Component {
                     </Grid>
 
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button color="primary" variant="contained">View/Edit</Button>
+                        <Button color="primary" variant="contained">
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                      pathname: '/edit_transit',
+                                      state: {
+                                          type: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].type,
+                                          route: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].route,
+                                          price: this.state.selected === null ? null : this.state.initialTransits[this.state.selected].price,
+                                          sites: this.state.site_names
+                                      }
+                                  }}>Edit</Link>
+                        </Button>
                     </Grid>
 
                     <Grid item>
