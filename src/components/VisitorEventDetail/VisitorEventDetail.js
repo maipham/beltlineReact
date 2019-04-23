@@ -86,12 +86,12 @@ export default class VisitorEventDetail extends Component {
         console.log(e.target.value);
         this.state.event.visitDate = e.target.value;
         this.setState(this.state);
-    }
+    };
 
     logVisit = (e) => {
         const visit_date = this.state.event.visitDate;
         console.log("Log Visit");
         console.log(visit_date);
-    }
+    };
 }
 

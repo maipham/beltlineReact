@@ -61,23 +61,28 @@ export class ManageSite extends Component {
         this.hr.send();
     }
 
+    shouldComponentUpdate() {
+        return this.state.initialManageSite || this.state.allSites;
+    }
+
     deleteSite = () => {
         console.log(this.state);
         const del_ind = this.state.selected;
-        const delete_site = this.state.allSites[del_ind];
+        const delete_site = this.state.initialManageSite[del_ind]['site_name'];
         const url = 'http://localhost:5000/delete_site?site_name=' + delete_site;
+        console.log(this.state.initialManageSite);
         console.log(delete_site);
-
+        console.log(del_ind);
         this.hr.open('DELETE', url);
         this.hr.onreadystatechange = (e) => {
             if (e.target.readyState === 4 && e.target.status === 200) {
                 console.log(e.target.responseText);
-                const all_sites = this.state.allSites;
+                const all_sites = this.state.initialManageSite;
                 all_sites.splice(del_ind, 0);
                 this.setState({
-                    allSites: all_sites
+                    initialManageSite: all_sites
                 });
-                console.log(this.state.allSites);
+                console.log(this.state.initialManageSite);
             }
         };
         this.hr.send();
