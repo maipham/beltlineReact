@@ -35,8 +35,6 @@ export class ManageSite extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
-
         const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/a_manage_site';
         hr.open('GET', url);
@@ -107,9 +105,15 @@ export class ManageSite extends Component {
     };
 
     handleRowClick = (event, i) => {
-        this.setState({
-            selected: i
-        })
+        if (this.state.selected === i) {
+            this.setState({
+                selected: null
+            })
+        } else {
+            this.setState({
+                selected: i
+            })
+        }
     };
 
     isSelected = id => id === this.state.selected;
@@ -191,7 +195,17 @@ export class ManageSite extends Component {
                         <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button component={Link} to={'/edit_site'} variant="contained" color="primary">Edit</Button>
+                        <Button disabled={!!(this.state.selected === null)} variant="contained" color="primary">
+                            <Link style={{textDecoration: 'none', color: 'white'}}
+                                  to={{
+                                      pathname: '/edit_site',
+                                      state: {
+                                          site_name: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].site_name,
+                                          name: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].name,
+                                          open: this.state.selected === null ? null : this.state.initialManageSite[this.state.selected].open_everyday,
+                                      }
+                                  }}>Edit</Link>
+                        </Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
                         <Button variant="contained" color="primary">Delete</Button>

@@ -1,4 +1,33 @@
 export default class EventDetail {
+    _name;
+    _site;
+    _startDate;
+    _endDate;
+    _duration;
+    _staffs;
+    _capacity;
+    _price;
+    _description;
+    _ticketPrice;
+    _ticketsRemain;
+    _visitDate;
+    constructor(name, site, startDate, endDate, duration, staffs,
+                capacity, price, description, ticketPrice,
+                ticketsRemain, visitDate) {
+        this._name = name;
+        this._site = site;
+        this._startDate = startDate;
+        this._endDate = endDate;
+        this._duration = duration;
+        this._staffs = staffs;
+        this._capacity = capacity;
+        this._price = price;
+        this._description = description;
+        this._ticketPrice = ticketPrice;
+        this._ticketsRemain = ticketsRemain;
+        this._visitDate = visitDate;
+    }
+
     set name(value) {
         this._name = value;
     }
@@ -92,33 +121,5 @@ export default class EventDetail {
 
     get visitDate() {
         return this._visitDate;
-    }
-    _name;
-    _site;
-    _startDate;
-    _endDate;
-    _duration;
-    _staffs;
-    _capacity;
-    _price;
-    _description;
-    _ticketPrice;
-    _ticketsRemain;
-    _visitDate;
-    constructor(name, site, startDate, endDate, duration, staffs,
-                capacity, price, description, ticketPrice,
-                ticketsRemain, visitDate) {
-        this._name = name;
-        this._site = site;
-        this._startDate = startDate;
-        this._endDate = endDate;
-        this._duration = duration;
-        this._staffs = staffs;
-        this._capacity = capacity;
-        this._price = price;
-        this._description = description;
-        this._ticketPrice = ticketPrice;
-        this._ticketsRemain = ticketsRemain;
-        this._visitDate = visitDate;
     }
 }

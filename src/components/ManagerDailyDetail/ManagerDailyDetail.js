@@ -20,7 +20,6 @@ export class ManagerDailyDetail extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-
         const hr = new XMLHttpRequest();
         const url = 'http://localhost:5000/get_user_info?username=' + this.hash;
         console.log(this.hash);

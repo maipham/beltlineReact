@@ -8,8 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
 import React, { Component } from 'react';
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import {Link} from "react-router-dom";
 
 const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 
@@ -147,7 +146,8 @@ export class StaffViewSchedule extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button onClick = {this.handleViewEvent} color="primary" variant="contained">View Event</Button>
+                        <Button variant="contained"  component={Link} color="primary"
+                                to={{pathname: '/staff_event_detail', hash: this.hash}}>View Event</Button>
                     </Grid>
                 </Grid>
 

@@ -12,6 +12,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import { Link } from "react-router-dom";
 
 const site_names = ['ALL','Piedmont Park', 'Atlanta Park', 'Atlanta Beltline Center', 'Historic Fourth Ward Park', 'Westview Cementary', 'Inman Park'];
 const openEveryday = ['ALL', 'YES', 'NO'];
@@ -238,10 +239,14 @@ export class VisitorExploreSite extends Component {
                     </Grid>
 
                     <Grid item style={{marginRight: '10px'}}>
-                        <Button color='primary' variant='contained'>Site Detail</Button>
+                        <Button color="primary" variant="contained"  component={Link}
+                                to={{pathname: '/site_detail', hash: this.hash}}
+                        >Site Detail</Button>
                     </Grid>
                     <Grid item>
-                        <Button color='primary' variant='contained'>Transit Detail</Button>
+                        <Button color="primary" variant="contained"  component={Link}
+                                to={{pathname: '/transit_detail', hash: this.hash}}
+                        >Transit Detail</Button>
                     </Grid>
                 </Grid>
 

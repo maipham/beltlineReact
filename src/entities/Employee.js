@@ -13,7 +13,6 @@ export class Employee extends User{
         this._id = id;
     }
 
-
     get address() {
         return this._address;
     }
