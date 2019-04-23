@@ -13,12 +13,12 @@ import TableBody from "@material-ui/core/TableBody";
 import Paper from "@material-ui/core/Paper";
 
 export default class ViewEditEvent extends Component {
+    hr = new XMLHttpRequest();
+    event_name = '';
+    event_date = '';
+    hash = '';
     constructor(props) {
         super(props);
-        this.init();
-    };
-
-    init() {
         this.state = {
             event: mock_events[0], // pass event from props to this event in state
             allStaffs: ['staff1', 'staff2', 'staff3', 'staff4', 'staff5'], // Call API to get a list of all schedule
@@ -28,45 +28,85 @@ export default class ViewEditEvent extends Component {
             endRevenue: '',
             filteredStats: [...mock_events[0].stats],
         };
-        this.state.allStaffs.forEach((staff) => {
-            this.state[staff] = this.state.event.schedule.includes(staff);
-        });
-        console.log(this.state);
+        console.log(props.location.hash);
+        this.hash = props.location.hash.substring(1);
+        console.log(this.hash);
+        const split_hash = this.hash.split('/');
+        this.event_date = split_hash[2];
+        this.event_name = split_hash[1].replace('%20', ' ');
+    };
+
+    componentDidMount() {
+        const url = 'http://localhost:5000/m_edit_event?event_name=' + this.event_name + '&event_start=' + this.event_date;
+        console.log(url);
+        this.hr.open('GET', url);
+        //
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                console.log(data);
+                console.log(data[0][0]);
+                this.state.allStaffs = data[0][0].staff_names;
+                this.state.event = data[0][0];
+                this.state.filteredStats = data[1];
+                this.setState(this.state);
+            }
+        };
+        this.hr.send();
     }
+    update = () => {
+        const url = 'http://localhost:5000/m_edit_event';
+        const body = {
+            'event_name': this.event_name,
+            'event_start': this.event_date,
+            'new_descr': this.state.event.description,
+            'staffs': this.state.event.staff_usernames
+        };
+        this.hr.open('POST', url);
+        this.hr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        this.hr.onreadystatechange = (e) => {
+            if (e.target.readyState === 4 && e.target.status === 200) {
+                // console.log(e.target.responseText);
+                console.log('UPDATED');
+            }
+        };
+        this.hr.send(JSON.stringify(body));
+        console.log(body);
+    };
 
     render() {
         return (
             <Grid container className={'event-container'}>
-                <Grid item md={12}>
+                <Grid item container xs={12}>
                     <Grid container
                           alignItems={'center'}
                           direction={'row'}
                           justify={'center'}>
-                        <Grid item md={12}>
+                        <Grid item xs={12}>
                             <h1>View/Edit Event</h1>
                         </Grid>
-                        <Grid item md={6}>
-                            <strong> Name: </strong> {this.state.event.name}
+                        <Grid item xs={6}>
+                            <strong> Name: </strong> {this.state.event.event_name}
                         </Grid>
-                        <Grid item md={6}>
-                            <strong>Price:</strong> {this.state.event.price}
+                        <Grid item xs={6}>
+                            <strong>Price:</strong> {this.state.event.event_price}
                         </Grid>
-                        <Grid item md={6}>
-                            <strong>Start Date: </strong> {this.state.event.start_date}
+                        <Grid item xs={6}>
+                            <strong>Start Date: </strong> {this.state.event.event_start}
                         </Grid>
-                        <Grid item md={6}>
+                        <Grid item xs={6}>
                             <strong>End Date: </strong> {this.state.event.end_date}
                         </Grid>
-                        <Grid item md={6}>
+                        <Grid item xs={6}>
                             <strong>Minimum Staff required: </strong> {this.state.event.min_staff}
                         </Grid>
-                        <Grid item md={6}>
+                        <Grid item xs={6}>
                             <strong> Capacity: </strong> {this.state.event.capacity}
                         </Grid>
-                        <Grid item md={3}>
+                        <Grid item xs={3}>
                             <strong> Staff Assigned </strong>
                         </Grid>
-                        <Grid item md={9}>
+                        <Grid item xs={9}>
                             {
                                 this.state.allStaffs.map((staff, indx) => {
                                     return (
@@ -80,10 +120,10 @@ export default class ViewEditEvent extends Component {
                                 })
                             }
                         </Grid>
-                        <Grid md={3}>
+                        <Grid item xs={3}>
                             <strong> Description </strong>
                         </Grid>
-                        <Grid item md={9}>
+                        <Grid item xs={9}>
                             <TextField
                                 className={'description-text'}
                                 label="Description"
@@ -95,7 +135,7 @@ export default class ViewEditEvent extends Component {
                                 variant="outlined"
                             />
                         </Grid>
-                        <Grid md={6}>
+                        <Grid item xs={6}>
                             <strong>
                                 Daily Visits Range:
                             </strong>
@@ -115,7 +155,7 @@ export default class ViewEditEvent extends Component {
                                 margin="normal"
                             />
                         </Grid>
-                        <Grid md={6}>
+                        <Grid item xs={6}>
                             <strong>
                                 Daily Revenue Range:
                             </strong>
@@ -136,7 +176,7 @@ export default class ViewEditEvent extends Component {
                             />
                         </Grid>
                         <Grid container spacing={24}>
-                            <Grid item md={6} spacing={24}>
+                            <Grid item xs={6} container spacing={24}>
                                 <Button variant="contained" onClick={this.reset}>
                                     Reset
                                 </Button>
@@ -144,14 +184,14 @@ export default class ViewEditEvent extends Component {
                                     Filter
                                 </Button>
                             </Grid>
-                            <Grid item md={6}>
+                            <Grid item xs={6}>
                                 <Button variant="contained" color="primary" onClick={this.update}>
                                     Update
                                 </Button>
                             </Grid>
                         </Grid>
 
-                        <Grid md={12}>
+                        <Grid item xs={12}>
                             <Paper>
                                 <Table className={'event-table'}>
                                     <TableHead>
@@ -165,9 +205,9 @@ export default class ViewEditEvent extends Component {
                                         {
                                             this.state.filteredStats.map((stat, indx) => (
                                                     <TableRow key={indx}>
-                                                        <TableCell>{stat['date']} </TableCell>
+                                                        <TableCell>{stat['visit_date']} </TableCell>
                                                         <TableCell>{stat['visits']}</TableCell>
-                                                        <TableCell>{stat['revenue']}</TableCell>
+                                                        <TableCell>{stat['price']}</TableCell>
                                                     </TableRow>
                                                 )
                                             )
@@ -187,12 +227,12 @@ export default class ViewEditEvent extends Component {
         this.setState({
             [staff]: e.target.checked
         });
-    }
+    };
 
     handleDescriptionChange = (event) => {
         this.state.event.description = event.target.value;
         this.setState(this.state);
-    }
+    };
 
     handleStartVisit = (event) => {
         console.log(event.target.value);
@@ -249,8 +289,4 @@ export default class ViewEditEvent extends Component {
         this.setState(this.state);
     }
 
-    update = (event) => {
-        console.log(event);
-        console.log(this.state);
-    }
 }

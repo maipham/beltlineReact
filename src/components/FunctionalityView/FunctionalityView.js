@@ -3,7 +3,7 @@ import './FunctionalityView.css';
 import Button from "@material-ui/core/es/Button/Button";
 import {view_options} from "../../entities/ViewOptions";
 import Grid from "@material-ui/core/Grid";
-import {BrowserRouter as Router, Route, Redirect, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {VisitHistory} from "../VisitHistory/VisitHistory";
 
 export default class FunctionalityView extends Component {

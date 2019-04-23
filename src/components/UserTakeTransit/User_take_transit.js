@@ -39,7 +39,7 @@ export class User_take_transit extends Component {
             pricehigh: 0,
             anchorEl: null,
             anchorEl2: null,
-            selected: null
+            selected: -1
         };
         console.log(props.location.hash.substring(1));
         this.hash = props.location.hash.substring(1);
@@ -273,7 +273,7 @@ export class User_take_transit extends Component {
                     </Grid>
 
                     <Grid item>
-                        <Button variant="contained" onClick={this.logTransit} color="primary" style={{marginTop: '10px'}}>Log Transit</Button>
+                        <Button variant="contained" onClick={this.logTransit} disabled={this.state.selected < 0} color="primary" style={{marginTop: '10px'}}>Log Transit</Button>
                     </Grid>
                 </Grid>
             </div>

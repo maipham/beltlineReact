@@ -8,13 +8,17 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from "@material-ui/core/Grid";
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 
 export class ManagerManageEvent extends Component {
     hr = new XMLHttpRequest();
     url = 'http://localhost:5000/m_manage_event';
+    hash = null;
+    eventHash = '';
 
     constructor(props) {
         super(props);
+        this.hash = props.location.hash;
         this.state = {
             name: '',
             keyword: '',
@@ -26,14 +30,20 @@ export class ManagerManageEvent extends Component {
             visitHigh: '',
             revenueLow: '',
             revenueHigh: '',
-            selected: null,
+            selected: -1,
             data: []
         }
+
     }
 
     isSelected = id => id === this.state.selected;
 
     handleRowClick = (event, i) => {
+        // this.eventHash =
+        console.log(this.state.data[i]);
+        const chosenEvent = this.state.data[i];
+        this.eventHash = '/' + chosenEvent.event_name + '/' + chosenEvent.start_date;
+        console.log(this.eventHash);
         this.setState({
             selected: i
         })
@@ -109,6 +119,7 @@ export class ManagerManageEvent extends Component {
                 this.setState({
                     data: data
                 });
+                console.log(data);
             }
         };
 
@@ -121,7 +132,7 @@ export class ManagerManageEvent extends Component {
                 {/*container for header*/}
                 <Grid container justify="center">
                     <Grid item>
-                        <h1>Manage</h1>
+                        <h1>Manage Event</h1>
                     </Grid>
                 </Grid>
 
@@ -190,11 +201,15 @@ export class ManagerManageEvent extends Component {
                     </Grid>
 
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button color="primary" variant="contained">Create</Button>
+                        <Button color="primary" variant="contained"  component={Link}
+                                to={{pathname: '/create_event', hash: this.hash}}
+                        >Create Event</Button>
                     </Grid>
 
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button color="primary" variant="contained">View/Edit</Button>
+                        <Button disabled={this.state.selected < 0} color="primary" variant="contained"  component={Link}
+                                to={{pathname: '/view_edit_event', hash: this.hash + this.eventHash}}
+                        >View/Edit</Button>
                     </Grid>
 
                     <Grid item>

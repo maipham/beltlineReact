@@ -23,6 +23,22 @@ export class AdminEditSite extends Component {
         }
     }
 
+
+    componentDidMount() {
+        this.hr.open('GET', 'http://localhost:5000/edit_site');
+        console.log(this.url);
+        this.hr.onreadystatechange = (event) => {
+            if (event.target.readyState === 4 && event.target.status === 200) {
+                const data = JSON.parse(event.target.responseText);
+                this.state.managers = data;
+                this.setState(this.state);
+                console.log(data);
+            }
+        };
+
+        this.hr.send();
+    }
+
     handleNameChange = (event) => {
         this.setState({
             name: event.target.value

@@ -15,63 +15,86 @@ export default class StaffEventDetail extends Component {
         console.log("Back");
     }
 
+    // componentDidMount() {
+    //     this.hr.open('GET');
+    //     this.hr.onreadystatechange = (event) => {
+    //         if (event.target.readyState === 4 && event.target.status === 200) {
+    //             const data = JSON.parse(event.target.responseText);
+    //             if (data.length > 0) {
+    //                 let a = [];
+    //                 data[1].forEach(function(element) {
+    //                     a.push(element.name);
+    //                 });
+    //
+    //                 this.setState({
+    //                     historyObjects: data[0],
+    //                     filteredHistory: data[0],
+    //                     siteNames: a
+    //                 });
+    //             }
+    //         }
+    //     };
+    //
+    //     this.hr.send();
+    // }
+
     render() {
         return (
-            <Grid container>
-                <Grid md={12}>
+            <Grid container justify="center">
+                <Grid item xs={12}>
                     <h1>Staff Event Detail</h1>
                 </Grid>
-                <Grid md={6}>
+                <Grid item xs={6}>
                     <strong> Event: </strong>
                     {this.state.event.name}
                 </Grid>
-                <Grid md={6}>
+                <Grid item xs={6}>
                     <strong> Site: </strong>
                     {this.state.event.site}
                 </Grid>
-                <Grid md={6}>
+                <Grid item xs={6}>
                     <strong>
                         Start Date:
                     </strong>
                     {this.state.event.startDate}
                 </Grid>
-                <Grid md={6}>
+                <Grid item xs={6}>
                     <strong>
                         End Date:
                     </strong>
                     {this.state.event.endDate}
                 </Grid>
-                <Grid md={4}>
+                <Grid item xs={4}>
                     <strong>
                         Staffs:
                     </strong>
                         {
-                            this.state.event.schedule.map(staff => (
+                            this.state.event.staffs.map(staff => (
                                 <div>
                                     <strong>{staff}</strong>
                                 </div>
                             ))
                         }
                 </Grid>
-                <Grid md={4}>
+                <Grid item xs={4}>
                     <strong>
                         Capacity:
                     </strong>
                     {this.state.event.capacity}
                 </Grid>
-                <Grid md={4}>
+                <Grid item xs={4}>
                     <strong>
                         Price:
                     </strong>
                     {this.state.event.ticketPrice}
                 </Grid>
-                <Grid md={6}>
+                <Grid item xs={6}>
                     <strong>
                         Description:
                     </strong>
                     {this.state.event.description}
                 </Grid>
-                <Grid md={12}>
+                <Grid item xs={12}>
                     <Button color={"primary"} variant={"raised"} onClick={this.back}>Back</Button>
                 </Grid>
             </Grid>

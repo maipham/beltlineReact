@@ -26,7 +26,7 @@ export class ManageSite extends Component {
             anchorEl: null,
             anchorEl1: null,
             anchorEl2: null,
-            selected: null,
+            selected: -1,
             initialManageSite: [],
             filteredManageSite: [],
             allSites: [],
@@ -191,7 +191,7 @@ export class ManageSite extends Component {
                         <Button component={Link} to={'/create_site'} variant="contained" color="primary">Create</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
-                        <Button component={Link} to={'/edit_site'} variant="contained" color="primary">Edit</Button>
+                        <Button component={Link} to={'/edit_site'} disabled={this.state.selected > -1} variant="contained" color="primary">Edit</Button>
                     </Grid>
                     <Grid item style={{marginRight: '20px'}}>
                         <Button variant="contained" color="primary">Delete</Button>

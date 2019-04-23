@@ -18,6 +18,7 @@ export class AdminCreateSite extends Component {
             zipcode: '',
             address: '',
             manager: "--",
+            username: '',
             managers: [],
             openEveryday: false,
             anchorEl: null
@@ -51,11 +52,18 @@ export class AdminCreateSite extends Component {
         this.setState({ anchorEl: event.currentTarget });
     };
 
-    handleManagerOptionClick = event => {
-        this.setState({
-            anchorEl: null,
-            manager: event.target.innerText
-        })
+    handleManagerOptionClick = (e) => {
+        const managers = this.state.managers;
+        const selected_man = e.target.innerText;
+        for (let i = 0; i < this.state.managers.length; i++) {
+            if (managers[i].manager_name === selected_man) {
+                this.state.manager = selected_man;
+                this.state.username = managers[i].username;
+                this.state.anchorEl = null;
+                this.setState(this.state);
+                break;
+            }
+        }
     };
 
     handleChange = name => event => {
@@ -64,13 +72,12 @@ export class AdminCreateSite extends Component {
 
     componentDidMount() {
         this.hr.open('GET', this.url);
-
+        console.log(this.url);
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);
-                this.setState({
-                    managers: data
-                });
+                this.state.managers = data;
+                this.setState(this.state);
                 console.log(data);
             }
         };
@@ -90,7 +97,7 @@ export class AdminCreateSite extends Component {
         const zip = this.state.zipcode;
         const address = this.state.address;
         const open = this.state.openEveryday ? 'Yes' : 'No';
-        const manager = this.state.manager;
+        const manager = this.state.username;
         const obj = {'name': name, 'address': address, 'zip': zip, 'manager': manager, 'open': open};
         this.hr.send(JSON.stringify(obj));
         console.log(JSON.stringify(obj));
@@ -139,8 +146,7 @@ export class AdminCreateSite extends Component {
                             id="type_menu"
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
-                            onClose={this.handleClose}
-                        >
+                            onClose={this.handleClose}>
                             {this.state.managers.map((manager, index) =>
                                 <MenuItem key={index} onClick={this.handleManagerOptionClick} value={manager.manager_name}>{manager.manager_name}</MenuItem>)}
                         </Menu>
@@ -152,7 +158,7 @@ export class AdminCreateSite extends Component {
                                 checked={!!this.state.openEveryday}
                                 onChange={this.handleChange('openEveryday')}
                                 value=""
-                                color="primary"/>}label={"Open Everyday"} />
+                                color="primary"/>} label={"Open Everyday"} />
                     </Grid>
                 </Grid>
 

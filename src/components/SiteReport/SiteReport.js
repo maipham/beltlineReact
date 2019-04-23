@@ -16,9 +16,11 @@ import Radio from "@material-ui/core/Radio";
 import {Link} from "react-router-dom";
 
 export default class SiteReport extends Component {
+    hash = null;
     constructor(props) {
         super(props);
         this.init();
+        this.hash = props.location.hash;
     };
 
     init() {
@@ -166,8 +168,7 @@ export default class SiteReport extends Component {
                             {/*Daily Detail*/}
                         {/*</Button>*/}
                         <Button variant="contained"  component={Link} color="primary"
-                                to={{pathname: '/daily_detail', hash: this.hash}}
-                        >Daily Detail</Button>
+                                to={{pathname: '/daily_detail', hash: this.hash}}>Daily Detail</Button>
                     </Grid>
 
                     <Grid container justify="center" item xs={12}>

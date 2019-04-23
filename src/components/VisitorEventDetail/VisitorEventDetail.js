@@ -20,50 +20,50 @@ export default class VisitorEventDetail extends Component {
 
     render() {
         return (
-            <Grid container>
-                <Grid md={12}>
+            <Grid container justify="center">
+                <Grid item xs={12}>
                     <h1>Visitor Event Detail</h1>
                 </Grid>
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong> Event: </strong>
                     {this.state.event.name}
                 </Grid>
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong> Site: </strong>
                     {this.state.event.site}
                 </Grid>
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong>
                         Start Date:
                     </strong>
                     {this.state.event.startDate}
                 </Grid>
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong>
                         End Date:
                     </strong>
                     {this.state.event.endDate}
                 </Grid>
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong>
                         Price:
                     </strong>
                     {this.state.event.ticketPrice}
                 </Grid>
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong>
                         Ticket Remains:
                     </strong>
                     {this.state.event.ticketsRemain}
                 </Grid>
 
-                <Grid md={6}>
+                <Grid item container justify="center" xs={6}>
                     <strong>
                         Description:
                     </strong>
                     {this.state.event.description}
                 </Grid>
-                <Grid md={12}>
+                <Grid item container justify="center" xs={12}>
                     <InputLabel style={{marginRight: '15px'}}>Visit Date</InputLabel>
                     <TextField id="visitDate"
                                type="date"
@@ -74,7 +74,7 @@ export default class VisitorEventDetail extends Component {
 
                     <Button color={"primary"} variant={"raised"} onClick={this.logVisit}>Log Visit</Button>
                 </Grid>
-                <Grid md={12}>
+                <Grid item container justify="center" xs={12}>
                     <Button color={"primary"} variant={"raised"} onClick={this.back}>Back</Button>
                 </Grid>
             </Grid>

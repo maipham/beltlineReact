@@ -71,14 +71,11 @@ export class TransitHistory extends Component {
 
     componentDidMount() {
         const full = this.url + 'username=' + this.props.location.hash.substring(1);
-        console.log(full);
-
         this.hr.open('GET', full);
         this.hr.onreadystatechange = (event) => {
             if (event.target.readyState === 4 && event.target.status === 200) {
                 const data = JSON.parse(event.target.responseText);
-                console.log(data);
-                if (data.lenth > 0) {
+                if (data.length > 0) {
                     let a = [];
                     data[1].forEach(function(element) {
                         a.push(element.name);
@@ -89,7 +86,6 @@ export class TransitHistory extends Component {
                         filteredHistory: data[0],
                         siteNames: a
                     });
-                    console.log(data);
                 }
             }
         };
